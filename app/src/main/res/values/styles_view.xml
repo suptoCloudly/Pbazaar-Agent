@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--styles for buttons-->
+
+    <style name="Button.Flat" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">sans-serif-mono</item>
+    </style>
+
+    <style name="Button.Flat.Submit">
+        <item name="android:background">@drawable/button_background</item>
+    </style>
+
+</resources>
