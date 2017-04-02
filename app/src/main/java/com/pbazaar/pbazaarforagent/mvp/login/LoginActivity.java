@@ -35,6 +35,15 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), loginFragment, LOGIN_FRAGMENT_TAG).commit();
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
 

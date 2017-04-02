@@ -1,5 +1,7 @@
 package com.pbazaar.pbazaarforagent.remote;
 
+import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
+import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
 
@@ -16,5 +18,8 @@ public interface PbazaarApiServiceClient {
 
     @POST("LogIn")
     Call<LoginResponse> logIn(@Body LoginRequest loginRequest);
+
+    @POST("GetDistrictsByCountryId")
+    Call<GetDistrictByCountryIdResponse> getDistrictsByCountryId(@Body GetDistrictByCountryIdRequest getDistrictByCountryIdRequest);
 
 }

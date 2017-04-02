@@ -109,7 +109,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
             Intent intent = new Intent(getActivity(), RegistrationActivity.class);
             startActivity(intent);
-            getActivity().overridePendingTransition(R.anim.push_down_in, R.anim.push_down_out);
+            getActivity().overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
         }
 
     }

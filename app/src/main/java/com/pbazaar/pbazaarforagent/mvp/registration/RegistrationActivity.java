@@ -47,7 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
         startActivity(intent);
 
-        overridePendingTransition(R.anim.push_up_in, R.anim.push_up_out);
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 }
 
