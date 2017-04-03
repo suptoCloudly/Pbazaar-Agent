@@ -2,6 +2,8 @@ package com.pbazaar.pbazaarforagent.remote;
 
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
+import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
+import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
 
@@ -21,5 +23,8 @@ public interface PbazaarApiServiceClient {
 
     @POST("GetDistrictsByCountryId")
     Call<GetDistrictByCountryIdResponse> getDistrictsByCountryId(@Body GetDistrictByCountryIdRequest getDistrictByCountryIdRequest);
+
+    @POST("GetThanaAreasByDistrictId")
+    Call<GetThanaByDistrictIdResponse> getThanaByDistrictId(@Body GetThanaByDistrictIdRequest request);
 
 }

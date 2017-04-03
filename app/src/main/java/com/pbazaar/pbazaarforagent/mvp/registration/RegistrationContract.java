@@ -21,7 +21,7 @@ public interface RegistrationContract {
 
         void onDistrictLoaded(ArrayList<LocationSpinnerDataModel> districtList);
 
-        void onThanaLoaded(ArrayList<String> thanaList);
+        void onThanaLoaded(ArrayList<LocationSpinnerDataModel> thanaList);
 
     }
 

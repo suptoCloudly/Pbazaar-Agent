@@ -6,10 +6,10 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Created by supto on 4/2/17.
+ * Created by supto on 4/3/17.
  */
 
-public class GetDistrictByCountryIdResponse {
+public class GetThanaByDistrictIdResponse {
 
     @SerializedName("success")
     @Expose
@@ -17,7 +17,6 @@ public class GetDistrictByCountryIdResponse {
     @SerializedName("data")
     @Expose
     private List<Data> data = null;
-
 
     @SerializedName("message")
     @Expose
@@ -83,10 +82,10 @@ public class GetDistrictByCountryIdResponse {
             this.customProperties = customProperties;
         }
 
-
     }
 
     public class CustomProperties {
+
 
     }
 }
