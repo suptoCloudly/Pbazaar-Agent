@@ -1,4 +1,4 @@
-package com.pbazaar.pbazaarforagent.mvp.login;
+package com.pbazaar.pbazaarforagent.ui.login;
 
 
 import android.app.ProgressDialog;
@@ -17,9 +17,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pbazaar.pbazaarforagent.R;
+import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LoginCredentialModel;
 import com.pbazaar.pbazaarforagent.model.UserDataModel;
-import com.pbazaar.pbazaarforagent.mvp.registration.RegistrationActivity;
+import com.pbazaar.pbazaarforagent.ui.main.MainActivity;
+import com.pbazaar.pbazaarforagent.ui.registration.RegistrationActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,8 +95,8 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         emailEt.setText(email);
         passwordEt.setText(password);
 
-        Log.d(TAG,"Email: "+ email);
-        Log.d(TAG,"Pass: "+ password);
+        Log.d(TAG, "Email: " + email);
+        Log.d(TAG, "Pass: " + password);
 
         return view;
     }
@@ -142,8 +144,12 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     @Override
     public void onLoginSuccess(UserDataModel userDataModel) {
 
-        Log.d(TAG, "user email: " + userDataModel.getEmail());
-        showMessage(userDataModel.getEmail());
+        PreferenceHelper.getInstance().setCustomerId(userDataModel.getCustomerId());
+
+        getActivity().finish();
+        Intent productPostingIntent = new Intent(getActivity(), MainActivity.class);
+        startActivity(productPostingIntent);
+        getActivity().overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
     }
 
     @Override

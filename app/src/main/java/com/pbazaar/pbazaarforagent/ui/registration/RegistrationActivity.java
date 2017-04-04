@@ -1,4 +1,4 @@
-package com.pbazaar.pbazaarforagent.mvp.registration;
+package com.pbazaar.pbazaarforagent.ui.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 
 import com.pbazaar.pbazaarforagent.R;
-import com.pbazaar.pbazaarforagent.mvp.login.LoginActivity;
+import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -1,9 +1,9 @@
-package com.pbazaar.pbazaarforagent.mvp.login;
+package com.pbazaar.pbazaarforagent.ui.login;
 
 import com.pbazaar.pbazaarforagent.model.LoginCredentialModel;
 import com.pbazaar.pbazaarforagent.model.UserDataModel;
-import com.pbazaar.pbazaarforagent.mvp.BasePresenter;
-import com.pbazaar.pbazaarforagent.mvp.BaseView;
+import com.pbazaar.pbazaarforagent.ui.BasePresenter;
+import com.pbazaar.pbazaarforagent.ui.BaseView;
 
 /**
  * Created by supto on 4/2/17.

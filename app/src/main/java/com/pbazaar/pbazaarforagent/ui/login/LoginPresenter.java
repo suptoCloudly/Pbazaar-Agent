@@ -1,4 +1,4 @@
-package com.pbazaar.pbazaarforagent.mvp.login;
+package com.pbazaar.pbazaarforagent.ui.login;
 
 import android.util.Log;
 

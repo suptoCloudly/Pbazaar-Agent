@@ -1,4 +1,4 @@
-package com.pbazaar.pbazaarforagent.mvp.registration;
+package com.pbazaar.pbazaarforagent.ui.registration;
 
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;

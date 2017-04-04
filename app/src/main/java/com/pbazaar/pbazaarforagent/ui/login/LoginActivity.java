@@ -1,11 +1,14 @@
-package com.pbazaar.pbazaarforagent.mvp.login;
+package com.pbazaar.pbazaarforagent.ui.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.pbazaar.pbazaarforagent.R;
+import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
+import com.pbazaar.pbazaarforagent.ui.main.MainActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +30,15 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // if a user is logged in then start main activity
+        if (PreferenceHelper.getInstance().getCustomerId() != PreferenceHelper.CUSTOMER_ID_DEFAULT_VALUE) {
+            finish();
+            Intent mainActivityIntent = new Intent(this, MainActivity.class);
+            startActivity(mainActivityIntent);
+        }
+
+
         setContentView(R.layout.activity_login);
 
         ButterKnife.bind(this);

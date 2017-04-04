@@ -4,7 +4,7 @@
     android:id="@+id/root_layout_login_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvp.login.LoginFragment">
+    tools:context=".ui.login.LoginFragment">
 
     <ScrollView
         android:layout_width="match_parent"

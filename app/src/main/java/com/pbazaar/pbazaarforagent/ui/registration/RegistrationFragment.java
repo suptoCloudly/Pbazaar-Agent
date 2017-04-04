@@ -1,4 +1,4 @@
-package com.pbazaar.pbazaarforagent.mvp.registration;
+package com.pbazaar.pbazaarforagent.ui.registration;
 
 
 import android.app.ProgressDialog;
@@ -24,7 +24,7 @@ import com.pbazaar.pbazaarforagent.CustomSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
-import com.pbazaar.pbazaarforagent.mvp.login.LoginActivity;
+import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
 
 import java.util.ArrayList;
 

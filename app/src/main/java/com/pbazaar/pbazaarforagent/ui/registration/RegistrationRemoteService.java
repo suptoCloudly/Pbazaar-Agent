@@ -1,4 +1,4 @@
-package com.pbazaar.pbazaarforagent.mvp.registration;
+package com.pbazaar.pbazaarforagent.ui.registration;
 
 import android.util.Log;
 

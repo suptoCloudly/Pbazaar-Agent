@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pbazaar.pbazaarforagent.mvp.registration.RegistrationActivity">
+    tools:context="com.pbazaar.pbazaarforagent.ui.registration.RegistrationActivity">
 
     <FrameLayout
         android:id="@+id/fragment_registration_container"

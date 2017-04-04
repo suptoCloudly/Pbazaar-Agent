@@ -1,9 +1,9 @@
-package com.pbazaar.pbazaarforagent.mvp.registration;
+package com.pbazaar.pbazaarforagent.ui.registration;
 
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
-import com.pbazaar.pbazaarforagent.mvp.BasePresenter;
-import com.pbazaar.pbazaarforagent.mvp.BaseView;
+import com.pbazaar.pbazaarforagent.ui.BasePresenter;
+import com.pbazaar.pbazaarforagent.ui.BaseView;
 
 import java.util.ArrayList;
 

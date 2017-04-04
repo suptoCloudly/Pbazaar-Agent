@@ -14,4 +14,5 @@
     <string name="invalid_address_error_text">Invalid Address</string>
     <string name="district_load_failed_error_message">District load failed</string>
     <string name="registration_successfull_note">Registration Successful</string>
+    <string name="pick_image_intent_text">Pick your option</string>
 </resources>
