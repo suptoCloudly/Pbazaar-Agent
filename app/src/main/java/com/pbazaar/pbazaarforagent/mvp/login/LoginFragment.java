@@ -48,12 +48,21 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     private ProgressDialog progressDialog;
     private LoginContract.Presenter presenter;
 
+    private String email;
+    private String password;
+
     public LoginFragment() {
     }
 
 
-    public static LoginFragment newInstance() {
+    public static LoginFragment newInstance(String email, String password) {
         LoginFragment loginFragment = new LoginFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(LoginActivity.ARG_EMAIL, email);
+        bundle.putString(LoginActivity.ARG_PASSWORD, password);
+
+        loginFragment.setArguments(bundle);
         return loginFragment;
     }
 
@@ -69,12 +78,23 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
         ButterKnife.bind(this, view);
 
+
         logInButton.setOnClickListener(this);
         signUpTv.setOnClickListener(this);
 
         // TODO apply some styling for progressbar
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage(getString(R.string.network_operation_running_message));
+
+
+        // get the email and password and set it in the test edit test fields
+        email = getArguments().getString(LoginActivity.ARG_EMAIL);
+        password = getArguments().getString(LoginActivity.ARG_PASSWORD);
+        emailEt.setText(email);
+        passwordEt.setText(password);
+
+        Log.d(TAG,"Email: "+ email);
+        Log.d(TAG,"Pass: "+ password);
 
         return view;
     }

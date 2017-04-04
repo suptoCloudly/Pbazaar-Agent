@@ -2,6 +2,7 @@ package com.pbazaar.pbazaarforagent.mvp.registration;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -17,10 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.pbazaar.pbazaarforagent.CustomSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
+import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
+import com.pbazaar.pbazaarforagent.mvp.login.LoginActivity;
 
 import java.util.ArrayList;
 
@@ -119,14 +123,14 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
     private CustomSpinnerAdapter districtListAdapter;
     private CustomSpinnerAdapter thanaListAdapter;
 
-    public static RegistrationFragment newInstance() {
-        RegistrationFragment registrationFragment = new RegistrationFragment();
-        return registrationFragment;
-    }
-
     public RegistrationFragment() {
         // Required empty public constructor
 
+    }
+
+    public static RegistrationFragment newInstance() {
+        RegistrationFragment registrationFragment = new RegistrationFragment();
+        return registrationFragment;
     }
 
     @Override
@@ -197,8 +201,10 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
     @Override
     public void onClick(View view) {
         if (view == signUpButton) {
+            Log.d(TAG, "Click click");
 
 
+            // Extract all data
             String firstName = firstNameET.getText().toString();
             String lastName = lastNameET.getText().toString();
             String userName = userNameET.getText().toString();
@@ -223,7 +229,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
             String mobile2 = alternateMobileNumberEt.getText().toString();
             String phone = phoneNumberEt.getText().toString();
 
-            boolean newsLetter = newsLetterCheckbox.isChecked();
+            boolean subscribeNewsletter = newsLetterCheckbox.isChecked();
 
             String password = passwordEt.getText().toString();
             String confirmPassword = confirmPasswordEt.getText().toString();
@@ -236,19 +242,21 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
                 emptyInputFieldValidation(companyNameEt);
             }
 
-
             if (!password.contentEquals(confirmPassword)) {
-                showMessage("Password Mismatch");
+                showMessage(getString(R.string.passeword_mismatch_error_text));
                 return;
             }
 
             if (districtId == -1 || thanaAreaId == -1) {
-                showMessage("Invalid Address");
+                showMessage(getString(R.string.invalid_address_error_text));
                 return;
             }
 
 
-            presenter.onRegistrationButtonClicked();
+            // create a registration model data and pass it to presenter
+            RegistrationDataModel registrationDataModel = new RegistrationDataModel(firstName, lastName, userName, email, gender, isIndividualForRent, isIndividualForSell, isRealEstateCompany, isHotelGuestHouse, isAgentForSell, isAgentForRent, company, countryId, districtId, thanaAreaId, streetAddress, streetAddress2, mobile, mobile2, phone, subscribeNewsletter, password);
+
+            presenter.onRegistrationButtonClicked(registrationDataModel);
         }
     }
 
@@ -258,8 +266,20 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
     }
 
     @Override
-    public void onRegistrationSuccess() {
+    public void onRegistrationSuccess(String email, String password) {
 
+        // show a toast message ant start the login activity and pass login credential to it
+        Toast.makeText(getActivity(), R.string.registration_successfull_note, Toast.LENGTH_SHORT).show();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(LoginActivity.ARG_EMAIL, email);
+        bundle.putString(LoginActivity.ARG_PASSWORD, password);
+
+        Intent loginActivityIntent = new Intent(getActivity(), LoginActivity.class);
+        loginActivityIntent.putExtras(bundle);
+        startActivity(loginActivityIntent);
+        getActivity().finish();
+        getActivity().overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     @Override

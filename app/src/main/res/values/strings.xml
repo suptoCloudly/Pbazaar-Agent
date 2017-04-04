@@ -10,4 +10,8 @@
     <string name="no_internet_error_message">No Internet Connection found. Please turn on your network connection</string>
     <string name="network_operation_running_message">Connecting to Pbazaar</string>
     <string name="empty_input_field_error_message">Field can\'t be empty</string>
+    <string name="passeword_mismatch_error_text">Password Mismatch</string>
+    <string name="invalid_address_error_text">Invalid Address</string>
+    <string name="district_load_failed_error_message">District load failed</string>
+    <string name="registration_successfull_note">Registration Successful</string>
 </resources>

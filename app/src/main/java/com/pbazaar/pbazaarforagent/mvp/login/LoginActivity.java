@@ -2,6 +2,7 @@ package com.pbazaar.pbazaarforagent.mvp.login;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.pbazaar.pbazaarforagent.R;
@@ -11,15 +12,17 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public static final String ARG_EMAIL = "arg_email";
+    public static final String ARG_PASSWORD = "arg_password";
     private static final String TAG = LoginActivity.class.getSimpleName();
-
     private static final String LOGIN_FRAGMENT_TAG = "login_fragment_tag";
-
-
     @BindView(R.id.fragment_login_container)
     FrameLayout fragmentContainer;
 
     private LoginFragment loginFragment;
+
+    private String email = "";
+    private String password = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +31,21 @@ public class LoginActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        // if registration activity returns a email and password then pass it to fragment
+        if (getIntent().getExtras() != null) {
+            email = getIntent().getExtras().getString(ARG_EMAIL);
+            password = getIntent().getExtras().getString(ARG_PASSWORD);
+        }
+
+
+        Log.d(TAG, "Email: " + email);
+        Log.d(TAG, "Pass: " + password);
+
         loginFragment = (LoginFragment) getSupportFragmentManager().findFragmentByTag(LOGIN_FRAGMENT_TAG);
 
         if (loginFragment == null) {
-            loginFragment = LoginFragment.newInstance();
+            loginFragment = LoginFragment.newInstance(email, password);
+            Log.d(TAG, "New Login fragment created");
         }
 
         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), loginFragment, LOGIN_FRAGMENT_TAG).commit();

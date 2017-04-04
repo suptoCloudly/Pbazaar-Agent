@@ -6,6 +6,8 @@ import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
+import com.pbazaar.pbazaarforagent.remote.data.RegistrationRequest;
+import com.pbazaar.pbazaarforagent.remote.data.RegistrationResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -26,5 +28,8 @@ public interface PbazaarApiServiceClient {
 
     @POST("GetThanaAreasByDistrictId")
     Call<GetThanaByDistrictIdResponse> getThanaByDistrictId(@Body GetThanaByDistrictIdRequest request);
+
+    @POST("Register")
+    Call<RegistrationResponse> startRegistration(@Body RegistrationRequest registrationRequest);
 
 }

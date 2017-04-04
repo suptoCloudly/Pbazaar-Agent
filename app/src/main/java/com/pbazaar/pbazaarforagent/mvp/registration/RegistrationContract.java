@@ -1,6 +1,7 @@
 package com.pbazaar.pbazaarforagent.mvp.registration;
 
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
+import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
 import com.pbazaar.pbazaarforagent.mvp.BasePresenter;
 import com.pbazaar.pbazaarforagent.mvp.BaseView;
 
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public interface RegistrationContract {
     interface View extends BaseView<Presenter> {
 
-        void onRegistrationSuccess();
+        void onRegistrationSuccess(String email, String password);
 
         void setLoadingIndicator(boolean status);
 
@@ -27,10 +28,12 @@ public interface RegistrationContract {
 
     interface Presenter extends BasePresenter {
 
-        void onRegistrationButtonClicked();
+        void onRegistrationButtonClicked(RegistrationDataModel registrationDataModel);
 
         void onCountrySelected(int countryId);
 
         void onDistrictSelected(int districtId);
+
+
     }
 }
