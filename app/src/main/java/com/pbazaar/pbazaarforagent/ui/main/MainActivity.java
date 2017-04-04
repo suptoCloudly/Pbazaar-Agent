@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
+import com.pbazaar.pbazaarforagent.ui.main.product.ProductPostingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        getSupportActionBar().setElevation(0);
 
         productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag(ProductPostingFragment.class.getSimpleName());
 

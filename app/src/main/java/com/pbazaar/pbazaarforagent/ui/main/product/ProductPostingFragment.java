@@ -1,7 +1,6 @@
-package com.pbazaar.pbazaarforagent.ui.main;
+package com.pbazaar.pbazaarforagent.ui.main.product;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.pbazaar.pbazaarforagent.R;
@@ -32,18 +30,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductPostingFragment extends Fragment implements View.OnClickListener {
+public class ProductPostingFragment extends Fragment implements ProductPostingContract.View, View.OnClickListener {
 
     private static final String TAG = ProductPostingFragment.class.getSimpleName();
 
     private static final int PICK_IMAGE_ID = 100;
 
 
-    @BindView(R.id.image_view_product_posting_fragment)
-    ImageView productimage;
+    @BindView(R.id.image_view_pick_image_product_posting)
+    ImageView pickImageImageView;
 
-    @BindView(R.id.button_select_image_product_posting_fragment)
-    Button selectImageButton;
+
+    private ProductPostingContract.Presenter presenter;
+
 
     public ProductPostingFragment() {
     }
@@ -65,13 +64,24 @@ public class ProductPostingFragment extends Fragment implements View.OnClickList
         View view = inflater.inflate(R.layout.fragment_product_posting, container, false);
         ButterKnife.bind(this, view);
 
-        selectImageButton.setOnClickListener(this);
+        pickImageImageView.setOnClickListener(this);
+
         return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (presenter == null) {
+            presenter = new ProductPostingPresenter(this);
+            presenter.start();
+        }
     }
 
     @Override
     public void onClick(View view) {
-        if (view == selectImageButton) {
+        if (view == pickImageImageView) {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(getActivity());
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
         }
@@ -84,7 +94,7 @@ public class ProductPostingFragment extends Fragment implements View.OnClickList
             case PICK_IMAGE_ID:
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 if (bitmap != null) {
-                    productimage.setImageBitmap(bitmap);
+                    pickImageImageView.setImageBitmap(bitmap);
 
                     File imageFile = getFileFromBitmap(bitmap);
 
@@ -130,8 +140,13 @@ public class ProductPostingFragment extends Fragment implements View.OnClickList
         }
     }
 
+    @Override
+    public void setPresenter(ProductPostingContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
     private File getFileFromBitmap(Bitmap bitmap) {
-        File mydir = getActivity().getDir("Pbazar", Context.MODE_PRIVATE);
+        File mydir = getActivity().getCacheDir();
         File fileWithinMyDir = new File(mydir, "Pbazar");
 //        String rootPath = Environment.getExternalStorageDirectory() + "/Eskarjay";
 //        File file = new File(fileWithinMyDir, fileWithinMyDir);

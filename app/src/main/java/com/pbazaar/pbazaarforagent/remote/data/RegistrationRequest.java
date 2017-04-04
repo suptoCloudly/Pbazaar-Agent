@@ -111,4 +111,6 @@ public class RegistrationRequest extends BaseRequest {
         this.subscribeNewsletter = subscribeNewsletter;
         this.password = password;
     }
+
+
 }
