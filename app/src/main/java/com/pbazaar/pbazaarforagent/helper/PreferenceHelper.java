@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 public class PreferenceHelper {
 
     public static final String NETWORK_STATUS_KEY = "network_state_key";
-    public static final boolean NETWORK_STATUS_DEFAULT_VALUE = false;
+    public static final boolean NETWORK_STATUS_DEFAULT_VALUE = true;
     public static final String CUSTOMER_ID_KEY = "customer_id_key";
     public static final int CUSTOMER_ID_DEFAULT_VALUE = -1;
     private static final String TAG = PreferenceHelper.class.getSimpleName();

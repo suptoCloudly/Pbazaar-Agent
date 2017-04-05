@@ -3,6 +3,7 @@ package com.pbazaar.pbazaarforagent.ui.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
@@ -35,13 +36,14 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setElevation(0);
 
-        productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag(ProductPostingFragment.class.getSimpleName());
+        productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag("AAAA");
 
         if (productPostingFragment == null) {
             productPostingFragment = ProductPostingFragment.getInstance();
+            Log.d(TAG, "Fragment created");
         }
 
-        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), productPostingFragment, ProductPostingFragment.class.getSimpleName()).commit();
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), productPostingFragment, "AAAA").commit();
 
     }
 

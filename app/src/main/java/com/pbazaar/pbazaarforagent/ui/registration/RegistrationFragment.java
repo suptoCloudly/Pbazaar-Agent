@@ -20,13 +20,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.pbazaar.pbazaarforagent.CustomSpinnerAdapter;
+import com.pbazaar.pbazaarforagent.CustomAreaSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.R;
-import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
@@ -122,8 +120,8 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
     private ArrayList<LocationSpinnerDataModel> districtList;
     private ArrayList<LocationSpinnerDataModel> thanaList;
 
-    private CustomSpinnerAdapter districtListAdapter;
-    private CustomSpinnerAdapter thanaListAdapter;
+    private CustomAreaSpinnerAdapter districtListAdapter;
+    private CustomAreaSpinnerAdapter thanaListAdapter;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -163,8 +161,8 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         districtList.add(new LocationSpinnerDataModel("Select District", -1));
         thanaList.add(new LocationSpinnerDataModel("Select Thana", -1));
 
-        districtListAdapter = new CustomSpinnerAdapter(getActivity(), districtList);
-        thanaListAdapter = new CustomSpinnerAdapter(getActivity(), thanaList);
+        districtListAdapter = new CustomAreaSpinnerAdapter(getActivity(), districtList);
+        thanaListAdapter = new CustomAreaSpinnerAdapter(getActivity(), thanaList);
 
         selectDistrictSpinner.setAdapter(districtListAdapter);
         selectThanaSpinner.setAdapter(thanaListAdapter);
@@ -174,7 +172,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "Selected: " + districtList.get(position).getLocationId());
-                    presenter.onDistrictSelected(districtList.get(position).getLocationId());
+                presenter.onDistrictSelected(districtList.get(position).getLocationId());
             }
 
             @Override
@@ -186,12 +184,6 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        RefWatcher refWatcher = AppController.getRefWatcher();
-        refWatcher.watch(this);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -309,7 +301,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         this.districtList.clear();
         this.districtList.add(new LocationSpinnerDataModel("Select District", -1));
         this.districtList.addAll(districtList);
-        districtListAdapter = new CustomSpinnerAdapter(getActivity(), this.districtList);
+        districtListAdapter = new CustomAreaSpinnerAdapter(getActivity(), this.districtList);
         selectDistrictSpinner.setAdapter(districtListAdapter);
     }
 
@@ -318,7 +310,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         this.thanaList.clear();
         this.thanaList.add(new LocationSpinnerDataModel("Select Thana", -1));
         this.thanaList.addAll(thanaList);
-        thanaListAdapter = new CustomSpinnerAdapter(getActivity(), this.thanaList);
+        thanaListAdapter = new CustomAreaSpinnerAdapter(getActivity(), this.thanaList);
         selectThanaSpinner.setAdapter(thanaListAdapter);
     }
 

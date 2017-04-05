@@ -15,12 +15,12 @@ import java.util.ArrayList;
  * Created by supto on 4/2/17.
  */
 
-public class CustomSpinnerAdapter extends BaseAdapter {
+public class CustomAreaSpinnerAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<LocationSpinnerDataModel> itemList;
 
-    public CustomSpinnerAdapter(Context context, ArrayList<LocationSpinnerDataModel> itemList) {
+    public CustomAreaSpinnerAdapter(Context context, ArrayList<LocationSpinnerDataModel> itemList) {
 
         this.context = context;
         this.itemList = itemList;

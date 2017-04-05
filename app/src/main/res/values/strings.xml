@@ -15,4 +15,6 @@
     <string name="district_load_failed_error_message">District load failed</string>
     <string name="registration_successfull_note">Registration Successful</string>
     <string name="pick_image_intent_text">Pick your option</string>
+    <string name="image_upload_error_message">Image upload failed. Please check your internet connection and try again</string>
+    <string name="image_uploading_message">Uploading image to Pbazar</string>
 </resources>

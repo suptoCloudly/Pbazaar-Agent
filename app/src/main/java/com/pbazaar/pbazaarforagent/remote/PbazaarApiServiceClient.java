@@ -2,6 +2,8 @@ package com.pbazaar.pbazaarforagent.remote;
 
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
+import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryFromCategoryRequest;
+import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryFromCategoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
@@ -41,4 +43,6 @@ public interface PbazaarApiServiceClient {
     @POST("InsertPicture")
     Call<InsertImageResponse> uploadImage(@Part MultipartBody.Part file, @Part("apiToken") RequestBody requestBody);
 
+    @POST("GetCategories")
+    Call<GetSubcategoryFromCategoryResponse> getSubcategoryFromCategory(@Body GetSubcategoryFromCategoryRequest request);
 }

@@ -33,7 +33,5 @@ public interface RegistrationContract {
         void onCountrySelected(int countryId);
 
         void onDistrictSelected(int districtId);
-
-
     }
 }
