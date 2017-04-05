@@ -22,9 +22,11 @@ import android.widget.Toast;
 
 import com.pbazaar.pbazaarforagent.CustomSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.R;
+import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 
@@ -181,11 +183,14 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
             }
         });
 
-
-        // apply form validation
-
-
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        RefWatcher refWatcher = AppController.getRefWatcher();
+        refWatcher.watch(this);
     }
 
     @Override

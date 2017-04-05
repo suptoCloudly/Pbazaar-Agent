@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.pbazaar.pbazaarforagent.R;
+import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.helper.ImagePicker;
 import com.pbazaar.pbazaarforagent.remote.PbazaarApi;
 import com.pbazaar.pbazaarforagent.remote.RemoteConstant;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -69,6 +71,12 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         return view;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        RefWatcher refWatcher = AppController.getRefWatcher();
+        refWatcher.watch(this);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

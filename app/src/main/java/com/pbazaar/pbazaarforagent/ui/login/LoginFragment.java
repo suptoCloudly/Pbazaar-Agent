@@ -17,11 +17,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.pbazaar.pbazaarforagent.R;
+import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LoginCredentialModel;
 import com.pbazaar.pbazaarforagent.model.UserDataModel;
 import com.pbazaar.pbazaarforagent.ui.main.MainActivity;
 import com.pbazaar.pbazaarforagent.ui.registration.RegistrationActivity;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -110,6 +112,13 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
             presenter.start();
         }
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        RefWatcher refWatcher = AppController.getRefWatcher();
+        refWatcher.watch(this);
     }
 
     @Override
