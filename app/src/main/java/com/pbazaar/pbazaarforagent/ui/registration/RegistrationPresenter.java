@@ -1,5 +1,7 @@
 package com.pbazaar.pbazaarforagent.ui.registration;
 
+import android.util.Log;
+
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
 
@@ -63,6 +65,7 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
     @Override
     public void onCountrySelected(int countryId) {
 
+
         RegistrationRemoteService.getInstance().getDistrictByCountryId(countryId, new RegistrationRemoteService.DistrictLoadCompletionListener() {
             @Override
             public void onDistrictLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
@@ -72,12 +75,15 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
             @Override
             public void onDistrictLoadFailed(String message) {
                 //  view.showMessage(message);
+                Log.d(TAG, "Error: " + message);
             }
         });
     }
 
     @Override
     public void onDistrictSelected(int districtId) {
+
+        Log.d(TAG, "District id: " + districtId);
 
         RegistrationRemoteService.getInstance().getthanaByDistrictId(districtId, new RegistrationRemoteService.ThanaLoadCompletionListener() {
             @Override
@@ -88,6 +94,7 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
             @Override
             public void onThanaloadFailed(String message) {
                 //  view.showMessage(message);
+                Log.d(TAG, "Error: " + message);
             }
         });
 

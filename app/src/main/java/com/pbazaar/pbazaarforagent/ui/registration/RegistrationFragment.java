@@ -172,7 +172,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "Selected: " + districtList.get(position).getLocationId());
-                presenter.onDistrictSelected(districtList.get(position).getLocationId());
+                    presenter.onDistrictSelected(districtList.get(position).getLocationId());
             }
 
             @Override

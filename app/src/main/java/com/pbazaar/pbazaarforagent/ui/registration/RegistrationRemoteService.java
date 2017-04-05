@@ -49,7 +49,6 @@ public class RegistrationRemoteService {
         if (!PreferenceHelper.getInstance().getNetworkStatus()) {
             if (registrationCompletionListener != null)
                 registrationCompletionListener.onRegistrationFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
-
             return;
         }
 
@@ -138,20 +137,26 @@ public class RegistrationRemoteService {
     }
 
     public void getthanaByDistrictId(int districtId, final ThanaLoadCompletionListener thanaLoadCompletionListener) {
+
+        final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList = new ArrayList<>();
+
+        if (districtId == -1) {
+            if (thanaLoadCompletionListener != null)
+                thanaLoadCompletionListener.onThanaLoadSuccess(spinnerDataModelArrayList);
+            return;
+        }
+
         // check internet connection and return if not available
         if (!PreferenceHelper.getInstance().getNetworkStatus()) {
-            if (thanaLoadCompletionListener != null)
+            if (thanaLoadCompletionListener != null) {
                 thanaLoadCompletionListener.onThanaloadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
-
+            }
             return;
         }
 
 
         final GetThanaByDistrictIdRequest getThanaByDistrictIdRequest = new GetThanaByDistrictIdRequest(RemoteConstant.PUBLIC_API_TOKEN, districtId);
         Call<GetThanaByDistrictIdResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getThanaByDistrictId(getThanaByDistrictIdRequest);
-
-
-        final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList = new ArrayList<>();
 
         call.enqueue(new Callback<GetThanaByDistrictIdResponse>() {
             @Override
