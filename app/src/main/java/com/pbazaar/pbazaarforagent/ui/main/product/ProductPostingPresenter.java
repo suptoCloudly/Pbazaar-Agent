@@ -33,9 +33,8 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
 
     @Override
     public void start() {
-        getRootCategories();
         onCountrySelected();
-
+        getSubcategories(1);
         Log.d(TAG, "Presenter start");
     }
 
@@ -44,22 +43,6 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
 
     }
 
-    @Override
-    public void getRootCategories() {
-        remoteService.getRootCategories(new ProductPostingRemoteService.GetRootCategoryCompletionListener() {
-
-            @Override
-            public void onLoadSuccess(ArrayList<SubCategoryModel> subCategoryModelArrayList) {
-                view.setCategories(subCategoryModelArrayList);
-            }
-
-            @Override
-            public void onLoadFailed(String message) {
-                view.showMessage(message);
-
-            }
-        });
-    }
 
     @Override
     public void getSubcategories(int categoryId) {

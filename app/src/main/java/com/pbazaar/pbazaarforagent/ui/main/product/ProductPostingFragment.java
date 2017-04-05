@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 
 import com.pbazaar.pbazaarforagent.CustomAreaSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.CustomCategorySpinnerAdapter;
@@ -31,18 +33,21 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProductPostingFragment extends Fragment implements ProductPostingContract.View, View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class ProductPostingFragment extends Fragment implements ProductPostingContract.View, View.OnClickListener, AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener {
 
     private static final String TAG = ProductPostingFragment.class.getSimpleName();
 
     private static final int PICK_IMAGE_ID = 100;
 
+    private static final int CATEGORY_SELL = 4;
+    private static final int CATEGORY_RENT = 1;
+
 
     @BindView(R.id.root_layout_product_posting_fragment)
     CoordinatorLayout rootLayout;
 
-    @BindView(R.id.spinner_category_product_posting_fragment)
-    AppCompatSpinner selectCategorySpinner;
+    @BindView(R.id.radio_group_select_category_product_posting)
+    RadioGroup selectCategoryRadioGroup;
 
     @BindView(R.id.spinner_subcategory_product_posting_fragment)
     AppCompatSpinner selectSubCategorySpinner;
@@ -77,12 +82,10 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     private ProductPostingContract.Presenter presenter;
 
-    private ArrayList<SubCategoryModel> categories;
     private ArrayList<SubCategoryModel> subCategories;
     private ArrayList<LocationSpinnerDataModel> districtList;
     private ArrayList<LocationSpinnerDataModel> thanaList;
 
-    private CustomCategorySpinnerAdapter categorySpinnerAdapter;
     private CustomCategorySpinnerAdapter subcategorySpinnerAdapter;
     private CustomAreaSpinnerAdapter districtListAdapter;
     private CustomAreaSpinnerAdapter thanaListAdapter;
@@ -114,25 +117,21 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         ButterKnife.bind(this, view);
 
         pickImageImageView.setOnClickListener(this);
-        selectCategorySpinner.setOnItemSelectedListener(this);
         selectDistrictSpinner.setOnItemSelectedListener(this);
+        selectCategoryRadioGroup.setOnCheckedChangeListener(this);
 
-        categories = new ArrayList<>();
         subCategories = new ArrayList<>();
         districtList = new ArrayList<>();
         thanaList = new ArrayList<>();
 
-        categories.add(new SubCategoryModel("Select Category", "Select Category", -1));
         subCategories.add(new SubCategoryModel("Select Subcategory", "Select Subcategory", -1));
         districtList.add(new LocationSpinnerDataModel("Select District", -1));
         thanaList.add(new LocationSpinnerDataModel("Select Area", -1));
 
-        categorySpinnerAdapter = new CustomCategorySpinnerAdapter(getActivity(), categories);
         subcategorySpinnerAdapter = new CustomCategorySpinnerAdapter(getActivity(), subCategories);
         districtListAdapter = new CustomAreaSpinnerAdapter(getActivity(), districtList);
         thanaListAdapter = new CustomAreaSpinnerAdapter(getActivity(), thanaList);
 
-        selectCategorySpinner.setAdapter(categorySpinnerAdapter);
         selectSubCategorySpinner.setAdapter(subcategorySpinnerAdapter);
         selectDistrictSpinner.setAdapter(districtListAdapter);
         selectAreaSpinner.setAdapter(thanaListAdapter);
@@ -170,45 +169,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
                 Bitmap bitmap = ImagePicker.getImageFromResult(getActivity(), resultCode, data);
                 if (bitmap != null) {
                     presenter.uploadProductImage(bitmap);
-
-//                    pickImageImageView.setImageBitmap(bitmap);
-//
-//                    File imageFile = getFileFromBitmap(bitmap);
-//
-//                    Log.d(TAG, "File size: " + imageFile.length());
-//
-//                    RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/png"), imageFile);
-//
-//                    MultipartBody.Part body =
-//                            MultipartBody.Part.createFormData("uploaded_file", imageFile.getName(), requestFile);
-//                    RequestBody description = RequestBody.create(
-//                            MediaType.parse("multipart/form-data"), RemoteConstant.PUBLIC_API_TOKEN);
-//
-//
-//                    Call<InsertImageResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().uploadImage(body, description);
-//                    call.enqueue(new Callback<InsertImageResponse>() {
-//                        @Override
-//                        public void onResponse(Call<InsertImageResponse> call, Response<InsertImageResponse> response) {
-//                            if (response.isSuccessful()) {
-//                                InsertImageResponse insertImageResponse = response.body();
-//                                Log.d(TAG, "upload succes: " + insertImageResponse.getSuccess());
-//
-//                                if (insertImageResponse.getSuccess() == 1) {
-//                                    Log.d(TAG, "Success: " + insertImageResponse.getData().getImageUrl());
-//                                    Log.d(TAG, "Success: " + insertImageResponse.getData().getId());
-//                                } else {
-//                                    Log.d(TAG, "Success: " + insertImageResponse.getMesaage());
-//                                }
-//                            } else {
-//                                Log.d(TAG, "upload error");
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<InsertImageResponse> call, Throwable t) {
-//                            Log.d(TAG, "upload fail: " + t.getMessage());
-//                        }
-//                    });
                 }
                 break;
             default:
@@ -241,14 +201,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             progressDialog.dismiss();
     }
 
-    @Override
-    public void setCategories(ArrayList<SubCategoryModel> categories) {
-        this.categories.clear();
-        this.categories.add(new SubCategoryModel("Select Category", "Select Category", -1));
-        this.categories.addAll(categories);
-        categorySpinnerAdapter.notifyDataSetChanged();
-
-    }
 
     @Override
     public void setSubcategories(ArrayList<SubCategoryModel> subCategories) {
@@ -288,9 +240,8 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        if (adapterView == selectCategorySpinner) {
-            presenter.getSubcategories(categories.get(i).getId());
-        } else if (adapterView == selectDistrictSpinner) {
+        //presenter.getSubcategories(categories.get(i).getId());
+        if (adapterView == selectDistrictSpinner) {
             presenter.onDistrictSelected(districtList.get(i).getLocationId());
         }
     }
@@ -298,5 +249,14 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        if (checkedId == R.id.radio_button_rent_category_product_post) {
+            presenter.getSubcategories(CATEGORY_RENT);
+        } else if (checkedId == R.id.radio_button_sell_category_product_post) {
+            presenter.getSubcategories(CATEGORY_SELL);
+        }
     }
 }

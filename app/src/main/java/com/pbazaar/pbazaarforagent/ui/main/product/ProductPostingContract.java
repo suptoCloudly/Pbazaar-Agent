@@ -19,8 +19,6 @@ public interface ProductPostingContract {
 
         void showLoadingIndicator(boolean status,String message);
 
-        void setCategories(ArrayList<SubCategoryModel> categories);
-
         void setSubcategories(ArrayList<SubCategoryModel> subCategories);
 
         void onDistrictLoaded(ArrayList<LocationSpinnerDataModel> districtList);
@@ -31,7 +29,6 @@ public interface ProductPostingContract {
     }
 
     interface Presenter extends BasePresenter {
-        void getRootCategories();
 
         void getSubcategories(int categoryId);
 

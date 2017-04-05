@@ -4,6 +4,8 @@ import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryFromCategoryRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryFromCategoryResponse;
+import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryRequest;
+import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
@@ -45,4 +47,7 @@ public interface PbazaarApiServiceClient {
 
     @POST("GetCategories")
     Call<GetSubcategoryFromCategoryResponse> getSubcategoryFromCategory(@Body GetSubcategoryFromCategoryRequest request);
+
+    @POST("GetRequirementSubTypesByTypeId")
+    Call<GetSubcategoryResponse> getSubcategory(@Body GetSubcategoryRequest request);
 }
