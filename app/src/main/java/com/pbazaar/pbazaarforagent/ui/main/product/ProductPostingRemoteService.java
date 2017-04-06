@@ -7,6 +7,7 @@ import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
+import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
 import com.pbazaar.pbazaarforagent.remote.PbazaarApi;
 import com.pbazaar.pbazaarforagent.remote.RemoteConstant;
@@ -17,6 +18,8 @@ import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
+import com.pbazaar.pbazaarforagent.remote.data.PostProductRequest;
+import com.pbazaar.pbazaarforagent.remote.data.PostProductResponse;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,7 +58,7 @@ public class ProductPostingRemoteService {
                 completionListener.onLoadSuccess(subCategoryModelsList);
         }
 
-        // TODO network check
+
         if (!PreferenceHelper.getInstance().getNetworkStatus()) {
             if (completionListener != null)
                 completionListener.onLoadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
@@ -67,54 +70,34 @@ public class ProductPostingRemoteService {
         call.enqueue(new Callback<GetSubcategoryResponse>() {
             @Override
             public void onResponse(Call<GetSubcategoryResponse> call, Response<GetSubcategoryResponse> response) {
+                if (response.isSuccessful()) {
+                    GetSubcategoryResponse getSubcategoryResponse = response.body();
+                    if (getSubcategoryResponse.getSuccess() == 1) {
+                        for (GetSubcategoryResponse.Data data : getSubcategoryResponse.getData()) {
+                            subCategoryModelsList.add(new SubCategoryModel(data.getName(), data.getId()));
+                        }
+                        if (completionListener != null)
+                            completionListener.onLoadSuccess(subCategoryModelsList);
+                    } else {
+                        if (completionListener != null)
+                            completionListener.onLoadFailed(getSubcategoryResponse.getMessage());
 
+                        Log.d(TAG, getSubcategoryResponse.getMessage());
+                    }
+
+                    Log.d(TAG, "Subcategory response: " + getSubcategoryResponse.getSuccess());
+                } else {
+                    if (completionListener != null)
+                        completionListener.onLoadSuccess(subCategoryModelsList);
+                }
             }
 
             @Override
             public void onFailure(Call<GetSubcategoryResponse> call, Throwable t) {
-
+                if (completionListener != null)
+                    completionListener.onLoadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
             }
         });
-
-
-//        GetSubcategoryFromCategoryRequest request = new GetSubcategoryFromCategoryRequest(RemoteConstant.PUBLIC_API_TOKEN, categoryId);
-//        Call<GetSubcategoryFromCategoryResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getSubcategoryFromCategory(request);
-//        call.enqueue(new Callback<GetSubcategoryFromCategoryResponse>() {
-//            @Override
-//            public void onResponse(Call<GetSubcategoryFromCategoryResponse> call, Response<GetSubcategoryFromCategoryResponse> response) {
-//
-//                if (response.isSuccessful()) {
-//
-//                    GetSubcategoryFromCategoryResponse getSubcategoryFromCategoryResponse = response.body();
-//                    if (getSubcategoryFromCategoryResponse.getSuccess() == 1) {
-//
-//                        for (GetSubcategoryFromCategoryResponse.Data data : getSubcategoryFromCategoryResponse.getData()) {
-//                            SubCategoryModel subCategoryModel = new SubCategoryModel(data.getName(), data.getSeName(), data.getId());
-//                            subCategoryModelsList.add(subCategoryModel);
-//                        }
-//
-//
-//                        if (completionListener != null)
-//                            completionListener.onLoadSuccess(subCategoryModelsList);
-//                    } else {
-//                        if (completionListener != null)
-//                            completionListener.onLoadFailed(getSubcategoryFromCategoryResponse.getMessage());
-//
-//                        Log.d(TAG, getSubcategoryFromCategoryResponse.getMessage());
-//                    }
-//
-//                } else {
-//                    if (completionListener != null)
-//                        completionListener.onLoadSuccess(subCategoryModelsList);
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GetSubcategoryFromCategoryResponse> call, Throwable t) {
-//                if (completionListener != null)
-//                    completionListener.onLoadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
-//            }
-//        });
     }
 
     public void getDistrictByCountryId(int countryId, final ProductPostingRemoteService.DistrictLoadCompletionListener districtLoadCompletionListener) {
@@ -269,6 +252,63 @@ public class ProductPostingRemoteService {
         });
     }
 
+
+    public void postProduct(PostProductModel model, final ProductPostCompletionListener completionListener) {
+
+        if (!PreferenceHelper.getInstance().getNetworkStatus()) {
+            if (completionListener != null)
+                completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+            return;
+        }
+
+
+        if (!checkEmptyString(model.getAdvertiserEmail(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getHouseNo(), model.getRoadNo())) {
+            if (completionListener != null)
+                completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
+            return;
+        }
+
+
+        if (model.getCategoryId() == -1 || model.getSubCategoryId() == -1 || model.getThanaAreaId() == -1 || model.getCollectedId() == PreferenceHelper.CUSTOMER_ID_DEFAULT_VALUE) {
+            if (completionListener != null)
+                completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
+            return;
+        }
+
+
+        PostProductRequest request = new PostProductRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getCategoryId(), model.getSubCategoryId(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getAdvertiserEmail(), model.getHouseNo(), model.getRoadNo(), model.getThanaAreaId(), model.getPictureId(), model.getCollectedId());
+        Call<PostProductResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().postProduct(request);
+        call.enqueue(new Callback<PostProductResponse>() {
+            @Override
+            public void onResponse(Call<PostProductResponse> call, Response<PostProductResponse> response) {
+                if (response.isSuccessful()) {
+
+                    PostProductResponse postProductResponse = response.body();
+                    if (postProductResponse.getSuccess() == 1) {
+                        if (completionListener != null)
+                            completionListener.onPostSuccess(postProductResponse.getData());
+                    } else {
+                        if (completionListener != null)
+                            completionListener.onPostFailed(postProductResponse.getMessage());
+                    }
+
+
+                } else {
+                    if (completionListener != null)
+                        completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostProductResponse> call, Throwable t) {
+                if (completionListener != null)
+                    completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+            }
+        });
+    }
+
+
     private File getFileFromBitmap(Bitmap bitmap) {
         File mydir = AppController.getInstance().getCacheDir();
         File fileWithinMyDir = new File(mydir, AppController.getInstance().getString(R.string.app_name));
@@ -291,12 +331,15 @@ public class ProductPostingRemoteService {
         return null;
     }
 
-
-    public interface GetRootCategoryCompletionListener {
-        void onLoadSuccess(ArrayList<SubCategoryModel> subCategoryModelArrayList);
-
-        void onLoadFailed(String message);
+    private boolean checkEmptyString(String... strings) {
+        for (String string : strings) {
+            if (string.contentEquals("") || string.length() == 0) {
+                return false;
+            }
+        }
+        return true;
     }
+
 
     public interface GetSubCategoryCompletionListener {
         void onLoadSuccess(ArrayList<SubCategoryModel> subCategoryModelArrayList);
@@ -320,6 +363,12 @@ public class ProductPostingRemoteService {
         void onUploadSuccess(Bitmap bitmap, int imageId);
 
         void onUploadFailed(String message);
+    }
+
+    public interface ProductPostCompletionListener {
+        void onPostSuccess(String message);
+
+        void onPostFailed(String message);
     }
 
 }

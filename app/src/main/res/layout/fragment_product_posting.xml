@@ -45,10 +45,10 @@
                         android:text="Category Selection" />
 
                     <RadioGroup
-                        android:layout_marginLeft="@dimen/medium_margin"
                         android:id="@+id/radio_group_select_category_product_posting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/medium_margin"
                         android:layout_marginTop="@dimen/medium_margin"
                         android:checkedButton="@+id/radio_button_rent_category_product_post"
                         android:orientation="vertical">
@@ -195,7 +195,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Phone*"
-                            android:inputType="text" />
+                            android:inputType="number" />
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout

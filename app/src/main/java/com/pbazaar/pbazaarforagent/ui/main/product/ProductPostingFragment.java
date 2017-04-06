@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,7 +26,9 @@ import com.pbazaar.pbazaarforagent.CustomAreaSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.CustomCategorySpinnerAdapter;
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.ImagePicker;
+import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
+import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
 
 import java.util.ArrayList;
@@ -48,6 +51,12 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @BindView(R.id.radio_group_select_category_product_posting)
     RadioGroup selectCategoryRadioGroup;
+
+    @BindView(R.id.radio_button_rent_category_product_post)
+    AppCompatRadioButton rentRadioButton;
+
+    @BindView(R.id.radio_button_sell_category_product_post)
+    AppCompatRadioButton sellRadioButton;
 
     @BindView(R.id.spinner_subcategory_product_posting_fragment)
     AppCompatSpinner selectSubCategorySpinner;
@@ -117,14 +126,16 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         ButterKnife.bind(this, view);
 
         pickImageImageView.setOnClickListener(this);
+        postProductButton.setOnClickListener(this);
         selectDistrictSpinner.setOnItemSelectedListener(this);
         selectCategoryRadioGroup.setOnCheckedChangeListener(this);
+
 
         subCategories = new ArrayList<>();
         districtList = new ArrayList<>();
         thanaList = new ArrayList<>();
 
-        subCategories.add(new SubCategoryModel("Select Subcategory", "Select Subcategory", -1));
+        subCategories.add(new SubCategoryModel("Select Subcategory", -1));
         districtList.add(new LocationSpinnerDataModel("Select District", -1));
         thanaList.add(new LocationSpinnerDataModel("Select Area", -1));
 
@@ -158,7 +169,34 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         if (view == pickImageImageView) {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(getActivity());
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+        } else if (view == postProductButton) {
+            postProduct();
         }
+    }
+
+    private void postProduct() {
+        // provide validation
+        emptyInputFieldValidation(houseNoEt, roadNoEt, advertiserNameEt, advertiserPhoneEt, advertiserEmailEt);
+
+
+        int categoryId = (rentRadioButton.isChecked() ? CATEGORY_RENT : CATEGORY_SELL);
+        int subCategoryId = subCategories.get(selectSubCategorySpinner.getSelectedItemPosition()).getId();
+        int areaId = thanaList.get(selectAreaSpinner.getSelectedItemPosition()).getLocationId();
+        int collectedById = PreferenceHelper.getInstance().getCustomerId();
+        int imageId = this.imageId;
+
+        String houseNo = houseNoEt.getText().toString();
+        String roadNo = roadNoEt.getText().toString();
+        String advertiserName = advertiserNameEt.getText().toString();
+        String advertiserPhone = advertiserPhoneEt.getText().toString();
+        String advertiserEmail = advertiserEmailEt.getText().toString();
+
+
+        PostProductModel postProductModel = new PostProductModel(categoryId, subCategoryId, advertiserName, advertiserPhone, advertiserEmail, houseNo, roadNo, areaId, imageId, collectedById);
+        presenter.onPostProductClicked(postProductModel);
+
+        Log.d(TAG, " Area: " + areaId + " cat: " + categoryId + " subc: " + subCategoryId + " coll: " + collectedById);
+
     }
 
     @Override
@@ -205,7 +243,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     @Override
     public void setSubcategories(ArrayList<SubCategoryModel> subCategories) {
         this.subCategories.clear();
-        this.subCategories.add(new SubCategoryModel("Select Subcategory", "Select Subcategory", -1));
+        this.subCategories.add(new SubCategoryModel("Select Subcategory", -1));
         this.subCategories.addAll(subCategories);
         subcategorySpinnerAdapter.notifyDataSetChanged();
         selectSubCategorySpinner.setSelection(0);
@@ -237,10 +275,22 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         Log.d(TAG, "Image Id: " + imageId);
     }
 
+    @Override
+    public void clearAllFields() {
+        selectSubCategorySpinner.setSelection(0);
+        selectDistrictSpinner.setSelection(0);
+        selectAreaSpinner.setSelection(0);
+        houseNoEt.setText("");
+        roadNoEt.setText("");
+        advertiserNameEt.setText("");
+        advertiserPhoneEt.setText("");
+        advertiserEmailEt.setText("");
+        pickImageImageView.setImageResource(R.drawable.plus);
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        //presenter.getSubcategories(categories.get(i).getId());
         if (adapterView == selectDistrictSpinner) {
             presenter.onDistrictSelected(districtList.get(i).getLocationId());
         }
@@ -257,6 +307,16 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             presenter.getSubcategories(CATEGORY_RENT);
         } else if (checkedId == R.id.radio_button_sell_category_product_post) {
             presenter.getSubcategories(CATEGORY_SELL);
+        }
+    }
+
+    private void emptyInputFieldValidation(TextInputEditText... textInputEditTextGroups) {
+
+        for (TextInputEditText textInputEditText : textInputEditTextGroups) {
+            String inputText = textInputEditText.getText().toString();
+            if (inputText.matches("")) {
+                textInputEditText.setError(getString(R.string.empty_input_field_error_message));
+            }
         }
     }
 }

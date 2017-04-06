@@ -3,6 +3,7 @@ package com.pbazaar.pbazaarforagent.ui.main.product;
 import android.graphics.Bitmap;
 
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
+import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
 import com.pbazaar.pbazaarforagent.ui.BasePresenter;
 import com.pbazaar.pbazaarforagent.ui.BaseView;
@@ -17,7 +18,7 @@ public interface ProductPostingContract {
     interface View extends BaseView<Presenter> {
         void showMessage(String message);
 
-        void showLoadingIndicator(boolean status,String message);
+        void showLoadingIndicator(boolean status, String message);
 
         void setSubcategories(ArrayList<SubCategoryModel> subCategories);
 
@@ -26,6 +27,8 @@ public interface ProductPostingContract {
         void onThanaLoaded(ArrayList<LocationSpinnerDataModel> thanaList);
 
         void onProductImageUploaded(Bitmap bitmap, int imageId);
+
+        void clearAllFields();
     }
 
     interface Presenter extends BasePresenter {
@@ -37,5 +40,7 @@ public interface ProductPostingContract {
         void onDistrictSelected(int districtId);
 
         void uploadProductImage(Bitmap bitmap);
+
+        void onPostProductClicked(PostProductModel postProductModel);
     }
 }

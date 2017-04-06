@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("Post Product");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag("AAAA");
 
@@ -59,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.log_out_menu_button) {
             logout();
+        } else if (id == android.R.id.home) {
+            onBackPressed();
         }
 
         return true;
@@ -74,4 +78,12 @@ public class MainActivity extends AppCompatActivity {
         startActivity(logInActivityIntent);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
 }

@@ -6,6 +6,7 @@ import android.util.Log;
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
+import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
 
 import java.util.ArrayList;
@@ -105,6 +106,26 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
 
             @Override
             public void onUploadFailed(String message) {
+                view.showMessage(message);
+                view.showLoadingIndicator(false, "");
+            }
+        });
+    }
+
+    @Override
+    public void onPostProductClicked(PostProductModel postProductModel) {
+        view.showLoadingIndicator(true, AppController.getInstance().getString(R.string.network_operation_running_message));
+        ProductPostingRemoteService.newInstance().postProduct(postProductModel, new ProductPostingRemoteService.ProductPostCompletionListener() {
+            @Override
+            public void onPostSuccess(String message) {
+                view.showMessage(message);
+                view.showLoadingIndicator(false, "");
+
+                view.clearAllFields();
+            }
+
+            @Override
+            public void onPostFailed(String message) {
                 view.showMessage(message);
                 view.showLoadingIndicator(false, "");
             }

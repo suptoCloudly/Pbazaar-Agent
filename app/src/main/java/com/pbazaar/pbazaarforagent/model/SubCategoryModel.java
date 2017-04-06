@@ -6,15 +6,13 @@ package com.pbazaar.pbazaarforagent.model;
 
 public class SubCategoryModel {
     private String name;
-    private String seName;
     private int id;
 
     public SubCategoryModel() {
     }
 
-    public SubCategoryModel(String name, String seName, int id) {
+    public SubCategoryModel(String name, int id) {
         this.name = name;
-        this.seName = seName;
         this.id = id;
     }
 
@@ -26,13 +24,6 @@ public class SubCategoryModel {
         this.name = name;
     }
 
-    public String getSeName() {
-        return seName;
-    }
-
-    public void setSeName(String seName) {
-        this.seName = seName;
-    }
 
     public int getId() {
         return id;

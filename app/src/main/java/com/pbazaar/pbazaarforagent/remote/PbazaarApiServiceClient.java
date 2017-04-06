@@ -2,8 +2,6 @@ package com.pbazaar.pbazaarforagent.remote;
 
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
-import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryFromCategoryRequest;
-import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryFromCategoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
@@ -11,6 +9,8 @@ import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
+import com.pbazaar.pbazaarforagent.remote.data.PostProductRequest;
+import com.pbazaar.pbazaarforagent.remote.data.PostProductResponse;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationRequest;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationResponse;
 
@@ -45,9 +45,9 @@ public interface PbazaarApiServiceClient {
     @POST("InsertPicture")
     Call<InsertImageResponse> uploadImage(@Part MultipartBody.Part file, @Part("apiToken") RequestBody requestBody);
 
-    @POST("GetCategories")
-    Call<GetSubcategoryFromCategoryResponse> getSubcategoryFromCategory(@Body GetSubcategoryFromCategoryRequest request);
-
     @POST("GetRequirementSubTypesByTypeId")
     Call<GetSubcategoryResponse> getSubcategory(@Body GetSubcategoryRequest request);
+
+    @POST("InsertProductInfoByCollector")
+    Call<PostProductResponse> postProduct(@Body PostProductRequest request);
 }

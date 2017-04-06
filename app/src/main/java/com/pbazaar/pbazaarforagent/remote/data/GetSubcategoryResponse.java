@@ -17,6 +17,10 @@ public class GetSubcategoryResponse {
     @Expose
     private List<Data> data = null;
 
+    @SerializedName("message")
+    @Expose
+    private String message;
+
     public Integer getSuccess() {
         return success;
     }
@@ -31,6 +35,14 @@ public class GetSubcategoryResponse {
 
     public void setData(List<Data> data) {
         this.data = data;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public class Data {
