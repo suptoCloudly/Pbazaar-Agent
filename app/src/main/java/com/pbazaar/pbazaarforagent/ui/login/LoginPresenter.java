@@ -1,5 +1,8 @@
 package com.pbazaar.pbazaarforagent.ui.login;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.pbazaar.pbazaarforagent.R;
@@ -35,6 +38,19 @@ public class LoginPresenter implements LoginContract.Presenter {
     public void start() {
         Log.d(TAG, "Login presenter started");
         // start all the mandatory work needed
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) AppController.getInstance()
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager
+                .getActiveNetworkInfo();
+        // Check internet connection and set the current network state in sharedpreference
+        if (networkInfo != null && networkInfo.isConnected()) {
+            PreferenceHelper.getInstance().setNetworkStatus(true);
+            Log.d(TAG, "TRue");
+        } else {
+            PreferenceHelper.getInstance().setNetworkStatus(false);
+            Log.d(TAG, "False");
+        }
 
     }
 

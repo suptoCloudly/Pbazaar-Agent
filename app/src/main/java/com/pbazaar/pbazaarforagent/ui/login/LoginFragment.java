@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener {
 
-    public static final String TAG = LoginFragment.class.getSimpleName();
+    private static final String TAG = LoginFragment.class.getSimpleName();
 
 
     @BindView(R.id.root_layout_login_fragment)

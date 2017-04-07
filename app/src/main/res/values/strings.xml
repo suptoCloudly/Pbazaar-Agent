@@ -18,4 +18,5 @@
     <string name="image_uploading_message">Uploading image to Pbazar</string>
     <string name="empty_textbox_error_meassage">Please provide all information</string>
     <string name="no_permission_text">Please provide all permissions</string>
+    <string name="welcome_to_pbazaar_note">Welcome To Pbazaar</string>
 </resources>

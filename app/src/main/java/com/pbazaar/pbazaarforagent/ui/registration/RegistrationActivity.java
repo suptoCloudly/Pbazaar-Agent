@@ -32,6 +32,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Registration");
+        getSupportActionBar().setElevation(0f);
 
         registrationFragment = (RegistrationFragment) getSupportFragmentManager().findFragmentByTag(REGISTRATION_FRAGMENT_TAG);
 

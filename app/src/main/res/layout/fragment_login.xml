@@ -24,9 +24,29 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <com.pbazaar.pbazaarforagent.helper.SquareLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/main_logo" />
+                </com.pbazaar.pbazaarforagent.helper.SquareLayout>
+            </LinearLayout>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/standard_margin">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/et_email_login_fragment"
@@ -53,7 +73,7 @@
             <Button
                 android:id="@+id/button_login_login_fragment"
                 style="@style/Button.Flat.Submit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/standard_margin"

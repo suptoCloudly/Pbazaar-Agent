@@ -8,21 +8,37 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <com.pbazaar.pbazaarforagent.helper.SquareLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/main_logo" />
+            </com.pbazaar.pbazaarforagent.helper.SquareLayout>
+
+        </LinearLayout>
 
         <TextView
-            android:layout_marginTop="@dimen/standard_margin"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welcome To Pbazaar"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:text="@string/welcome_to_pbazaar_note"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>
 
