@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by supto on 4/3/17.
  */
 
-public class RegistrationRequest extends BaseRequest {
+public class OldRegistrationRequest extends BaseRequest {
 
     @SerializedName("firstName")
     @Expose
@@ -82,11 +82,11 @@ public class RegistrationRequest extends BaseRequest {
     @Expose
     private String password;
 
-    public RegistrationRequest() {
+    public OldRegistrationRequest() {
     }
 
 
-    public RegistrationRequest(String apiToken, String firstName, String lastName, String userName, String email, String gender, boolean isIndividualForRent, boolean isIndividualForSell, boolean isRealEstateCompany, boolean isHotelGuestHouse, boolean isAgentForSell, boolean isAgentForRent, String company, int countryId, int districtId, int thanaAreaId, String streetAddress, String streetAddress2, String mobile, String mobile2, String phone, boolean subscribeNewsletter, String password) {
+    public OldRegistrationRequest(String apiToken, String firstName, String lastName, String userName, String email, String gender, boolean isIndividualForRent, boolean isIndividualForSell, boolean isRealEstateCompany, boolean isHotelGuestHouse, boolean isAgentForSell, boolean isAgentForRent, String company, int countryId, int districtId, int thanaAreaId, String streetAddress, String streetAddress2, String mobile, String mobile2, String phone, boolean subscribeNewsletter, String password) {
         super(apiToken);
         this.firstName = firstName;
         this.lastName = lastName;

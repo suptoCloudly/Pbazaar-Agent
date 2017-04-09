@@ -11,18 +11,20 @@ public class PostProductModel {
     private String advertiserName;
     private String advertiserPhone;
     private String advertiserEmail;
+    private String blockSector;
     private String houseNo;
     private String roadNo;
     private int thanaAreaId;
     private int pictureId;
     private int collectedId;
 
-    public PostProductModel(int categoryId, int subCategoryId, String advertiserName, String advertiserPhone, String advertiserEmail, String houseNo, String roadNo, int thanaAreaId, int pictureId, int collectedId) {
+    public PostProductModel(int categoryId, int subCategoryId, String advertiserName, String advertiserPhone, String advertiserEmail, String blockSector, String houseNo, String roadNo, int thanaAreaId, int pictureId, int collectedId) {
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
         this.advertiserName = advertiserName;
         this.advertiserPhone = advertiserPhone;
         this.advertiserEmail = advertiserEmail;
+        this.blockSector = blockSector;
         this.houseNo = houseNo;
         this.roadNo = roadNo;
         this.thanaAreaId = thanaAreaId;
@@ -68,6 +70,14 @@ public class PostProductModel {
 
     public void setAdvertiserEmail(String advertiserEmail) {
         this.advertiserEmail = advertiserEmail;
+    }
+
+    public String getBlockSector() {
+        return blockSector;
+    }
+
+    public void setBlockSector(String blockSector) {
+        this.blockSector = blockSector;
     }
 
     public String getHouseNo() {

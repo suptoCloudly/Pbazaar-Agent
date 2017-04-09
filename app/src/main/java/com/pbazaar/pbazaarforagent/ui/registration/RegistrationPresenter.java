@@ -39,12 +39,12 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
 
     }
 
+
     @Override
     public void onRegistrationButtonClicked(final RegistrationDataModel registrationDataModel) {
-
         view.setLoadingIndicator(true);
 
-        RegistrationRemoteService.getInstance().startRegistration(registrationDataModel, new RegistrationRemoteService.RegistrationCompletionListener() {
+        RegistrationRemoteService.getInstance().registerAgent(registrationDataModel, new RegistrationRemoteService.RegistrationCompletionListener() {
             @Override
             public void onRegistrationSuccess(String message) {
                 view.onRegistrationSuccess(registrationDataModel.getEmail(), registrationDataModel.getPassword());
@@ -59,23 +59,24 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
                 view.setLoadingIndicator(false);
             }
         });
-
     }
 
     @Override
     public void onCountrySelected(int countryId) {
-
+        view.setLoadingIndicator(true);
 
         RegistrationRemoteService.getInstance().getDistrictByCountryId(countryId, new RegistrationRemoteService.DistrictLoadCompletionListener() {
             @Override
             public void onDistrictLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
                 view.onDistrictLoaded(spinnerDataModelArrayList);
+                view.setLoadingIndicator(false);
             }
 
             @Override
             public void onDistrictLoadFailed(String message) {
                 //  view.showMessage(message);
                 Log.d(TAG, "Error: " + message);
+                view.setLoadingIndicator(false);
             }
         });
     }
@@ -84,17 +85,20 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
     public void onDistrictSelected(int districtId) {
 
         Log.d(TAG, "District id: " + districtId);
+        view.setLoadingIndicator(true);
 
         RegistrationRemoteService.getInstance().getthanaByDistrictId(districtId, new RegistrationRemoteService.ThanaLoadCompletionListener() {
             @Override
             public void onThanaLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
                 view.onThanaLoaded(spinnerDataModelArrayList);
+                view.setLoadingIndicator(false);
             }
 
             @Override
             public void onThanaloadFailed(String message) {
                 //  view.showMessage(message);
                 Log.d(TAG, "Error: " + message);
+                view.setLoadingIndicator(false);
             }
         });
 

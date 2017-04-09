@@ -47,31 +47,37 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
 
     @Override
     public void getSubcategories(int categoryId) {
+        view.showLoadingIndicator(true, AppController.getInstance().getString(R.string.network_operation_running_message));
         remoteService.getSubCategories(categoryId, new ProductPostingRemoteService.GetSubCategoryCompletionListener() {
             @Override
             public void onLoadSuccess(ArrayList<SubCategoryModel> subCategoryModelArrayList) {
                 view.setSubcategories(subCategoryModelArrayList);
+                view.showLoadingIndicator(false, "");
             }
 
             @Override
             public void onLoadFailed(String message) {
                 view.showMessage(message);
+                view.showLoadingIndicator(false, "");
             }
         });
     }
 
     @Override
     public void onCountrySelected() {
+        view.showLoadingIndicator(true, AppController.getInstance().getString(R.string.network_operation_running_message));
         ProductPostingRemoteService.newInstance().getDistrictByCountryId(3, new ProductPostingRemoteService.DistrictLoadCompletionListener() {
             @Override
             public void onDistrictLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
                 view.onDistrictLoaded(spinnerDataModelArrayList);
+                view.showLoadingIndicator(false, "");
             }
 
             @Override
             public void onDistrictLoadFailed(String message) {
                 //  view.showMessage(message);
                 Log.d(TAG, "Error: " + message);
+                view.showLoadingIndicator(false, "");
             }
         });
     }
@@ -79,17 +85,19 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
     @Override
     public void onDistrictSelected(int districtId) {
         Log.d(TAG, "District id: " + districtId);
-
+        view.showLoadingIndicator(true, AppController.getInstance().getString(R.string.network_operation_running_message));
         ProductPostingRemoteService.newInstance().getThanaByDistrictId(districtId, new ProductPostingRemoteService.ThanaLoadCompletionListener() {
             @Override
             public void onThanaLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
                 view.onThanaLoaded(spinnerDataModelArrayList);
+                view.showLoadingIndicator(false, "");
             }
 
             @Override
             public void onThanaloadFailed(String message) {
                 //  view.showMessage(message);
                 Log.d(TAG, "Error: " + message);
+                view.showLoadingIndicator(false, "");
             }
         });
     }
@@ -118,10 +126,9 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
         ProductPostingRemoteService.newInstance().postProduct(postProductModel, new ProductPostingRemoteService.ProductPostCompletionListener() {
             @Override
             public void onPostSuccess(String message) {
-                view.showMessage(message);
                 view.showLoadingIndicator(false, "");
-
                 view.clearAllFields();
+                view.onPostSuccess();
             }
 
             @Override

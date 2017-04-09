@@ -43,7 +43,7 @@ public class RegistrationRemoteService {
         return instance;
     }
 
-    public void startRegistration(RegistrationDataModel model, final RegistrationCompletionListener registrationCompletionListener) {
+    public void registerAgent(RegistrationDataModel model, final RegistrationCompletionListener registrationCompletionListener) {
 
         // check internet connection and return if not available
         if (!PreferenceHelper.getInstance().getNetworkStatus()) {
@@ -53,14 +53,10 @@ public class RegistrationRemoteService {
         }
 
 
-        RegistrationRequest registrationRequest = new RegistrationRequest(
-                RemoteConstant.PUBLIC_API_TOKEN, model.getFirstName(), model.getLastName(), model.getUserName(),
-                model.getEmail(), model.getGender(), model.isIndividualForRent(), model.isIndividualForSell(), model.isRealEstateCompany(),
-                model.isHotelGuestHouse(), model.isAgentForSell(), model.isAgentForRent(), model.getCompany(), model.getCountryId(),
-                model.getDistrictId(), model.getThanaAreaId(), model.getStreetAddress(), model.getStreetAddress2(),
-                model.getMobile(), model.getMobile2(), model.getPhone(), model.isSubscribeNewsletter(), model.getPassword());
+        RegistrationRequest request = new RegistrationRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getEmail(), "", model.getPassword(), model.getGender(), model.getFirstName(), model.getLastName(), "", model.getStreetAddress(), model.getStreetAddressTwo(), 3, model.getDistrictId(), model.getThanaId(), "", model.getMobileNumber(), "", false, model.isAgentForData(), model.isAgentForSearch(), model.isAgentForAgency());
 
-        Call<RegistrationResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().startRegistration(registrationRequest);
+
+        Call<RegistrationResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().registerAgent(request);
         call.enqueue(new Callback<RegistrationResponse>() {
             @Override
             public void onResponse(Call<RegistrationResponse> call, Response<RegistrationResponse> response) {
@@ -90,6 +86,7 @@ public class RegistrationRemoteService {
                     registrationCompletionListener.onRegistrationFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
             }
         });
+
     }
 
     public void getDistrictByCountryId(int countryId, final DistrictLoadCompletionListener districtLoadCompletionListener) {

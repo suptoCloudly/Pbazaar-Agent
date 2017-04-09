@@ -9,6 +9,7 @@ import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
+import com.pbazaar.pbazaarforagent.remote.data.OldRegistrationRequest;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductRequest;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductResponse;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationRequest;
@@ -38,8 +39,8 @@ public interface PbazaarApiServiceClient {
     @POST("GetThanaAreasByDistrictId")
     Call<GetThanaByDistrictIdResponse> getThanaByDistrictId(@Body GetThanaByDistrictIdRequest request);
 
-    @POST("Register")
-    Call<RegistrationResponse> startRegistration(@Body RegistrationRequest registrationRequest);
+    @POST("RegisterAgent")
+    Call<RegistrationResponse> registerAgent(@Body RegistrationRequest request);
 
     @Multipart
     @POST("InsertPicture")

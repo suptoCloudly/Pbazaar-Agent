@@ -9,7 +9,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
@@ -47,8 +46,8 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
     @BindView(R.id.et_last_name_registration_fragment)
     TextInputEditText lastNameET;
 
-    @BindView(R.id.et_user_name_registration_fragment)
-    TextInputEditText userNameET;
+    @BindView(R.id.et_mobile_number_registration_fragment)
+    TextInputEditText mobileNumberEt;
 
     @BindView(R.id.et_email_registration_fragment)
     TextInputEditText emailET;
@@ -59,26 +58,18 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
     @BindView(R.id.radio_button_female_registration_fragment)
     AppCompatRadioButton femaleRadioButton;
 
-    @BindView(R.id.checkbox_is_individual_for_rent_registration_fragment)
-    AppCompatCheckBox isIndividualForRentCb;
 
-    @BindView(R.id.checkbox_is_invidual_for_sell_registration_fragment)
-    AppCompatCheckBox isIndividualForSellCb;
+    @BindView(R.id.radio_button_is_agent_for_data_registration_fragment)
+    AppCompatRadioButton isAgentForDataRadioButton;
 
-    @BindView(R.id.checkbox_is_real_estate_company_registration_fragment)
-    AppCompatCheckBox isRealEstateCompanyCb;
 
-    @BindView(R.id.checkbox_is_hotel_owner_company_registration_fragment)
-    AppCompatCheckBox isHotelGuestHouseCb;
+    @BindView(R.id.radio_button_is_agent_for_search_registration_fragment)
+    AppCompatRadioButton isAgentForSearchRadioButton;
 
-    @BindView(R.id.checkbox_is_agent_for_rent_registration_fragment)
-    AppCompatCheckBox isAgentForSellCb;
 
-    @BindView(R.id.checkbox_is_agent_for_sell_registration_fragment)
-    AppCompatCheckBox isAgentForRentCb;
+    @BindView(R.id.radio_button_is_agent_for_agency_registration_fragment)
+    AppCompatRadioButton isAgentForAgencyRadioButton;
 
-    @BindView(R.id.et_company_name_registration_fragment)
-    TextInputEditText companyNameEt;
 
     @BindView(R.id.et_street_address_registration_fragment)
     TextInputEditText streetAddressEt;
@@ -91,18 +82,6 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
 
     @BindView(R.id.spinner_select_thana_registration_fragment)
     AppCompatSpinner selectThanaSpinner;
-
-    @BindView(R.id.et_mobile_number_registration_fragment)
-    TextInputEditText mobileNumberEt;
-
-    @BindView(R.id.et_mobile_number_alternate_registration_fragment)
-    TextInputEditText alternateMobileNumberEt;
-
-    @BindView(R.id.et_phone_number_registration_fragment)
-    TextInputEditText phoneNumberEt;
-
-    @BindView(R.id.checkbox_newsletter_registration_fragment)
-    AppCompatCheckBox newsLetterCheckbox;
 
     @BindView(R.id.et_password_registration_fragment)
     TextInputEditText passwordEt;
@@ -152,6 +131,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         // TODO apply some styling for progressbar
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage(getString(R.string.network_operation_running_message));
+        progressDialog.setCancelable(false);
 
 
         // initialize district and thana list spinner
@@ -204,40 +184,28 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
             // Extract all data
             String firstName = firstNameET.getText().toString();
             String lastName = lastNameET.getText().toString();
-            String userName = userNameET.getText().toString();
+            String mobile = mobileNumberEt.getText().toString();
             String email = emailET.getText().toString();
             String gender = (maleRadioButton.isChecked() ? "M" : "F");
 
-            boolean isIndividualForRent = isIndividualForRentCb.isChecked();
-            boolean isIndividualForSell = isIndividualForSellCb.isChecked();
-            boolean isRealEstateCompany = isRealEstateCompanyCb.isChecked();
-            boolean isHotelGuestHouse = isHotelGuestHouseCb.isChecked();
-            boolean isAgentForSell = isAgentForSellCb.isChecked();
-            boolean isAgentForRent = isAgentForRentCb.isChecked();
+            boolean isAgentForData = isAgentForDataRadioButton.isChecked();
+            boolean isAgentForSearch = isAgentForSearchRadioButton.isChecked();
+            boolean isAgentForAgency = isAgentForAgencyRadioButton.isChecked();
 
-            String company = companyNameEt.getText().toString();
-            int countryId = 3;
             int districtId = districtList.get(selectDistrictSpinner.getSelectedItemPosition()).getLocationId();
             int thanaAreaId = thanaList.get(selectThanaSpinner.getSelectedItemPosition()).getLocationId();
             String streetAddress = streetAddressEt.getText().toString();
             String streetAddress2 = streetAddressSecondEt.getText().toString();
 
-            String mobile = mobileNumberEt.getText().toString();
-            String mobile2 = alternateMobileNumberEt.getText().toString();
-            String phone = phoneNumberEt.getText().toString();
-
-            boolean subscribeNewsletter = newsLetterCheckbox.isChecked();
-
             String password = passwordEt.getText().toString();
             String confirmPassword = confirmPasswordEt.getText().toString();
 
 
-            // apply form validations
-            emptyInputFieldValidation(firstNameET, lastNameET, userNameET, emailET, streetAddressEt, mobileNumberEt, passwordEt, confirmPasswordEt);
+            Log.d(TAG,"District: "+ districtId+" thana: "+ thanaAreaId);
 
-            if (isRealEstateCompanyCb.isChecked() || isHotelGuestHouseCb.isChecked()) {
-                emptyInputFieldValidation(companyNameEt);
-            }
+
+            // apply form validations
+            emptyInputFieldValidation(firstNameET, lastNameET, mobileNumberEt, emailET, streetAddressEt, passwordEt, confirmPasswordEt);
 
             if (!password.contentEquals(confirmPassword)) {
                 showMessage(getString(R.string.passeword_mismatch_error_text));
@@ -251,8 +219,8 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
 
 
             // create a registration model data and pass it to presenter
-            RegistrationDataModel registrationDataModel = new RegistrationDataModel(firstName, lastName, userName, email, gender, isIndividualForRent, isIndividualForSell, isRealEstateCompany, isHotelGuestHouse, isAgentForSell, isAgentForRent, company, countryId, districtId, thanaAreaId, streetAddress, streetAddress2, mobile, mobile2, phone, subscribeNewsletter, password);
 
+            RegistrationDataModel registrationDataModel = new RegistrationDataModel(firstName, lastName, mobile, email, gender, isAgentForData, isAgentForSearch, isAgentForAgency, districtId, thanaAreaId, streetAddress, streetAddress2, password);
             presenter.onRegistrationButtonClicked(registrationDataModel);
         }
     }

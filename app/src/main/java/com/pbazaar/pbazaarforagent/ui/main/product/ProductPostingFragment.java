@@ -17,10 +17,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 
 import com.pbazaar.pbazaarforagent.CustomAreaSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.CustomCategorySpinnerAdapter;
@@ -30,11 +32,14 @@ import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
+import com.pbazaar.pbazaarforagent.ui.main.PostSuccessDialog;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class ProductPostingFragment extends Fragment implements ProductPostingContract.View, View.OnClickListener, AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener {
 
@@ -48,6 +53,9 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @BindView(R.id.root_layout_product_posting_fragment)
     CoordinatorLayout rootLayout;
+
+    @BindView(R.id.scroll_view_product_posting)
+    ScrollView scrollView;
 
     @BindView(R.id.radio_group_select_category_product_posting)
     RadioGroup selectCategoryRadioGroup;
@@ -66,6 +74,9 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @BindView(R.id.spinner_select_area_product_posting_fragment)
     AppCompatSpinner selectAreaSpinner;
+
+    @BindView(R.id.et_sector_block_product_posting_fragment)
+    TextInputEditText blockSectorEt;
 
     @BindView(R.id.et_house_no_product_posting_fragment)
     TextInputEditText houseNoEt;
@@ -149,6 +160,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
         // TODO apply some styling for progressbar
         progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
 
 
         return view;
@@ -170,13 +182,20 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(getActivity());
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
         } else if (view == postProductButton) {
+
+            // hide the soft keyboard
+            if (getActivity().getCurrentFocus() != null) {
+                InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            }
+
             postProduct();
         }
     }
 
     private void postProduct() {
         // provide validation
-        emptyInputFieldValidation(houseNoEt, roadNoEt, advertiserNameEt, advertiserPhoneEt, advertiserEmailEt);
+        emptyInputFieldValidation(houseNoEt, roadNoEt, advertiserPhoneEt);
 
 
         int categoryId = (rentRadioButton.isChecked() ? CATEGORY_RENT : CATEGORY_SELL);
@@ -185,6 +204,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         int collectedById = PreferenceHelper.getInstance().getCustomerId();
         int imageId = this.imageId;
 
+        String blockSector = blockSectorEt.getText().toString();
         String houseNo = houseNoEt.getText().toString();
         String roadNo = roadNoEt.getText().toString();
         String advertiserName = advertiserNameEt.getText().toString();
@@ -192,7 +212,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         String advertiserEmail = advertiserEmailEt.getText().toString();
 
 
-        PostProductModel postProductModel = new PostProductModel(categoryId, subCategoryId, advertiserName, advertiserPhone, advertiserEmail, houseNo, roadNo, areaId, imageId, collectedById);
+        PostProductModel postProductModel = new PostProductModel(categoryId, subCategoryId, advertiserName, advertiserPhone, advertiserEmail, blockSector, houseNo, roadNo, areaId, imageId, collectedById);
         presenter.onPostProductClicked(postProductModel);
 
         Log.d(TAG, " Area: " + areaId + " cat: " + categoryId + " subc: " + subCategoryId + " coll: " + collectedById);
@@ -286,6 +306,23 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         advertiserPhoneEt.setText("");
         advertiserEmailEt.setText("");
         pickImageImageView.setImageResource(R.drawable.plus);
+    }
+
+    @Override
+    public void onPostSuccess() {
+        PostSuccessDialog postSuccessDialog = PostSuccessDialog.getInstance(new PostSuccessDialog.OnButtonClicked() {
+            @Override
+            public void onPositiveButtonClicked() {
+                scrollView.smoothScrollTo(0, 0);
+            }
+
+            @Override
+            public void onNegativeButtonClicked() {
+                getActivity().onBackPressed();
+            }
+        });
+
+        postSuccessDialog.show(getActivity().getSupportFragmentManager(), PostSuccessDialog.class.getSimpleName());
     }
 
 

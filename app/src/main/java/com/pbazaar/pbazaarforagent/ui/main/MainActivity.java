@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("Post Product");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag("AAAA");
 
@@ -102,8 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.log_out_menu_button) {
             logout();
-        } else if (id == android.R.id.home) {
-            onBackPressed();
         }
 
         return true;

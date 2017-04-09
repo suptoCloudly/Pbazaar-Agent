@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.pbazaar.pbazaarforagent.R;
 
-import org.w3c.dom.Text;
-
 /**
  * Created by Pathshala on 04-Mar-17.
  */
@@ -35,7 +33,7 @@ public class NoPermissionDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.fragment_permission_required, null);
+        View view = inflater.inflate(R.layout.fragment_dialog_permission_required, null);
 
         okButtonText = (TextView) view.findViewById(R.id.no_permission_description_button);
 

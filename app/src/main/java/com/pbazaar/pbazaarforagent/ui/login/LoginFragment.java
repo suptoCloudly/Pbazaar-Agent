@@ -87,6 +87,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         // TODO apply some styling for progressbar
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage(getString(R.string.network_operation_running_message));
+        progressDialog.setCancelable(false);
 
 
         // get the email and password and set it in the test edit test fields

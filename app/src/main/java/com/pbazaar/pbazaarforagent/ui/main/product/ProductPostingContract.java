@@ -29,6 +29,8 @@ public interface ProductPostingContract {
         void onProductImageUploaded(Bitmap bitmap, int imageId);
 
         void clearAllFields();
+
+        void onPostSuccess();
     }
 
     interface Presenter extends BasePresenter {

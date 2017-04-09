@@ -262,7 +262,7 @@ public class ProductPostingRemoteService {
         }
 
 
-        if (!checkEmptyString(model.getAdvertiserEmail(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getHouseNo(), model.getRoadNo())) {
+        if (!checkEmptyString( model.getAdvertiserPhone(), model.getHouseNo(), model.getRoadNo())) {
             if (completionListener != null)
                 completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
             return;
@@ -276,7 +276,7 @@ public class ProductPostingRemoteService {
         }
 
 
-        PostProductRequest request = new PostProductRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getCategoryId(), model.getSubCategoryId(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getAdvertiserEmail(), model.getHouseNo(), model.getRoadNo(), model.getThanaAreaId(), model.getPictureId(), model.getCollectedId());
+        PostProductRequest request = new PostProductRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getCategoryId(), model.getSubCategoryId(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getAdvertiserEmail(),model.getBlockSector(), model.getHouseNo(), model.getRoadNo(), model.getThanaAreaId(), model.getPictureId(), model.getCollectedId());
         Call<PostProductResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().postProduct(request);
         call.enqueue(new Callback<PostProductResponse>() {
             @Override
