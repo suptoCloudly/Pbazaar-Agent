@@ -164,6 +164,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
             }
         });
 
+
         return view;
     }
 
@@ -177,6 +178,12 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onCountrySelected(3);
+
+    }
 
     @Override
     public void onClick(View view) {

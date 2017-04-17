@@ -2,6 +2,8 @@ package com.pbazaar.pbazaarforagent.remote;
 
 import com.google.gson.GsonBuilder;
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -44,5 +46,18 @@ public class PbazaarApi {
 
     public PbazaarApiServiceClient getPbazaarApiServiceClient() {
         return pbazaarApiServiceClient;
+    }
+
+    public PbazaarApiServiceClient getPbazarApiServiceClientForMultipartUpload() {
+        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder().connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(RemoteConstant.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .client(okHttpClient.build())
+                .build();
+
+        return retrofit.create(PbazaarApiServiceClient.class);
     }
 }

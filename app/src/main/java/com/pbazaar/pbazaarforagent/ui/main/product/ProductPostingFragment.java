@@ -177,6 +177,14 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+//
+//        presenter.onCountrySelected();
+//        presenter.getSubcategories(1);
+    }
+
+    @Override
     public void onClick(View view) {
         if (view == pickImageImageView) {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(getActivity());

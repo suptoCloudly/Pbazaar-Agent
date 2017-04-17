@@ -1,6 +1,7 @@
 package com.pbazaar.pbazaarforagent.ui.main.product;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 
 import com.pbazaar.pbazaarforagent.R;
@@ -34,6 +35,7 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
 
     @Override
     public void start() {
+
         onCountrySelected();
         getSubcategories(1);
         Log.d(TAG, "Presenter start");
@@ -68,16 +70,30 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
         view.showLoadingIndicator(true, AppController.getInstance().getString(R.string.network_operation_running_message));
         ProductPostingRemoteService.newInstance().getDistrictByCountryId(3, new ProductPostingRemoteService.DistrictLoadCompletionListener() {
             @Override
-            public void onDistrictLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
-                view.onDistrictLoaded(spinnerDataModelArrayList);
-                view.showLoadingIndicator(false, "");
+            public void onDistrictLoadSuccess(final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
+
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.onDistrictLoaded(spinnerDataModelArrayList);
+                        view.showLoadingIndicator(false, "");
+
+                    }
+                });
             }
 
             @Override
-            public void onDistrictLoadFailed(String message) {
-                //  view.showMessage(message);
+            public void onDistrictLoadFailed(final String message) {
                 Log.d(TAG, "Error: " + message);
-                view.showLoadingIndicator(false, "");
+
+
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.showMessage(message);
+                        view.showLoadingIndicator(false, "");
+                    }
+                });
             }
         });
     }
@@ -88,16 +104,30 @@ public class ProductPostingPresenter implements ProductPostingContract.Presenter
         view.showLoadingIndicator(true, AppController.getInstance().getString(R.string.network_operation_running_message));
         ProductPostingRemoteService.newInstance().getThanaByDistrictId(districtId, new ProductPostingRemoteService.ThanaLoadCompletionListener() {
             @Override
-            public void onThanaLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
-                view.onThanaLoaded(spinnerDataModelArrayList);
-                view.showLoadingIndicator(false, "");
+            public void onThanaLoadSuccess(final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
+
+
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.onThanaLoaded(spinnerDataModelArrayList);
+                        view.showLoadingIndicator(false, "");
+                    }
+                });
             }
 
             @Override
-            public void onThanaloadFailed(String message) {
-                //  view.showMessage(message);
+            public void onThanaloadFailed(final String message) {
                 Log.d(TAG, "Error: " + message);
-                view.showLoadingIndicator(false, "");
+
+
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.showMessage(message);
+                        view.showLoadingIndicator(false, "");
+                    }
+                });
             }
         });
     }

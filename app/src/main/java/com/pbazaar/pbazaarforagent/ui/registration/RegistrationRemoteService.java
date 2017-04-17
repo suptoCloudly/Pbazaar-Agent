@@ -18,6 +18,7 @@ import com.pbazaar.pbazaarforagent.remote.data.RegistrationResponse;
 import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralRequest;
 import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralResponse;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -31,6 +32,7 @@ import retrofit2.Response;
 public class RegistrationRemoteService {
 
     private static final String TAG = RegistrationRemoteService.class.getSimpleName();
+
 
     private static RegistrationRemoteService instance;
 
@@ -136,42 +138,99 @@ public class RegistrationRemoteService {
             return;
         }
 
-        GetDistrictByCountryIdRequest getDistrictByCountryIdRequest = new GetDistrictByCountryIdRequest(RemoteConstant.PUBLIC_API_TOKEN, countryId);
+//        final GetDistrictByCountryIdRequest getDistrictByCountryIdRequest = new GetDistrictByCountryIdRequest(RemoteConstant.PUBLIC_API_TOKEN, countryId);
+//        final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList = new ArrayList<LocationSpinnerDataModel>();
+
+//        final Call<GetDistrictByCountryIdResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getDistrictsByCountryId(getDistrictByCountryIdRequest);
+//        call.enqueue(new Callback<GetDistrictByCountryIdResponse>() {
+//            @Override
+//            public void onResponse(Call<GetDistrictByCountryIdResponse> call, Response<GetDistrictByCountryIdResponse> response) {
+//                if (response.isSuccessful()) {
+//
+//                    GetDistrictByCountryIdResponse districtByCountryIdResponse = response.body();
+//
+//                    // if the request returns data then send it to view or show error message
+//                    if (districtByCountryIdResponse.getSuccess() == 1) {
+//                        for (GetDistrictByCountryIdResponse.Data data : districtByCountryIdResponse.getData()) {
+//                            LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
+//                            spinnerDataModelArrayList.add(locationSpinnerDataModel);
+//                        }
+//
+//                        if (districtLoadCompletionListener != null)
+//                            districtLoadCompletionListener.onDistrictLoadSuccess(spinnerDataModelArrayList);
+//                    } else {
+//                        if (districtLoadCompletionListener != null)
+//                            districtLoadCompletionListener.onDistrictLoadFailed(districtByCountryIdResponse.getMessage());
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GetDistrictByCountryIdResponse> call, Throwable t) {
+//                if (districtLoadCompletionListener != null)
+//                    districtLoadCompletionListener.onDistrictLoadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+//            }
+//        });
+
+        final GetDistrictByCountryIdRequest getDistrictByCountryIdRequest = new GetDistrictByCountryIdRequest(RemoteConstant.PUBLIC_API_TOKEN, countryId);
         final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList = new ArrayList<LocationSpinnerDataModel>();
 
-        Call<GetDistrictByCountryIdResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getDistrictsByCountryId(getDistrictByCountryIdRequest);
-        call.enqueue(new Callback<GetDistrictByCountryIdResponse>() {
+        new Thread(new Runnable() {
             @Override
-            public void onResponse(Call<GetDistrictByCountryIdResponse> call, Response<GetDistrictByCountryIdResponse> response) {
-                if (response.isSuccessful()) {
+            public void run() {
 
-                    GetDistrictByCountryIdResponse districtByCountryIdResponse = response.body();
+                int retryCount = 0;
+                while (true) {
 
-                    // if the request returns data then send it to view or show error message
-                    if (districtByCountryIdResponse.getSuccess() == 1) {
-                        for (GetDistrictByCountryIdResponse.Data data : districtByCountryIdResponse.getData()) {
-                            LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
-                            spinnerDataModelArrayList.add(locationSpinnerDataModel);
+                    try {
+                        final Call<GetDistrictByCountryIdResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getDistrictsByCountryId(getDistrictByCountryIdRequest);
+                        Response<GetDistrictByCountryIdResponse> response = call.execute();
+                        if (response.isSuccessful()) {
+                            GetDistrictByCountryIdResponse districtByCountryIdResponse = response.body();
+
+                            // if the request returns data then send it to view or show error message
+                            if (districtByCountryIdResponse.getSuccess() == 1) {
+                                for (GetDistrictByCountryIdResponse.Data data : districtByCountryIdResponse.getData()) {
+                                    LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
+                                    spinnerDataModelArrayList.add(locationSpinnerDataModel);
+                                }
+
+                                if (districtLoadCompletionListener != null)
+                                    districtLoadCompletionListener.onDistrictLoadSuccess(spinnerDataModelArrayList);
+                            } else {
+                                if (districtLoadCompletionListener != null)
+                                    districtLoadCompletionListener.onDistrictLoadFailed(districtByCountryIdResponse.getMessage());
+
+                            }
+                            Log.d(TAG, "Response success");
+
+                            break;
+                        } else {
+
+                            retryCount++;
+                            Log.d(TAG, "Response unsuccess");
                         }
-
-                        if (districtLoadCompletionListener != null)
-                            districtLoadCompletionListener.onDistrictLoadSuccess(spinnerDataModelArrayList);
-                    } else {
-                        if (districtLoadCompletionListener != null)
-                            districtLoadCompletionListener.onDistrictLoadFailed(districtByCountryIdResponse.getMessage());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Log.d(TAG, "Response fail");
+                        retryCount++;
                     }
+
+                    if (retryCount > RemoteConstant.RETRY_ATTEMPT) {
+                        if (districtLoadCompletionListener != null)
+                            districtLoadCompletionListener.onDistrictLoadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+
+                        break;
+                    }
+
                 }
             }
+        }).start();
 
-            @Override
-            public void onFailure(Call<GetDistrictByCountryIdResponse> call, Throwable t) {
-                if (districtLoadCompletionListener != null)
-                    districtLoadCompletionListener.onDistrictLoadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
-            }
-        });
+
     }
 
-    public void getthanaByDistrictId(int districtId, final ThanaLoadCompletionListener thanaLoadCompletionListener) {
+    public void getThanaByDistrictId(final int districtId, final ThanaLoadCompletionListener thanaLoadCompletionListener) {
 
         final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList = new ArrayList<>();
 
@@ -190,36 +249,83 @@ public class RegistrationRemoteService {
         }
 
 
-        final GetThanaByDistrictIdRequest getThanaByDistrictIdRequest = new GetThanaByDistrictIdRequest(RemoteConstant.PUBLIC_API_TOKEN, districtId);
-        Call<GetThanaByDistrictIdResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getThanaByDistrictId(getThanaByDistrictIdRequest);
-
-        call.enqueue(new Callback<GetThanaByDistrictIdResponse>() {
+        new Thread(new Runnable() {
             @Override
-            public void onResponse(Call<GetThanaByDistrictIdResponse> call, Response<GetThanaByDistrictIdResponse> response) {
-                if (response.isSuccessful()) {
-                    GetThanaByDistrictIdResponse getThanaByDistrictIdResponse = response.body();
+            public void run() {
 
-                    if (getThanaByDistrictIdResponse.getSuccess() == 1) {
-                        for (GetThanaByDistrictIdResponse.Data data : getThanaByDistrictIdResponse.getData()) {
-                            LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
-                            spinnerDataModelArrayList.add(locationSpinnerDataModel);
+                int retryCount = 0;
+                while (true) {
+
+                    final GetThanaByDistrictIdRequest getThanaByDistrictIdRequest = new GetThanaByDistrictIdRequest(RemoteConstant.PUBLIC_API_TOKEN, districtId);
+                    Call<GetThanaByDistrictIdResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getThanaByDistrictId(getThanaByDistrictIdRequest);
+
+                    try {
+                        Response<GetThanaByDistrictIdResponse> response = call.execute();
+                        if (response.isSuccessful()) {
+                            GetThanaByDistrictIdResponse getThanaByDistrictIdResponse = response.body();
+
+                            if (getThanaByDistrictIdResponse.getSuccess() == 1) {
+                                for (GetThanaByDistrictIdResponse.Data data : getThanaByDistrictIdResponse.getData()) {
+                                    LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
+                                    spinnerDataModelArrayList.add(locationSpinnerDataModel);
+                                }
+
+                                if (thanaLoadCompletionListener != null)
+                                    thanaLoadCompletionListener.onThanaLoadSuccess(spinnerDataModelArrayList);
+                            } else {
+                                if (thanaLoadCompletionListener != null)
+                                    thanaLoadCompletionListener.onThanaloadFailed(getThanaByDistrictIdResponse.getMessage());
+                            }
+                            break;
+                        } else {
+                            retryCount++;
                         }
-
-                        if (thanaLoadCompletionListener != null)
-                            thanaLoadCompletionListener.onThanaLoadSuccess(spinnerDataModelArrayList);
-                    } else {
-                        if (thanaLoadCompletionListener != null)
-                            thanaLoadCompletionListener.onThanaloadFailed(getThanaByDistrictIdResponse.getMessage());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        retryCount++;
                     }
+
+                    if (retryCount > RemoteConstant.RETRY_ATTEMPT) {
+                        if (thanaLoadCompletionListener != null)
+                            thanaLoadCompletionListener.onThanaloadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+                        break;
+                    }
+
                 }
             }
+        }).start();
 
-            @Override
-            public void onFailure(Call<GetThanaByDistrictIdResponse> call, Throwable t) {
-                if (thanaLoadCompletionListener != null)
-                    thanaLoadCompletionListener.onThanaloadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
-            }
-        });
+//        final GetThanaByDistrictIdRequest getThanaByDistrictIdRequest = new GetThanaByDistrictIdRequest(RemoteConstant.PUBLIC_API_TOKEN, districtId);
+//        Call<GetThanaByDistrictIdResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getThanaByDistrictId(getThanaByDistrictIdRequest);
+
+//        call.enqueue(new Callback<GetThanaByDistrictIdResponse>() {
+//            @Override
+//            public void onResponse(Call<GetThanaByDistrictIdResponse> call, Response<GetThanaByDistrictIdResponse> response) {
+//                if (response.isSuccessful()) {
+//                    GetThanaByDistrictIdResponse getThanaByDistrictIdResponse = response.body();
+//
+//                    if (getThanaByDistrictIdResponse.getSuccess() == 1) {
+//                        for (GetThanaByDistrictIdResponse.Data data : getThanaByDistrictIdResponse.getData()) {
+//                            LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
+//                            spinnerDataModelArrayList.add(locationSpinnerDataModel);
+//                        }
+//
+//                        if (thanaLoadCompletionListener != null)
+//                            thanaLoadCompletionListener.onThanaLoadSuccess(spinnerDataModelArrayList);
+//                    } else {
+//                        if (thanaLoadCompletionListener != null)
+//                            thanaLoadCompletionListener.onThanaloadFailed(getThanaByDistrictIdResponse.getMessage());
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<GetThanaByDistrictIdResponse> call, Throwable t) {
+//                if (thanaLoadCompletionListener != null)
+//                    thanaLoadCompletionListener.onThanaloadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+//            }
+//        });
+
 
     }
 

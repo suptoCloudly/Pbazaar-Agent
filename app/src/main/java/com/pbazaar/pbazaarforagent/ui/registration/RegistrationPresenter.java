@@ -1,7 +1,9 @@
 package com.pbazaar.pbazaarforagent.ui.registration;
 
+import android.os.Handler;
 import android.util.Log;
 
+import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
 
@@ -31,7 +33,7 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
 
     @Override
     public void start() {
-        onCountrySelected(3);
+
     }
 
     @Override
@@ -72,18 +74,36 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
 
         RegistrationRemoteService.getInstance().getDistrictByCountryId(countryId, new RegistrationRemoteService.DistrictLoadCompletionListener() {
             @Override
-            public void onDistrictLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
-                view.onDistrictLoaded(spinnerDataModelArrayList);
-                view.setLoadingIndicator(false);
+            public void onDistrictLoadSuccess(final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
+
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.onDistrictLoaded(spinnerDataModelArrayList);
+                        view.setLoadingIndicator(false);
+                    }
+                });
+
+
             }
 
             @Override
-            public void onDistrictLoadFailed(String message) {
-                //  view.showMessage(message);
+            public void onDistrictLoadFailed(final String message) {
                 Log.d(TAG, "Error: " + message);
-                view.setLoadingIndicator(false);
+
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.showMessage(message);
+                        view.setLoadingIndicator(false);
+                    }
+                });
+
+
             }
+
         });
+
     }
 
     @Override
@@ -92,18 +112,30 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
         Log.d(TAG, "District id: " + districtId);
         view.setLoadingIndicator(true);
 
-        RegistrationRemoteService.getInstance().getthanaByDistrictId(districtId, new RegistrationRemoteService.ThanaLoadCompletionListener() {
+        RegistrationRemoteService.getInstance().getThanaByDistrictId(districtId, new RegistrationRemoteService.ThanaLoadCompletionListener() {
             @Override
-            public void onThanaLoadSuccess(ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
-                view.onThanaLoaded(spinnerDataModelArrayList);
-                view.setLoadingIndicator(false);
+            public void onThanaLoadSuccess(final ArrayList<LocationSpinnerDataModel> spinnerDataModelArrayList) {
+
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.onThanaLoaded(spinnerDataModelArrayList);
+                        view.setLoadingIndicator(false);
+                    }
+                });
             }
 
             @Override
-            public void onThanaloadFailed(String message) {
-                //  view.showMessage(message);
+            public void onThanaloadFailed(final String message) {
+
                 Log.d(TAG, "Error: " + message);
-                view.setLoadingIndicator(false);
+                new Handler(AppController.getInstance().getMainLooper()).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        view.setLoadingIndicator(false);
+                        view.showMessage(message);
+                    }
+                });
             }
         });
 
