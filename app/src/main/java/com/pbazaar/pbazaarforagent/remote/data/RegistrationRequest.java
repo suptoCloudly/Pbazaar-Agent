@@ -65,9 +65,11 @@ public class RegistrationRequest extends BaseRequest {
     @SerializedName("isAgentAgency")
     @Expose
     private Boolean isAgentAgency;
+    @SerializedName("referralCode")
+    @Expose
+    private String referralCode;
 
-
-    public RegistrationRequest(String apiToken, String email, String username, String password, String gender, String firstName, String lastName, String company, String streetAddress, String streetAddress2, Integer countryId, Integer districtId, Integer thanaAreaId, String phone, String mobile, String mobile2, Boolean subscribeNewsletter, Boolean isAgentData, Boolean isAgentSearch, Boolean isAgentAgency) {
+    public RegistrationRequest(String apiToken, String email, String username, String password, String gender, String firstName, String lastName, String company, String streetAddress, String streetAddress2, Integer countryId, Integer districtId, Integer thanaAreaId, String phone, String mobile, String mobile2, Boolean subscribeNewsletter, Boolean isAgentData, Boolean isAgentSearch, Boolean isAgentAgency, String referralCode) {
         super(apiToken);
         this.email = email;
         this.username = username;
@@ -88,7 +90,9 @@ public class RegistrationRequest extends BaseRequest {
         this.isAgentData = isAgentData;
         this.isAgentSearch = isAgentSearch;
         this.isAgentAgency = isAgentAgency;
+        this.referralCode = referralCode;
     }
+
 
     public String getEmail() {
         return email;
@@ -218,27 +222,35 @@ public class RegistrationRequest extends BaseRequest {
         this.subscribeNewsletter = subscribeNewsletter;
     }
 
-    public Boolean getIsAgentData() {
+    public Boolean getAgentData() {
         return isAgentData;
     }
 
-    public void setIsAgentData(Boolean isAgentData) {
-        this.isAgentData = isAgentData;
+    public void setAgentData(Boolean agentData) {
+        isAgentData = agentData;
     }
 
-    public Boolean getIsAgentSearch() {
+    public Boolean getAgentSearch() {
         return isAgentSearch;
     }
 
-    public void setIsAgentSearch(Boolean isAgentSearch) {
-        this.isAgentSearch = isAgentSearch;
+    public void setAgentSearch(Boolean agentSearch) {
+        isAgentSearch = agentSearch;
     }
 
-    public Boolean getIsAgentAgency() {
+    public Boolean getAgentAgency() {
         return isAgentAgency;
     }
 
-    public void setIsAgentAgency(Boolean isAgentAgency) {
-        this.isAgentAgency = isAgentAgency;
+    public void setAgentAgency(Boolean agentAgency) {
+        isAgentAgency = agentAgency;
+    }
+
+    public String getReferralCode() {
+        return referralCode;
+    }
+
+    public void setReferralCode(String referralCode) {
+        this.referralCode = referralCode;
     }
 }

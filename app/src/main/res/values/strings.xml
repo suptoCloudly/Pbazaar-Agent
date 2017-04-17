@@ -22,4 +22,9 @@
     <string name="post_success_message">Your post is successfully submitted</string>
     <string name="positive_post_success_dialog_button">Exit</string>
     <string name="negative_post_success_dialog_button">Post Another</string>
+    <string name="invalid_referral_code_error_message">Invalid Referral Code given</string>
+    <string name="share_referral_code">Share Referral Code</string>
+    <string name="share_referral_code_message">Your referral code is: </string>
+    <string name="share_using">Share Using</string>
+    <string name="share_referral_intent_subject">Share Referral Code</string>
 </resources>

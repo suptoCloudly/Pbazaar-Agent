@@ -18,9 +18,10 @@ public class RegistrationDataModel {
     private int thanaId;
     private String streetAddress;
     private String streetAddressTwo;
+    private String referral;
     private String password;
 
-    public RegistrationDataModel(String firstName, String lastName, String mobileNumber, String email, String gender, boolean isAgentForData, boolean isAgentForSearch, boolean isAgentForAgency, int districtId, int thanaId, String streetAddress, String streetAddressTwo, String password) {
+    public RegistrationDataModel(String firstName, String lastName, String mobileNumber, String email, String gender, boolean isAgentForData, boolean isAgentForSearch, boolean isAgentForAgency, int districtId, int thanaId, String streetAddress, String streetAddressTwo, String referral, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mobileNumber = mobileNumber;
@@ -33,9 +34,9 @@ public class RegistrationDataModel {
         this.thanaId = thanaId;
         this.streetAddress = streetAddress;
         this.streetAddressTwo = streetAddressTwo;
+        this.referral = referral;
         this.password = password;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -131,6 +132,14 @@ public class RegistrationDataModel {
 
     public void setStreetAddressTwo(String streetAddressTwo) {
         this.streetAddressTwo = streetAddressTwo;
+    }
+
+    public String getReferral() {
+        return referral;
+    }
+
+    public void setReferral(String referral) {
+        this.referral = referral;
     }
 
     public String getPassword() {

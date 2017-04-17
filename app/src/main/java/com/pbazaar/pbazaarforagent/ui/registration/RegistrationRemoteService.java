@@ -15,6 +15,8 @@ import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationRequest;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationResponse;
+import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralRequest;
+import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralResponse;
 
 import java.util.ArrayList;
 
@@ -53,9 +55,46 @@ public class RegistrationRemoteService {
         }
 
 
-        RegistrationRequest request = new RegistrationRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getEmail(), "", model.getPassword(), model.getGender(), model.getFirstName(), model.getLastName(), "", model.getStreetAddress(), model.getStreetAddressTwo(), 3, model.getDistrictId(), model.getThanaId(), "", model.getMobileNumber(), "", false, model.isAgentForData(), model.isAgentForSearch(), model.isAgentForAgency());
+        final RegistrationRequest request = new RegistrationRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getEmail(), "", model.getPassword(), model.getGender(), model.getFirstName(), model.getLastName(), "", model.getStreetAddress(), model.getStreetAddressTwo(), 3, model.getDistrictId(), model.getThanaId(), "", model.getMobileNumber(), "", false, model.isAgentForData(), model.isAgentForSearch(), model.isAgentForAgency(), model.getReferral());
+
+        if (model.getReferral().length() > 0 && !model.getReferral().contentEquals("")) {
+            // TODO write referral validation code
+            ValidateReferralRequest validateReferralRequest = new ValidateReferralRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getReferral());
+
+            Call<ValidateReferralResponse> validateReferralCall = PbazaarApi.getInstance().getPbazaarApiServiceClient().validateReferral(validateReferralRequest);
+            validateReferralCall.enqueue(new Callback<ValidateReferralResponse>() {
+                @Override
+                public void onResponse(Call<ValidateReferralResponse> call, Response<ValidateReferralResponse> response) {
+                    if (response.isSuccessful()) {
+
+                        ValidateReferralResponse validateReferralResponse = response.body();
+
+                        if (validateReferralResponse.getSuccess() == 1) {
+                            requestRegistration(registrationCompletionListener, request);
+                        } else {
+                            if (registrationCompletionListener != null)
+                                registrationCompletionListener.onInvalidReferralCodeGiven(AppController.getInstance().getString(R.string.invalid_referral_code_error_message));
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ValidateReferralResponse> call, Throwable t) {
+                    if (registrationCompletionListener != null)
+                        registrationCompletionListener.onRegistrationFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+
+                }
+            });
+
+        } else {
+            requestRegistration(registrationCompletionListener, request);
+        }
 
 
+    }
+
+    private void requestRegistration(final RegistrationCompletionListener registrationCompletionListener, RegistrationRequest request) {
         Call<RegistrationResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().registerAgent(request);
         call.enqueue(new Callback<RegistrationResponse>() {
             @Override
@@ -86,7 +125,6 @@ public class RegistrationRemoteService {
                     registrationCompletionListener.onRegistrationFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
             }
         });
-
     }
 
     public void getDistrictByCountryId(int countryId, final DistrictLoadCompletionListener districtLoadCompletionListener) {
@@ -190,6 +228,8 @@ public class RegistrationRemoteService {
         void onRegistrationSuccess(String message);
 
         void onRegistrationFailed(String message);
+
+        void onInvalidReferralCodeGiven(String message);
     }
 
     public interface DistrictLoadCompletionListener {

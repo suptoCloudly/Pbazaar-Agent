@@ -99,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.log_out_menu_button) {
+        if (id == R.id.share_referral_code_menu_button) {
+            shareReferralCode();
+        } else if (id == R.id.log_out_menu_button) {
             logout();
         }
 
@@ -158,6 +160,17 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    private void shareReferralCode() {
+        String shareBody = getResources().getString(R.string.share_referral_code_message) + " " + PreferenceHelper.getInstance().getCustomerId();
+
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_referral_intent_subject));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, getResources().getString(R.string.share_using)));
+
     }
 
 

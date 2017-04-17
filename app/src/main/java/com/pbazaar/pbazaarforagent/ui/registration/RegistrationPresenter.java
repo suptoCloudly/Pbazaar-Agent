@@ -48,15 +48,20 @@ public class RegistrationPresenter implements RegistrationContract.Presenter {
             @Override
             public void onRegistrationSuccess(String message) {
                 view.onRegistrationSuccess(registrationDataModel.getEmail(), registrationDataModel.getPassword());
-
                 view.setLoadingIndicator(false);
             }
 
             @Override
             public void onRegistrationFailed(String message) {
                 view.showMessage(message);
-
                 view.setLoadingIndicator(false);
+            }
+
+            @Override
+            public void onInvalidReferralCodeGiven(String message) {
+                view.setLoadingIndicator(false);
+                view.showMessage(message);
+                view.onInvalidReferralCodeGiven();
             }
         });
     }

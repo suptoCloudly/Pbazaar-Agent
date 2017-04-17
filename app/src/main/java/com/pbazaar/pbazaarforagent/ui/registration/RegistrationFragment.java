@@ -83,6 +83,9 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
     @BindView(R.id.spinner_select_thana_registration_fragment)
     AppCompatSpinner selectThanaSpinner;
 
+    @BindView(R.id.et_referral_registration_fragment)
+    TextInputEditText referralEt;
+
     @BindView(R.id.et_password_registration_fragment)
     TextInputEditText passwordEt;
 
@@ -197,15 +200,19 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
             String streetAddress = streetAddressEt.getText().toString();
             String streetAddress2 = streetAddressSecondEt.getText().toString();
 
+            String referral = referralEt.getText().toString();
+
             String password = passwordEt.getText().toString();
             String confirmPassword = confirmPasswordEt.getText().toString();
 
 
-            Log.d(TAG,"District: "+ districtId+" thana: "+ thanaAreaId);
+            Log.d(TAG, "District: " + districtId + " thana: " + thanaAreaId);
 
 
             // apply form validations
-            emptyInputFieldValidation(firstNameET, lastNameET, mobileNumberEt, emailET, streetAddressEt, passwordEt, confirmPasswordEt);
+            if (!emptyInputFieldValidation(firstNameET, lastNameET, mobileNumberEt, emailET, streetAddressEt, passwordEt, confirmPasswordEt)) {
+                return;
+            }
 
             if (!password.contentEquals(confirmPassword)) {
                 showMessage(getString(R.string.passeword_mismatch_error_text));
@@ -220,7 +227,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
 
             // create a registration model data and pass it to presenter
 
-            RegistrationDataModel registrationDataModel = new RegistrationDataModel(firstName, lastName, mobile, email, gender, isAgentForData, isAgentForSearch, isAgentForAgency, districtId, thanaAreaId, streetAddress, streetAddress2, password);
+            RegistrationDataModel registrationDataModel = new RegistrationDataModel(firstName, lastName, mobile, email, gender, isAgentForData, isAgentForSearch, isAgentForAgency, districtId, thanaAreaId, streetAddress, streetAddress2, referral, password);
             presenter.onRegistrationButtonClicked(registrationDataModel);
         }
     }
@@ -282,15 +289,25 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         selectThanaSpinner.setAdapter(thanaListAdapter);
     }
 
+    @Override
+    public void onInvalidReferralCodeGiven() {
+        referralEt.setError(getString(R.string.invalid_referral_code_error_message));
+    }
 
-    private void emptyInputFieldValidation(TextInputEditText... textInputEditTextGroups) {
+
+    private boolean emptyInputFieldValidation(TextInputEditText... textInputEditTextGroups) {
+
+        boolean validation = true;
 
         for (TextInputEditText textInputEditText : textInputEditTextGroups) {
             String inputText = textInputEditText.getText().toString();
             if (inputText.matches("")) {
                 textInputEditText.setError(getString(R.string.empty_input_field_error_message));
+                validation = false;
             }
         }
+
+        return validation;
     }
 
 }

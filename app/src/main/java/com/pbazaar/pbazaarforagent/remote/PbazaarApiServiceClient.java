@@ -9,11 +9,12 @@ import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
-import com.pbazaar.pbazaarforagent.remote.data.OldRegistrationRequest;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductRequest;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductResponse;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationRequest;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationResponse;
+import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralRequest;
+import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralResponse;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -38,6 +39,9 @@ public interface PbazaarApiServiceClient {
 
     @POST("GetThanaAreasByDistrictId")
     Call<GetThanaByDistrictIdResponse> getThanaByDistrictId(@Body GetThanaByDistrictIdRequest request);
+
+    @POST("ValidateReferralCode")
+    Call<ValidateReferralResponse> validateReferral(@Body ValidateReferralRequest request);
 
     @POST("RegisterAgent")
     Call<RegistrationResponse> registerAgent(@Body RegistrationRequest request);

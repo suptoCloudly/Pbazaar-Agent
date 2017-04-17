@@ -24,6 +24,8 @@ public interface RegistrationContract {
 
         void onThanaLoaded(ArrayList<LocationSpinnerDataModel> thanaList);
 
+        void onInvalidReferralCodeGiven();
+
     }
 
     interface Presenter extends BasePresenter {

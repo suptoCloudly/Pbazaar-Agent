@@ -32,6 +32,8 @@ public class SplashActivity extends AppCompatActivity {
         }
 
 
+        Log.d(TAG, "Id: " + PreferenceHelper.getInstance().getCustomerId());
+
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
