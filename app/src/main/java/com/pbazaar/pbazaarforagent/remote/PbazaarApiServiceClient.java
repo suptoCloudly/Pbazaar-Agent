@@ -9,6 +9,8 @@ import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
+import com.pbazaar.pbazaarforagent.remote.data.PaymentHistoryRequest;
+import com.pbazaar.pbazaarforagent.remote.data.PaymentHistoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductRequest;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductResponse;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationRequest;
@@ -55,4 +57,7 @@ public interface PbazaarApiServiceClient {
 
     @POST("InsertProductInfoByCollector")
     Call<PostProductResponse> postProduct(@Body PostProductRequest request);
+
+    @POST("GetAgentPaymentHistory")
+    Call<PaymentHistoryResponse> getPaymentHistory(@Body PaymentHistoryRequest request);
 }

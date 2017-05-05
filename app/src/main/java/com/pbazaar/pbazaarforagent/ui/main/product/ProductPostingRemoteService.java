@@ -369,9 +369,15 @@ public class ProductPostingRemoteService {
         }
 
 
-        if (!checkEmptyString(model.getAdvertiserPhone(), model.getHouseNo(), model.getRoadNo())) {
+        if (!checkEmptyString(model.getAdvertiserPhone())) {
             if (completionListener != null)
                 completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
+            return;
+        }
+
+        if(model.getPictureId() == 0){
+            if (completionListener != null)
+                completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_image_error_message));
             return;
         }
 

@@ -23,6 +23,7 @@ import com.pbazaar.pbazaarforagent.CustomAreaSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.RegistrationDataModel;
+import com.pbazaar.pbazaarforagent.ui.dialogs.ShowMessageDialog;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
 
 import java.util.ArrayList;
@@ -141,7 +142,7 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
         districtList = new ArrayList<>();
         thanaList = new ArrayList<>();
 
-        districtList.add(new LocationSpinnerDataModel("Select District", -1));
+        districtList.add(new LocationSpinnerDataModel("Select Division", -1));
         thanaList.add(new LocationSpinnerDataModel("Select Thana", -1));
 
         districtListAdapter = new CustomAreaSpinnerAdapter(getActivity(), districtList);
@@ -274,14 +275,18 @@ public class RegistrationFragment extends Fragment implements RegistrationContra
 
     @Override
     public void showMessage(String message) {
-        Snackbar.make(rootCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+//        Snackbar.make(rootCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+
+        ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
+        showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
+
     }
 
     @Override
     public void onDistrictLoaded(ArrayList<LocationSpinnerDataModel> districtList) {
         Log.d(TAG, "Distric list size: " + districtList.size());
         this.districtList.clear();
-        this.districtList.add(new LocationSpinnerDataModel("Select District", -1));
+        this.districtList.add(new LocationSpinnerDataModel("Select Division", -1));
         this.districtList.addAll(districtList);
         districtListAdapter = new CustomAreaSpinnerAdapter(getActivity(), this.districtList);
         selectDistrictSpinner.setAdapter(districtListAdapter);

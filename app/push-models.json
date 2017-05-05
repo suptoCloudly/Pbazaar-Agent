@@ -1,0 +1,9 @@
+//for app update information
+
+{
+  "to": "/topics/pbazaaragent",
+  "data": {
+    "latest_version_code": "12"
+  },
+  "time_to_live": 2419200
+}

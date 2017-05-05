@@ -20,6 +20,7 @@ import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LoginCredentialModel;
 import com.pbazaar.pbazaarforagent.model.UserDataModel;
+import com.pbazaar.pbazaarforagent.ui.dialogs.ShowMessageDialog;
 import com.pbazaar.pbazaarforagent.ui.main.MainActivity;
 import com.pbazaar.pbazaarforagent.ui.registration.RegistrationActivity;
 
@@ -168,8 +169,12 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
     @Override
     public void showMessage(String message) {
-        Log.d(TAG, message);
-        Snackbar.make(rootCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+//        Snackbar.make(rootCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
+
+        ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
+        showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
+
+
     }
 
 

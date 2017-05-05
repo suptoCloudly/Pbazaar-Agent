@@ -86,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mNotificationReceiver);
+        Log.d(TAG, "OnDestroy");
+
     }
 
 
@@ -114,6 +116,15 @@ public class MainActivity extends AppCompatActivity {
 
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "OnPause");
+
+    }
+
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

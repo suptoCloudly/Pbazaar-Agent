@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Pbazaar Agent</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="log_in">Log In</string>
@@ -18,7 +17,7 @@
     <string name="image_uploading_message">Uploading image to Pbazaar</string>
     <string name="empty_textbox_error_meassage">Please provide all information</string>
     <string name="no_permission_text">Please provide all permissions</string>
-    <string name="welcome_to_pbazaar_note">Welcome To Pbazaar</string>
+    <string name="welcome_to_pbazaar_note">Welcome To pBazaar.com</string>
     <string name="post_success_message">Your post is successfully submitted</string>
     <string name="positive_post_success_dialog_button">Exit</string>
     <string name="negative_post_success_dialog_button">Post Another</string>
@@ -27,4 +26,8 @@
     <string name="share_referral_code_message">Your referral code is: </string>
     <string name="share_using">Share Using</string>
     <string name="share_referral_intent_subject">Share Referral Code</string>
+    <string name="empty_image_error_message">please upload a property picture</string>
+    <string name="update_app_message">A new version of this app is released. Please update the app from Google Play Store</string>
+    <string name="not_now">Not Now</string>
+    <string name="ok">Ok</string>
 </resources>

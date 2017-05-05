@@ -2,13 +2,13 @@ package com.pbazaar.pbazaarforagent.ui.main.product;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.AppCompatRadioButton;
@@ -32,6 +32,7 @@ import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
+import com.pbazaar.pbazaarforagent.ui.dialogs.ShowMessageDialog;
 import com.pbazaar.pbazaarforagent.ui.main.PostSuccessDialog;
 
 import java.util.ArrayList;
@@ -125,9 +126,9 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        this.setRetainInstance(true);
 
-
+        Log.d(TAG, "On create");
     }
 
     @Override
@@ -135,6 +136,8 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_posting, container, false);
         ButterKnife.bind(this, view);
+
+        Log.d(TAG, "On create view");
 
         pickImageImageView.setOnClickListener(this);
         postProductButton.setOnClickListener(this);
@@ -147,7 +150,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         thanaList = new ArrayList<>();
 
         subCategories.add(new SubCategoryModel("Select Subcategory", -1));
-        districtList.add(new LocationSpinnerDataModel("Select District", -1));
+        districtList.add(new LocationSpinnerDataModel("Select Division", -1));
         thanaList.add(new LocationSpinnerDataModel("Select Area", -1));
 
         subcategorySpinnerAdapter = new CustomCategorySpinnerAdapter(getActivity(), subCategories);
@@ -168,21 +171,99 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        if (presenter == null) {
-            presenter = new ProductPostingPresenter(this);
-            presenter.start();
-        }
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.d(TAG, "OnSaveInstance");
+
+        savedInstanceState.putParcelableArrayList("subCategories", subCategories);
+        savedInstanceState.putParcelableArrayList("districtList", districtList);
+        savedInstanceState.putParcelableArrayList("thanaList", thanaList);
+        savedInstanceState.putInt("subCategoriesSelected", selectSubCategorySpinner.getSelectedItemPosition());
+        savedInstanceState.putInt("districtListSelected", selectDistrictSpinner.getSelectedItemPosition());
+        savedInstanceState.putInt("thanaListSelected", selectAreaSpinner.getSelectedItemPosition());
+
+        savedInstanceState.putInt("categoryId", (rentRadioButton.isChecked() ? CATEGORY_RENT : CATEGORY_SELL));
+        savedInstanceState.putInt("imageId", imageId);
+        savedInstanceState.putString("blockSector", blockSectorEt.getText().toString());
+        savedInstanceState.putString("houseNo", houseNoEt.getText().toString());
+        savedInstanceState.putString("roadNo", roadNoEt.getText().toString());
+        savedInstanceState.putString("advertiserName", advertiserNameEt.getText().toString());
+        savedInstanceState.putString("advertiserPhone", advertiserPhoneEt.getText().toString());
+        savedInstanceState.putString("advertiserEmail", advertiserEmailEt.getText().toString());
+
+
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-//
-//        presenter.onCountrySelected();
-//        presenter.getSubcategories(1);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        Log.d(TAG, "On Activity created");
+        if (presenter == null) {
+            Log.d(TAG, "Presenter is null");
+            presenter = new ProductPostingPresenter(this);
+        }
+
+        if (savedInstanceState == null) {
+            presenter.start();
+        } else {
+            subCategories = savedInstanceState.getParcelableArrayList("subCategories");
+            districtList = savedInstanceState.getParcelableArrayList("districtList");
+            thanaList = savedInstanceState.getParcelableArrayList("thanaList");
+
+
+            subcategorySpinnerAdapter = new CustomCategorySpinnerAdapter(getActivity(), subCategories);
+            districtListAdapter = new CustomAreaSpinnerAdapter(getActivity(), districtList);
+            thanaListAdapter = new CustomAreaSpinnerAdapter(getActivity(), thanaList);
+
+            selectSubCategorySpinner.setAdapter(subcategorySpinnerAdapter);
+            selectDistrictSpinner.setAdapter(districtListAdapter);
+            selectAreaSpinner.setAdapter(thanaListAdapter);
+
+            selectSubCategorySpinner.setSelection(savedInstanceState.getInt("subCategoriesSelected"));
+            selectDistrictSpinner.setSelection(savedInstanceState.getInt("districtListSelected"));
+            selectAreaSpinner.setSelection(savedInstanceState.getInt("thanaListSelected"));
+
+
+            if (savedInstanceState.getInt("categoryId") == CATEGORY_RENT) {
+                rentRadioButton.setChecked(true);
+            } else {
+                sellRadioButton.setChecked(true);
+            }
+
+            this.imageId = savedInstanceState.getInt("imageId");
+            blockSectorEt.setText(savedInstanceState.getString("blockSector"));
+            houseNoEt.setText(savedInstanceState.getString("houseNo"));
+            roadNoEt.setText(savedInstanceState.getString("roadNo"));
+            advertiserNameEt.setText(savedInstanceState.getString("advertiserName"));
+            advertiserPhoneEt.setText(savedInstanceState.getString("advertiserPhone"));
+            advertiserEmailEt.setText(savedInstanceState.getString("advertiserEmail"));
+
+        }
     }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "OnPause");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "OnDestroy");
+
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "OnDetach");
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -203,7 +284,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     private void postProduct() {
         // provide validation
-        emptyInputFieldValidation(houseNoEt, roadNoEt, advertiserPhoneEt);
+        emptyInputFieldValidation(advertiserPhoneEt);
 
 
         int categoryId = (rentRadioButton.isChecked() ? CATEGORY_RENT : CATEGORY_SELL);
@@ -250,7 +331,11 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @Override
     public void showMessage(String message) {
-        Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show();
+//        Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show();
+
+        ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
+        showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
+
     }
 
     @Override
@@ -267,11 +352,29 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             progressDialog.dismiss();
     }
 
+    @Override
+    public void showImageLoadingIndicator(boolean status, String message) {
+        if (message.length() > 0)
+            progressDialog.setMessage(message);
+        else
+            progressDialog.setMessage(getString(R.string.network_operation_running_message));
+
+
+        if (status)
+            progressDialog.show();
+        else
+            progressDialog.dismiss();
+    }
+
 
     @Override
     public void setSubcategories(ArrayList<SubCategoryModel> subCategories) {
+
+        subCategories.add(0, new SubCategoryModel("Select Subcategory", -1));
+        if (isTwoSubCategoryModelArrayListsWithSameValues(subCategories, this.subCategories))
+            return;
+
         this.subCategories.clear();
-        this.subCategories.add(new SubCategoryModel("Select Subcategory", -1));
         this.subCategories.addAll(subCategories);
         subcategorySpinnerAdapter.notifyDataSetChanged();
         selectSubCategorySpinner.setSelection(0);
@@ -279,8 +382,12 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @Override
     public void onDistrictLoaded(ArrayList<LocationSpinnerDataModel> districtList) {
+        districtList.add(0, new LocationSpinnerDataModel("Select Division", -1));
+
+        if (isTwoArrayListsWithSameValues(districtList, this.districtList))
+            return;
+
         this.districtList.clear();
-        this.districtList.add(new LocationSpinnerDataModel("Select District", -1));
         this.districtList.addAll(districtList);
         districtListAdapter = new CustomAreaSpinnerAdapter(getActivity(), this.districtList);
         selectDistrictSpinner.setAdapter(districtListAdapter);
@@ -288,8 +395,13 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @Override
     public void onThanaLoaded(ArrayList<LocationSpinnerDataModel> thanaList) {
+
+        thanaList.add(0, new LocationSpinnerDataModel("Select Area", -1));
+        Log.d(TAG, "Thana is: " + isTwoArrayListsWithSameValues(thanaList, this.thanaList));
+        if (isTwoArrayListsWithSameValues(thanaList, this.thanaList))
+            return;
+
         this.thanaList.clear();
-        this.thanaList.add(new LocationSpinnerDataModel("Select Area", -1));
         this.thanaList.addAll(thanaList);
         thanaListAdapter = new CustomAreaSpinnerAdapter(getActivity(), this.thanaList);
         selectAreaSpinner.setAdapter(thanaListAdapter);
@@ -300,6 +412,17 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     public void onProductImageUploaded(Bitmap bitmap, int imageId) {
         pickImageImageView.setImageBitmap(bitmap);
         this.imageId = imageId;
+
+
+        // hide the keyboard and scroll to bottom
+        scrollView.smoothScrollTo(0, scrollView.getBottom());
+
+
+        if (getActivity().getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+
         Log.d(TAG, "Image Id: " + imageId);
     }
 
@@ -313,7 +436,8 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         advertiserNameEt.setText("");
         advertiserPhoneEt.setText("");
         advertiserEmailEt.setText("");
-        pickImageImageView.setImageResource(R.drawable.plus);
+        imageId = 0;
+        pickImageImageView.setImageResource(R.drawable.ic_add_a_photo);
     }
 
     @Override
@@ -337,6 +461,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (adapterView == selectDistrictSpinner) {
+
             presenter.onDistrictSelected(districtList.get(i).getLocationId());
         }
     }
@@ -363,5 +488,33 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
                 textInputEditText.setError(getString(R.string.empty_input_field_error_message));
             }
         }
+    }
+
+    public boolean isTwoArrayListsWithSameValues(ArrayList<LocationSpinnerDataModel> list1, ArrayList<LocationSpinnerDataModel> list2) {
+        //null checking
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < list1.size(); i++) {
+            if (list1.get(i).getLocationId() != list2.get(i).getLocationId()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isTwoSubCategoryModelArrayListsWithSameValues(ArrayList<SubCategoryModel> list1, ArrayList<SubCategoryModel> list2) {
+        //null checking
+        if (list1.size() != list2.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < list1.size(); i++) {
+            if (list1.get(i).getId() != list2.get(i).getId()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

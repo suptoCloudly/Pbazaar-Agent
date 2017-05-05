@@ -13,7 +13,12 @@ public class PreferenceHelper {
     public static final boolean NETWORK_STATUS_DEFAULT_VALUE = true;
     public static final String CUSTOMER_ID_KEY = "customer_id_key";
     public static final int CUSTOMER_ID_DEFAULT_VALUE = -1;
+    public static final String LATEST_VERSION_CODE_KEY = "latest_version_code_key";
+    public static final int LATEST_VERSION_CODE_DEFAULT_VALUE = 0;
+
     private static final String TAG = PreferenceHelper.class.getSimpleName();
+
+
     private static PreferenceHelper instance;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -45,5 +50,13 @@ public class PreferenceHelper {
 
     public void setCustomerId(int customerId) {
         editor.putInt(CUSTOMER_ID_KEY, customerId).apply();
+    }
+
+    public int getLatestVersionCode() {
+        return preferences.getInt(LATEST_VERSION_CODE_KEY, LATEST_VERSION_CODE_DEFAULT_VALUE);
+    }
+
+    public void setLatestVersionCode(int versionCode) {
+        editor.putInt(LATEST_VERSION_CODE_KEY, versionCode).apply();
     }
 }

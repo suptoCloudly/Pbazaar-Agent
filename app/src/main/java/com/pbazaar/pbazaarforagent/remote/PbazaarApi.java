@@ -25,7 +25,8 @@ public class PbazaarApi {
 
 
     private PbazaarApi() {
-        okHttpClient = new OkHttpClient.Builder();
+        okHttpClient = new OkHttpClient.Builder().connectTimeout(5, TimeUnit.MINUTES)
+                .readTimeout(5, TimeUnit.MINUTES);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(RemoteConstant.BASE_URL)

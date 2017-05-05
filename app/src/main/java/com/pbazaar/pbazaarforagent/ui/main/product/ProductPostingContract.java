@@ -20,6 +20,8 @@ public interface ProductPostingContract {
 
         void showLoadingIndicator(boolean status, String message);
 
+        void showImageLoadingIndicator(boolean status, String message);
+
         void setSubcategories(ArrayList<SubCategoryModel> subCategories);
 
         void onDistrictLoaded(ArrayList<LocationSpinnerDataModel> districtList);
