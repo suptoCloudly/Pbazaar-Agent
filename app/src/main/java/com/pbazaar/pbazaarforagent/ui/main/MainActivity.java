@@ -8,33 +8,53 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
+import com.pbazaar.pbazaarforagent.ui.dialogs.ShareReferralDialog;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
+import com.pbazaar.pbazaarforagent.ui.main.payment.PayHistoryFragment;
 import com.pbazaar.pbazaarforagent.ui.main.product.ProductPostingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ShareReferralDialog.OnShareButtonClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private static final int MY_PERMISSIONS_REQUEST_CODE = 420;
     public static final String ACTION = "no_permission_receiver";
 
+
+    @BindView(R.id.drawer_layout_main_activity)
+    DrawerLayout drawerLayout;
+
+    @BindView(R.id.navigation_view_main_activity)
+    NavigationView navigationView;
+
+    @BindView(R.id.toolbar_main_activity)
+    Toolbar toolbar;
+
     @BindView(R.id.fragment_container_main_activity)
     FrameLayout fragmentContainer;
 
 
     private ProductPostingFragment productPostingFragment;
+    private PayHistoryFragment payHistoryFragment;
 
     private final BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
         @Override
@@ -60,17 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("Post Product");
+        setSupportActionBar(toolbar);
 
-        productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag("AAAA");
-
-        if (productPostingFragment == null) {
-            productPostingFragment = ProductPostingFragment.getInstance();
-            Log.d(TAG, "Fragment created");
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), productPostingFragment, "AAAA").commit();
+        showPostProductFragment();
 
 
         // check for the permission
@@ -78,6 +90,23 @@ public class MainActivity extends AppCompatActivity {
         requestPermission();
 
 
+        // initialize the navigation drawer
+        navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+        };
+        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
 
@@ -117,14 +146,48 @@ public class MainActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
+
     @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "OnPause");
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        drawerLayout.closeDrawers();
+        switch (item.getItemId()) {
+            case R.id.product_posting_nav_menu_item:
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        navigationView.getMenu().getItem(0).setChecked(true);
+                        navigationView.getMenu().getItem(1).setChecked(false);
+                        showPostProductFragment();
+                    }
+                }, 200);
 
+                return true;
+            case R.id.payment_nav_menu_item:
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        navigationView.getMenu().getItem(1).setChecked(true);
+                        navigationView.getMenu().getItem(0).setChecked(false);
+                        showPaymentHistoryFragment();
+                    }
+                }, 200);
+
+                return true;
+            case R.id.share_referral_nav_menu_item:
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        ShareReferralDialog shareReferralDialog = ShareReferralDialog.newInstance(MainActivity.this);
+                        shareReferralDialog.show(getSupportFragmentManager(), ShareReferralDialog.class.getSimpleName());
+                    }
+                }, 200);
+
+                return true;
+            default:
+                return true;
+        }
     }
-
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -147,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!status) {
 
                     // permission was granted, yay! do the
-                    // calendar task you need to do.
+                    // crazy task you need to do.
 
                     Intent intent = new Intent(ACTION);
                     LocalBroadcastManager.getInstance(MainActivity.this).sendBroadcast(intent);
@@ -156,6 +219,33 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    private void showPostProductFragment() {
+        productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag("AAAA");
+        if (productPostingFragment == null) {
+            productPostingFragment = ProductPostingFragment.getInstance();
+            Log.d(TAG, "Fragment created");
+        }
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), productPostingFragment, "AAAA").commit();
+
+        getSupportActionBar().setTitle("post Product");
+
+    }
+
+
+    private void showPaymentHistoryFragment() {
+        payHistoryFragment = (PayHistoryFragment) getSupportFragmentManager().findFragmentByTag(PayHistoryFragment.class.getSimpleName());
+
+        if (payHistoryFragment == null) {
+            payHistoryFragment = PayHistoryFragment.newInstance();
+            Log.d(TAG, "Payment Fragment created");
+        }
+
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), payHistoryFragment, PayHistoryFragment.class.getSimpleName()).commit();
+
+        getSupportActionBar().setTitle("Payment History");
+
     }
 
     private void requestPermission() {
@@ -168,10 +258,10 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
                                 , Manifest.permission.WRITE_EXTERNAL_STORAGE}
                         , MY_PERMISSIONS_REQUEST_CODE);
-                return;
             }
         }
     }
+
 
     private void shareReferralCode() {
         String shareBody = getResources().getString(R.string.share_referral_code_message) + " " + PreferenceHelper.getInstance().getCustomerId();
@@ -184,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void logout() {
         // clear the customerId saved in preference and start login activity
 
@@ -194,5 +283,10 @@ public class MainActivity extends AppCompatActivity {
         Intent logInActivityIntent = new Intent(this, LoginActivity.class);
         startActivity(logInActivityIntent);
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+    }
+
+    @Override
+    public void onShareButtonClicked() {
+        shareReferralCode();
     }
 }

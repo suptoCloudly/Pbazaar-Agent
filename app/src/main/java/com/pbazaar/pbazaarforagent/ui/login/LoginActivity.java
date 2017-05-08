@@ -32,11 +32,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // if a user is logged in then start main activity
-        if (PreferenceHelper.getInstance().getCustomerId() != PreferenceHelper.CUSTOMER_ID_DEFAULT_VALUE) {
-            finish();
-            Intent mainActivityIntent = new Intent(this, MainActivity.class);
-            startActivity(mainActivityIntent);
-        }
+//        if (PreferenceHelper.getInstance().getCustomerId() != PreferenceHelper.CUSTOMER_ID_DEFAULT_VALUE) {
+//            finish();
+//            Intent mainActivityIntent = new Intent(this, MainActivity.class);
+//            startActivity(mainActivityIntent);
+//        }
 
 
         setContentView(R.layout.activity_login);

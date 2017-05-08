@@ -1,5 +1,7 @@
 package com.pbazaar.pbazaarforagent.remote;
 
+import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordRequest;
+import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryRequest;
@@ -60,4 +62,8 @@ public interface PbazaarApiServiceClient {
 
     @POST("GetAgentPaymentHistory")
     Call<PaymentHistoryResponse> getPaymentHistory(@Body PaymentHistoryRequest request);
+
+
+    @POST("ForgetPassword")
+    Call<ForgotPasswordResponse> forgotPassword(@Body ForgotPasswordRequest request);
 }

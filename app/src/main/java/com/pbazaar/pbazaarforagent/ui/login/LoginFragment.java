@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -21,6 +20,7 @@ import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LoginCredentialModel;
 import com.pbazaar.pbazaarforagent.model.UserDataModel;
 import com.pbazaar.pbazaarforagent.ui.dialogs.ShowMessageDialog;
+import com.pbazaar.pbazaarforagent.ui.forgot_password.ForgotPasswordActivity;
 import com.pbazaar.pbazaarforagent.ui.main.MainActivity;
 import com.pbazaar.pbazaarforagent.ui.registration.RegistrationActivity;
 
@@ -47,6 +47,9 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
     @BindView(R.id.tv_sign_up)
     TextView signUpTv;
+
+    @BindView(R.id.tv_forgot_password_login_fragment)
+    TextView forgotPasswordTv;
 
     private ProgressDialog progressDialog;
     private LoginContract.Presenter presenter;
@@ -84,6 +87,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
         logInButton.setOnClickListener(this);
         signUpTv.setOnClickListener(this);
+        forgotPasswordTv.setOnClickListener(this);
 
         // TODO apply some styling for progressbar
         progressDialog = new ProgressDialog(getActivity());
@@ -118,7 +122,6 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     @Override
     public void onClick(View v) {
         if (v == logInButton) {
-
             emptyInputFieldValidation(emailEt, passwordEt);
 
             String email = emailEt.getText().toString();
@@ -128,11 +131,13 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
             presenter.onLoginButtonClicked(loginCredentialModel);
         } else if (v == signUpTv) {
             // start registration activity
-
             getActivity().finish();
 
-
             Intent intent = new Intent(getActivity(), RegistrationActivity.class);
+            startActivity(intent);
+            getActivity().overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
+        } else if (v == forgotPasswordTv) {
+            Intent intent = new Intent(getActivity(), ForgotPasswordActivity.class);
             startActivity(intent);
             getActivity().overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
         }
@@ -169,12 +174,9 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
     @Override
     public void showMessage(String message) {
-//        Snackbar.make(rootCoordinatorLayout, message, Snackbar.LENGTH_SHORT).show();
 
         ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
         showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
-
-
     }
 
 

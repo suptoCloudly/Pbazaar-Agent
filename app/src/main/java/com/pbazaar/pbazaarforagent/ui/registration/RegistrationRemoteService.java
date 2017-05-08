@@ -160,7 +160,7 @@ public class RegistrationRemoteService {
 //                            districtLoadCompletionListener.onDistrictLoadSuccess(spinnerDataModelArrayList);
 //                    } else {
 //                        if (districtLoadCompletionListener != null)
-//                            districtLoadCompletionListener.onDistrictLoadFailed(districtByCountryIdResponse.getMessage());
+//                            districtLoadCompletionListener.onDistrictLoadFailed(districtByCountryIdResponse.getData());
 //                    }
 //                }
 //            }
@@ -314,7 +314,7 @@ public class RegistrationRemoteService {
 //                            thanaLoadCompletionListener.onThanaLoadSuccess(spinnerDataModelArrayList);
 //                    } else {
 //                        if (thanaLoadCompletionListener != null)
-//                            thanaLoadCompletionListener.onThanaloadFailed(getThanaByDistrictIdResponse.getMessage());
+//                            thanaLoadCompletionListener.onThanaloadFailed(getThanaByDistrictIdResponse.getData());
 //                    }
 //                }
 //            }

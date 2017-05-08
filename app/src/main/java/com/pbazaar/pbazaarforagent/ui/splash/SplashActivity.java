@@ -87,7 +87,7 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateDial
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                             }
-                        }, 1000);
+                        }, 100);
 
 
                     }
