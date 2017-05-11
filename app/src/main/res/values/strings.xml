@@ -61,4 +61,5 @@
     <string name="post_history_nav_menu_item">Post History</string>
     <string name="payment_history_nav_menu_item">Payment History</string>
     <string name="post_product_nav_menu_item">Post Product</string>
+    <string name="forgot_password_note">If you have forgotten your password, you can reset it here</string>
 </resources>
