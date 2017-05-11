@@ -2,6 +2,8 @@ package com.pbazaar.pbazaarforagent.ui.main.payment;
 
 import android.util.Log;
 
+import com.pbazaar.pbazaarforagent.R;
+import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.model.PaymentHistoryModel;
 import com.pbazaar.pbazaarforagent.remote.PbazaarApi;
 import com.pbazaar.pbazaarforagent.remote.RemoteConstant;
@@ -47,6 +49,7 @@ public class PaymentHistoryPresenter implements PaymentHistoryContract.Presenter
     @Override
     public void loadPaymentHistory(int agentId) {
 
+        view.showLoadingIndicator(true);
         PaymentHistoryRequest paymentHistoryRequest = new PaymentHistoryRequest(RemoteConstant.PUBLIC_API_TOKEN, agentId, 0);
 
         Call<PaymentHistoryResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().getPaymentHistory(paymentHistoryRequest);
@@ -74,12 +77,19 @@ public class PaymentHistoryPresenter implements PaymentHistoryContract.Presenter
                         Log.d(TAG, paymentHistoryResponse.getMessage());
 
                     }
+                } else {
+                    view.showMessage(AppController.getInstance().getString(R.string.internet_connection_error_message));
                 }
+
+                view.showLoadingIndicator(false);
+
             }
 
             @Override
             public void onFailure(Call<PaymentHistoryResponse> call, Throwable t) {
                 Log.d(TAG, "On failure calling");
+                view.showLoadingIndicator(false);
+                view.showMessage(AppController.getInstance().getString(R.string.internet_connection_error_message));
             }
         });
     }

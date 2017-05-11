@@ -31,13 +31,34 @@
     <string name="not_now">Not Now</string>
     <string name="ok">Ok</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
+
     <string name="forgot_password_text">Forgot password?</string>
     <string name="request_password">Request Password</string>
     <string name="no_email_error_text">No email found</string>
     <string name="share">Share</string>
     <string name="cancel">Cancel</string>
+
+
+    <string name="not_called_yet_post_history">Not called yet : </string>
+    <string name="no_answer_post_history">No answer : </string>
+    <string name="switched_off_post_history">Switched off : </string>
+    <string name="busy_post_history">Busy : </string>
+    <string name="call_later_post_history">Call later : </string>
+    <string name="not_interested_post_history">Not interested : </string>
+    <string name="not_awarded_post_history">Not awarded : </string>
+    <string name="invalid_post_history">Invalid : </string>
+    <string name="rent_out_post_history">Rent out : </string>
+    <string name="sold_out_post_history">Sold out : </string>
+    <string name="finished_post_history">Finished : </string>
+    <string name="already_exists_post_history">Already exists : </string>
+    <string name="total_posts_history">Total posts history : </string>
+    <string name="posts_this_week">Posts This Week : </string>
+
+
+    <string name="referral_code_nav_menu_item">Referral Code</string>
+    <string name="post_history_nav_menu_item">Post History</string>
+    <string name="payment_history_nav_menu_item">Payment History</string>
+    <string name="post_product_nav_menu_item">Post Product</string>
 </resources>

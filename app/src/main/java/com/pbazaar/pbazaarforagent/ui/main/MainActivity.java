@@ -27,6 +27,7 @@ import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.ui.dialogs.ShareReferralDialog;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
 import com.pbazaar.pbazaarforagent.ui.main.payment.PayHistoryFragment;
+import com.pbazaar.pbazaarforagent.ui.main.post_history.PostHistoryFragment;
 import com.pbazaar.pbazaarforagent.ui.main.product.ProductPostingFragment;
 
 import butterknife.BindView;
@@ -34,28 +35,9 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ShareReferralDialog.OnShareButtonClickListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-
-    private static final int MY_PERMISSIONS_REQUEST_CODE = 420;
     public static final String ACTION = "no_permission_receiver";
-
-
-    @BindView(R.id.drawer_layout_main_activity)
-    DrawerLayout drawerLayout;
-
-    @BindView(R.id.navigation_view_main_activity)
-    NavigationView navigationView;
-
-    @BindView(R.id.toolbar_main_activity)
-    Toolbar toolbar;
-
-    @BindView(R.id.fragment_container_main_activity)
-    FrameLayout fragmentContainer;
-
-
-    private ProductPostingFragment productPostingFragment;
-    private PayHistoryFragment payHistoryFragment;
-
+    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final int MY_PERMISSIONS_REQUEST_CODE = 420;
     private final BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -72,6 +54,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             noPermissionDialog.show(MainActivity.this.getSupportFragmentManager(), NoPermissionDialog.class.getSimpleName());
         }
     };
+    @BindView(R.id.drawer_layout_main_activity)
+    DrawerLayout drawerLayout;
+    @BindView(R.id.navigation_view_main_activity)
+    NavigationView navigationView;
+    @BindView(R.id.toolbar_main_activity)
+    Toolbar toolbar;
+    @BindView(R.id.fragment_container_main_activity)
+    FrameLayout fragmentContainer;
+    private ProductPostingFragment productPostingFragment;
+    private PayHistoryFragment payHistoryFragment;
+    private PostHistoryFragment postHistoryFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,25 +143,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawers();
+
+
         switch (item.getItemId()) {
             case R.id.product_posting_nav_menu_item:
+                navigationView.getMenu().getItem(1).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(0).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        navigationView.getMenu().getItem(0).setChecked(true);
-                        navigationView.getMenu().getItem(1).setChecked(false);
                         showPostProductFragment();
                     }
                 }, 200);
 
                 return true;
             case R.id.payment_nav_menu_item:
+                navigationView.getMenu().getItem(0).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(1).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        navigationView.getMenu().getItem(1).setChecked(true);
-                        navigationView.getMenu().getItem(0).setChecked(false);
                         showPaymentHistoryFragment();
+                    }
+                }, 200);
+
+                return true;
+            case R.id.post_history_nav_menu_item:
+                navigationView.getMenu().getItem(0).setChecked(false);
+                navigationView.getMenu().getItem(1).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showPostHistoryFragment();
                     }
                 }, 200);
 
@@ -245,6 +254,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), payHistoryFragment, PayHistoryFragment.class.getSimpleName()).commit();
 
         getSupportActionBar().setTitle("Payment History");
+
+    }
+
+    private void showPostHistoryFragment() {
+        postHistoryFragment = (PostHistoryFragment) getSupportFragmentManager().findFragmentByTag(PostHistoryFragment.class.getSimpleName());
+
+        if (postHistoryFragment == null) {
+            postHistoryFragment = PostHistoryFragment.newInstance();
+            Log.d(TAG, "Payment Fragment created");
+        }
+
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), postHistoryFragment, PostHistoryFragment.class.getSimpleName()).commit();
+
+        getSupportActionBar().setTitle("Post History");
 
     }
 

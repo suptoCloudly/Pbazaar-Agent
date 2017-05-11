@@ -13,6 +13,8 @@ import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
 import com.pbazaar.pbazaarforagent.remote.data.PaymentHistoryRequest;
 import com.pbazaar.pbazaarforagent.remote.data.PaymentHistoryResponse;
+import com.pbazaar.pbazaarforagent.remote.data.PostHistoryRequest;
+import com.pbazaar.pbazaarforagent.remote.data.PostHistoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductRequest;
 import com.pbazaar.pbazaarforagent.remote.data.PostProductResponse;
 import com.pbazaar.pbazaarforagent.remote.data.RegistrationRequest;
@@ -63,7 +65,9 @@ public interface PbazaarApiServiceClient {
     @POST("GetAgentPaymentHistory")
     Call<PaymentHistoryResponse> getPaymentHistory(@Body PaymentHistoryRequest request);
 
-
     @POST("ForgetPassword")
     Call<ForgotPasswordResponse> forgotPassword(@Body ForgotPasswordRequest request);
+
+    @POST("GetProductInfoStatistics")
+    Call<PostHistoryResponse> getPostHistory(@Body PostHistoryRequest request);
 }

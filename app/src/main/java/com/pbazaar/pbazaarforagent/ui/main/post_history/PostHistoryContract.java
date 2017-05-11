@@ -1,26 +1,28 @@
-package com.pbazaar.pbazaarforagent.ui.main.payment;
+package com.pbazaar.pbazaarforagent.ui.main.post_history;
 
-import com.pbazaar.pbazaarforagent.model.PaymentHistoryModel;
+import com.pbazaar.pbazaarforagent.model.PostHistoryModel;
 import com.pbazaar.pbazaarforagent.ui.BasePresenter;
 import com.pbazaar.pbazaarforagent.ui.BaseView;
 
 import java.util.ArrayList;
 
 /**
- * Created by supto on 5/5/17.
+ * Created by Supto on 5/11/2017.
  */
 
-public interface PaymentHistoryContract {
+public interface PostHistoryContract {
 
     interface View extends BaseView<Presenter> {
-        void onPaymentHistoryLoaded(ArrayList<PaymentHistoryModel> paymentHistoryModels);
-
         void showMessage(String message);
 
+
         void showLoadingIndicator(boolean status);
+
+        void showHistoryData(ArrayList<PostHistoryModel> postHistoryModels);
+
     }
 
     interface Presenter extends BasePresenter {
-        void loadPaymentHistory(int agentId);
+        void loadHistory(int collectedById);
     }
 }

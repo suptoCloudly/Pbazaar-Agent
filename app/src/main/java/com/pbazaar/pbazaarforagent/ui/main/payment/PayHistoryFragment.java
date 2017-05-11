@@ -1,6 +1,7 @@
 package com.pbazaar.pbazaarforagent.ui.main.payment;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,6 +37,8 @@ public class PayHistoryFragment extends Fragment implements PaymentHistoryContra
     private PaymentHistoryContract.Presenter presenter;
     private ArrayList<PaymentHistoryModel> paymentHistoryModels = new ArrayList<>();
     private PaymentHistoryRcViewAdapter paymentHistoryRcViewAdapter;
+
+    private ProgressDialog progressDialog;
 
     public PayHistoryFragment() {
     }
@@ -84,6 +87,10 @@ public class PayHistoryFragment extends Fragment implements PaymentHistoryContra
         recyclerView.setAdapter(paymentHistoryRcViewAdapter);
 
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(getString(R.string.network_operation_running_message));
+
         return view;
     }
 
@@ -119,5 +126,13 @@ public class PayHistoryFragment extends Fragment implements PaymentHistoryContra
         ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
         showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
 
+    }
+
+    @Override
+    public void showLoadingIndicator(boolean status) {
+        if (status)
+            progressDialog.show();
+        else
+            progressDialog.dismiss();
     }
 }
