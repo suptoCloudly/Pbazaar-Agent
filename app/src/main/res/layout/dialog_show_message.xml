@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     android:padding="@dimen/standard_margin">
 
@@ -14,11 +15,14 @@
 
 
     <TextView
+        android:padding="@dimen/small_margin"
         android:id="@+id/text_view_confirm_show_message_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/standard_margin"
+        android:background="@drawable/text_button_background"
+        android:clickable="true"
         android:gravity="center"
         android:text="@string/ok"
         android:textColor="@color/colorPrimary"

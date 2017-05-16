@@ -7,4 +7,6 @@
     <color name="colorButtonNormal">#049C3C</color>
     <color name="colorButtonSelected">#026e2a</color>
 
+    <color name="colorTextButtonSelected">#9dc6ac</color>
+    <color name="colorWhite">#ffffff</color>
 </resources>
