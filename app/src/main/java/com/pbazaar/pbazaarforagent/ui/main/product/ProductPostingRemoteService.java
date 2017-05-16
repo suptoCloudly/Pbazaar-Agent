@@ -1,6 +1,7 @@
 package com.pbazaar.pbazaarforagent.ui.main.product;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.pbazaar.pbazaarforagent.R;
@@ -11,6 +12,8 @@ import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
 import com.pbazaar.pbazaarforagent.remote.PbazaarApi;
 import com.pbazaar.pbazaarforagent.remote.RemoteConstant;
+import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoRequest;
+import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryRequest;
@@ -301,13 +304,11 @@ public class ProductPostingRemoteService {
 
     }
 
-    public void uploadProductImage(final Bitmap bitmap, final ProductImageUploadListener imageUploadListener) {
+    public void uploadProductImage(final Bitmap bitmap, @NonNull final ProductImageUploadListener imageUploadListener) {
 
 
         if (!PreferenceHelper.getInstance().getNetworkStatus()) {
-            if (imageUploadListener != null) {
-                imageUploadListener.onUploadFailed(AppController.getInstance().getString(R.string.image_upload_error_message));
-            }
+            imageUploadListener.onUploadFailed(AppController.getInstance().getString(R.string.image_upload_error_message));
         }
 
         File imageFile = getFileFromBitmap(bitmap);
@@ -331,20 +332,14 @@ public class ProductPostingRemoteService {
                         Log.d(TAG, "Success: " + insertImageResponse.getData().getImageUrl());
                         Log.d(TAG, "Success: " + insertImageResponse.getData().getId());
 
-                        if (imageUploadListener != null) {
-                            imageUploadListener.onUploadSuccess(bitmap, insertImageResponse.getData().getId());
-                        }
+                        imageUploadListener.onUploadSuccess(bitmap, insertImageResponse.getData().getId());
                     } else {
                         Log.d(TAG, "Success: " + insertImageResponse.getMesaage());
-                        if (imageUploadListener != null) {
-                            imageUploadListener.onUploadFailed(insertImageResponse.getMesaage());
-                        }
+                        imageUploadListener.onUploadFailed(insertImageResponse.getMesaage());
                     }
                 } else {
                     Log.d(TAG, "upload error");
-                    if (imageUploadListener != null) {
-                        imageUploadListener.onUploadFailed(AppController.getInstance().getString(R.string.image_upload_error_message));
-                    }
+                    imageUploadListener.onUploadFailed(AppController.getInstance().getString(R.string.image_upload_error_message));
                 }
             }
 
@@ -352,44 +347,92 @@ public class ProductPostingRemoteService {
             public void onFailure(Call<InsertImageResponse> call, Throwable t) {
                 Log.d(TAG, "upload fail: " + t.getMessage());
                 t.printStackTrace();
-                if (imageUploadListener != null) {
-                    imageUploadListener.onUploadFailed(AppController.getInstance().getString(R.string.image_upload_error_message));
-                }
+                imageUploadListener.onUploadFailed(AppController.getInstance().getString(R.string.image_upload_error_message));
             }
         });
     }
 
 
-    public void postProduct(PostProductModel model, final ProductPostCompletionListener completionListener) {
+    public void postProduct(final PostProductModel model, @NonNull final ProductPostCompletionListener completionListener) {
 
         if (!PreferenceHelper.getInstance().getNetworkStatus()) {
-            if (completionListener != null)
-                completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+            completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
             return;
         }
 
 
         if (!checkEmptyString(model.getAdvertiserPhone())) {
-            if (completionListener != null)
-                completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
+            completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
             return;
         }
 
-        if(model.getPictureId() == 0){
-            if (completionListener != null)
-                completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_image_error_message));
+        if (model.getPictureId() == 0) {
+            completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_image_error_message));
             return;
         }
 
 
         if (model.getCategoryId() == -1 || model.getSubCategoryId() == -1 || model.getThanaAreaId() == -1 || model.getCollectedId() == PreferenceHelper.CUSTOMER_ID_DEFAULT_VALUE) {
-            if (completionListener != null)
-                completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
+            completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
             return;
         }
 
 
-        PostProductRequest request = new PostProductRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getCategoryId(), model.getSubCategoryId(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getAdvertiserEmail(), model.getBlockSector(), model.getHouseNo(), model.getRoadNo(), model.getThanaAreaId(), model.getPictureId(), model.getCollectedId());
+        CheckDuplicateNoRequest checkDuplicateNoRequest = new CheckDuplicateNoRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getAdvertiserPhone(), model.getAdvertiserPhone2(), model.getAdvertiserPhone3());
+
+        Call<CheckDuplicateNoResponse> checkDuplicateNoCall = PbazaarApi.getInstance().getPbazaarApiServiceClient().checkForDuplicateNo(checkDuplicateNoRequest);
+        checkDuplicateNoCall.enqueue(new Callback<CheckDuplicateNoResponse>() {
+            @Override
+            public void onResponse(Call<CheckDuplicateNoResponse> call, Response<CheckDuplicateNoResponse> duplicateNoResponse) {
+                if (duplicateNoResponse.isSuccessful()) {
+                    CheckDuplicateNoResponse checkDuplicateNoResponse = duplicateNoResponse.body();
+
+                    if (checkDuplicateNoResponse.getSuccess() == 1) {
+
+
+                        Log.d(TAG, checkDuplicateNoResponse.getData().getAdvertiserPhone1Duplicate() + "");
+                        Log.d(TAG, checkDuplicateNoResponse.getData().getAdvertiserPhone2Duplicate() + "");
+                        Log.d(TAG, checkDuplicateNoResponse.getData().getAdvertiserPhone3Duplicate() + "");
+
+
+                        if (checkDuplicateNoResponse.getData().getAdvertiserPhone1Duplicate()) {
+                            completionListener.onPostFailed("Phone no already exists");
+                            return;
+                        }
+                        if (checkDuplicateNoResponse.getData().getAdvertiserPhone2Duplicate()) {
+                            completionListener.onPostFailed("Second Phone no already exists");
+                            return;
+                        }
+                        if (checkDuplicateNoResponse.getData().getAdvertiserPhone3Duplicate()) {
+                            completionListener.onPostFailed("Third Phone no already exists");
+                            return;
+                        }
+
+
+                        post(model, completionListener);
+
+
+                    } else {
+                        completionListener.onPostFailed(checkDuplicateNoResponse.getMessage());
+                    }
+                } else {
+                    completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<CheckDuplicateNoResponse> call, Throwable t) {
+                completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+            }
+        });
+
+
+    }
+
+    private void post(PostProductModel model, @NonNull final ProductPostCompletionListener completionListener) {
+        PostProductRequest request = new PostProductRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getCategoryId(), model.getSubCategoryId(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getAdvertiserPhone2(), model.getAdvertiserPhone3(), model.getAdvertiserEmail(), model.getBlockSector(), model.getHouseNo(), model.getRoadNo(), model.getThanaAreaId(), model.getPictureId(), model.getCollectedId());
         Call<PostProductResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().postProduct(request);
         call.enqueue(new Callback<PostProductResponse>() {
             @Override
@@ -398,28 +441,19 @@ public class ProductPostingRemoteService {
 
                     PostProductResponse postProductResponse = response.body();
                     if (postProductResponse.getSuccess() == 1) {
-                        if (completionListener != null)
-                            completionListener.onPostSuccess(postProductResponse.getData());
+                        completionListener.onPostSuccess(postProductResponse.getData());
                     } else {
-                        if (completionListener != null)
-                            completionListener.onPostFailed(postProductResponse.getMessage());
+                        completionListener.onPostFailed(postProductResponse.getMessage());
                     }
 
-
                 } else {
-                    Log.d(TAG, "Image upload unsuccess");
-                    if (completionListener != null)
-                        completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
-
+                    completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
                 }
             }
 
             @Override
             public void onFailure(Call<PostProductResponse> call, Throwable t) {
-
-                Log.d(TAG, "Image upload error: " + t.getMessage());
-                if (completionListener != null)
-                    completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
+                completionListener.onPostFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
             }
         });
     }

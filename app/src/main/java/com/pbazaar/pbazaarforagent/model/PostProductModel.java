@@ -10,6 +10,8 @@ public class PostProductModel {
     private int subCategoryId;
     private String advertiserName;
     private String advertiserPhone;
+    private String advertiserPhone2;
+    private String advertiserPhone3;
     private String advertiserEmail;
     private String blockSector;
     private String houseNo;
@@ -18,11 +20,13 @@ public class PostProductModel {
     private int pictureId;
     private int collectedId;
 
-    public PostProductModel(int categoryId, int subCategoryId, String advertiserName, String advertiserPhone, String advertiserEmail, String blockSector, String houseNo, String roadNo, int thanaAreaId, int pictureId, int collectedId) {
+    public PostProductModel(int categoryId, int subCategoryId, String advertiserName, String advertiserPhone, String advertiserPhone2, String advertiserPhone3, String advertiserEmail, String blockSector, String houseNo, String roadNo, int thanaAreaId, int pictureId, int collectedId) {
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
         this.advertiserName = advertiserName;
         this.advertiserPhone = advertiserPhone;
+        this.advertiserPhone2 = advertiserPhone2;
+        this.advertiserPhone3 = advertiserPhone3;
         this.advertiserEmail = advertiserEmail;
         this.blockSector = blockSector;
         this.houseNo = houseNo;
@@ -118,5 +122,21 @@ public class PostProductModel {
 
     public void setCollectedId(int collectedId) {
         this.collectedId = collectedId;
+    }
+
+    public String getAdvertiserPhone2() {
+        return advertiserPhone2;
+    }
+
+    public void setAdvertiserPhone2(String advertiserPhone2) {
+        this.advertiserPhone2 = advertiserPhone2;
+    }
+
+    public String getAdvertiserPhone3() {
+        return advertiserPhone3;
+    }
+
+    public void setAdvertiserPhone3(String advertiserPhone3) {
+        this.advertiserPhone3 = advertiserPhone3;
     }
 }

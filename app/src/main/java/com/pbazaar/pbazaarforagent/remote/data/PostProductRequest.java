@@ -20,6 +20,12 @@ public class PostProductRequest extends BaseRequest {
     @SerializedName("advertiserPhone")
     @Expose
     private String advertiserPhone;
+    @SerializedName("advertiserPhone2")
+    @Expose
+    private String advertiserPhone2;
+    @SerializedName("advertiserPhone3")
+    @Expose
+    private String advertiserPhone3;
     @SerializedName("advertiserEmail")
     @Expose
     private String advertiserEmail;
@@ -42,13 +48,14 @@ public class PostProductRequest extends BaseRequest {
     @Expose
     private Integer collectedById;
 
-
-    public PostProductRequest(String apiToken, Integer categoryId, Integer subCategoryId, String advertiserName, String advertiserPhone, String advertiserEmail, String sectorBlock, String houseNo, String roadNo, Integer thanaAreaId, Integer pictureId, Integer collectedById) {
+    public PostProductRequest(String apiToken, Integer categoryId, Integer subCategoryId, String advertiserName, String advertiserPhone, String advertiserPhone2, String advertiserPhone3, String advertiserEmail, String sectorBlock, String houseNo, String roadNo, Integer thanaAreaId, Integer pictureId, Integer collectedById) {
         super(apiToken);
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
         this.advertiserName = advertiserName;
         this.advertiserPhone = advertiserPhone;
+        this.advertiserPhone2 = advertiserPhone2;
+        this.advertiserPhone3 = advertiserPhone3;
         this.advertiserEmail = advertiserEmail;
         this.sectorBlock = sectorBlock;
         this.houseNo = houseNo;
@@ -88,6 +95,22 @@ public class PostProductRequest extends BaseRequest {
 
     public void setAdvertiserPhone(String advertiserPhone) {
         this.advertiserPhone = advertiserPhone;
+    }
+
+    public String getAdvertiserPhone2() {
+        return advertiserPhone2;
+    }
+
+    public void setAdvertiserPhone2(String advertiserPhone2) {
+        this.advertiserPhone2 = advertiserPhone2;
+    }
+
+    public String getAdvertiserPhone3() {
+        return advertiserPhone3;
+    }
+
+    public void setAdvertiserPhone3(String advertiserPhone3) {
+        this.advertiserPhone3 = advertiserPhone3;
     }
 
     public String getAdvertiserEmail() {
@@ -145,5 +168,4 @@ public class PostProductRequest extends BaseRequest {
     public void setCollectedById(Integer collectedById) {
         this.collectedById = collectedById;
     }
-
 }

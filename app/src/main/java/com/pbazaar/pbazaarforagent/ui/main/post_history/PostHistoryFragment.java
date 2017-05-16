@@ -29,79 +29,43 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
 
 
     // ui fields for this week
-    @BindView(R.id.tv_this_week_not_called_yet_post_history)
-    TextView thisWeekNotCalledYet;
+    @BindView(R.id.tv_this_week_total_post_post_history)
+    TextView thisWeekTotalPostTV;
 
-    @BindView(R.id.tv_this_week_no_answer_post_history)
-    TextView thisWeekNoAnswerTv;
-
-    @BindView(R.id.tv_this_switched_off_post_history)
-    TextView thisWeekSwitchedOffTv;
-
-    @BindView(R.id.tv_this_week_busy_post_history)
-    TextView thisWeekBusyTv;
-
-    @BindView(R.id.tv_this_week_call_later_post_history)
-    TextView thisWeekCallLaterTv;
-
-    @BindView(R.id.tv_this_week_not_interested_post_history)
-    TextView thisWeekNotinterestedTv;
-
-    @BindView(R.id.tv_this_week_not_awarded_post_history)
-    TextView thisWeekNotAwardedTv;
-
-    @BindView(R.id.tv_this_week_invalid_post_history)
-    TextView thisWeekInvalidPostTv;
+    @BindView(R.id.tv_this_invalid_post_history)
+    TextView thisWeekInvalidTv;
 
     @BindView(R.id.tv_this_week_rent_out_post_history)
-    TextView thisWeekRentOutTv;
+    TextView thisWeekAlreadyRentOutTv;
 
     @BindView(R.id.tv_this_week_sold_out_post_history)
-    TextView thisWeekSoldOutTv;
+    TextView thisWeekAlreadySoldOutTv;
 
-    @BindView(R.id.tv_this_week_finished_post_history)
-    TextView thisWeekFinishedPostTv;
+    @BindView(R.id.tv_this_week_successful_post_history)
+    TextView thisWeekSuccessfulTv;
 
-    @BindView(R.id.tv_this_week_already_exists_post_history)
-    TextView thisWeekAlreadyExistTv;
+    @BindView(R.id.tv_this_week_check_in_progress_post_history)
+    TextView thisWeekCheckInProgressTv;
 
 
     // ui field for total
-    @BindView(R.id.tv_total_not_called_yet_post_history)
-    TextView totalNotCalledYet;
-
-    @BindView(R.id.tv_total_no_answer_post_history)
-    TextView totalNoAnswerTv;
-
-    @BindView(R.id.tv_total_switched_off_post_history)
-    TextView totalSwitchedOffTv;
-
-    @BindView(R.id.tv_total_busy_post_history)
-    TextView totalBusyTv;
-
-    @BindView(R.id.tv_total_call_later_post_history)
-    TextView totalCallLaterTv;
-
-    @BindView(R.id.tv_total_not_interested_post_history)
-    TextView totalNotinterestedTv;
-
-    @BindView(R.id.tv_total_not_awarded_post_history)
-    TextView totalNotAwardedTv;
+    @BindView(R.id.tv_total_total_post_post_history)
+    TextView totalTotalPostTV;
 
     @BindView(R.id.tv_total_invalid_post_history)
-    TextView totalInvalidPostTv;
+    TextView totalInvalidTv;
 
     @BindView(R.id.tv_total_rent_out_post_history)
-    TextView totalRentOutTv;
+    TextView totalAlreadyRentOutTv;
 
     @BindView(R.id.tv_total_sold_out_post_history)
-    TextView totalSoldOutTv;
+    TextView totalAlreadySoldOutTv;
 
-    @BindView(R.id.tv_total_finished_post_history)
-    TextView totalFinishedPostTv;
+    @BindView(R.id.tv_total_successful_post_history)
+    TextView totalSuccessfulTv;
 
-    @BindView(R.id.tv_total_already_exists_post_history)
-    TextView totalAlreadyExistTv;
+    @BindView(R.id.tv_total_check_in_progress_post_history)
+    TextView totalCheckInProgressTv;
 
     private ArrayList<PostHistoryModel> postHistoryList = new ArrayList<>();
     private PostHistoryContract.Presenter presenter;
@@ -193,69 +157,138 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
 
     private void setUiWithHistoryData(ArrayList<PostHistoryModel> postHistoryModels) {
 
+        int totalThisWeek = 0;
+        int invalidThisWeek = 0;
+        int alreadyRentOutThisWeek = 0;
+        int alreadySoldOutThisWeek = 0;
+        int successfulThisWeek = 0;
+        int checkInProgressThisWeek = 0;
+        int finishedThisWeek = 0;
+
+
+        int totalTotal = 0;
+        int invalidTotal = 0;
+        int alreadyRentOutTotal = 0;
+        int alreadySoldOutTotal = 0;
+        int successfulTotal = 0;
+        int checkInProgressTotal = 0;
+        int finishedTotal = 0;
+
+
         for (PostHistoryModel postHistoryModel : postHistoryModels) {
             switch (postHistoryModel.getProductInfoStatus()) {
 
                 case NotCalledYet:
-                    thisWeekNotCalledYet.setText(""+postHistoryModel.getCountThisWeek());
-                    totalNotCalledYet.setText(""+postHistoryModel.getCountAllTime());
+
+                    checkInProgressThisWeek = checkInProgressThisWeek + postHistoryModel.getCountThisWeek();
+                    checkInProgressTotal = checkInProgressTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case NoAnswer:
-                    thisWeekNoAnswerTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalNoAnswerTv.setText(""+postHistoryModel.getCountAllTime());
+
+                    invalidThisWeek = invalidThisWeek + postHistoryModel.getCountThisWeek();
+                    invalidTotal = invalidTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case SwitchedOff:
-                    thisWeekSwitchedOffTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalSwitchedOffTv.setText(""+postHistoryModel.getCountAllTime());
+
+                    invalidThisWeek = invalidThisWeek + postHistoryModel.getCountThisWeek();
+                    invalidTotal = invalidTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case Busy:
-                    thisWeekBusyTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalBusyTv.setText(""+postHistoryModel.getCountAllTime());
+
+
+                    invalidThisWeek = invalidThisWeek + postHistoryModel.getCountThisWeek();
+                    invalidTotal = invalidTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case CallLater:
-                    thisWeekCallLaterTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalCallLaterTv.setText(""+postHistoryModel.getCountAllTime());
+
+                    invalidThisWeek = invalidThisWeek + postHistoryModel.getCountThisWeek();
+                    invalidTotal = invalidTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case NotInterested:
-                    thisWeekNotinterestedTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalNotinterestedTv.setText(""+postHistoryModel.getCountAllTime());
+
+
+                    successfulThisWeek = successfulThisWeek + postHistoryModel.getCountThisWeek();
+                    successfulTotal = successfulTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case NotAwared:
-                    thisWeekNotAwardedTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalNotAwardedTv.setText(""+postHistoryModel.getCountAllTime());
+
+
+                    successfulThisWeek = successfulThisWeek + postHistoryModel.getCountThisWeek();
+                    successfulTotal = successfulTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case Invalid:
-                    thisWeekInvalidPostTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalInvalidPostTv.setText(""+postHistoryModel.getCountAllTime());
+
+
+                    invalidThisWeek = invalidThisWeek + postHistoryModel.getCountThisWeek();
+                    invalidTotal = invalidTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case RentOut:
-                    thisWeekRentOutTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalRentOutTv.setText(""+postHistoryModel.getCountAllTime());
+
+                    alreadyRentOutThisWeek = alreadyRentOutThisWeek + postHistoryModel.getCountThisWeek();
+                    alreadyRentOutTotal = alreadyRentOutTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case SoldOut:
-                    thisWeekSoldOutTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalSoldOutTv.setText(""+postHistoryModel.getCountAllTime());
+
+
+                    alreadySoldOutThisWeek = alreadySoldOutThisWeek + postHistoryModel.getCountThisWeek();
+                    alreadySoldOutTotal = alreadySoldOutTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case Finished:
-                    thisWeekFinishedPostTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalFinishedPostTv.setText(""+postHistoryModel.getCountAllTime());
+
+                    finishedThisWeek = finishedThisWeek + postHistoryModel.getCountThisWeek();
+                    finishedTotal = finishedTotal + postHistoryModel.getCountAllTime();
+
                     break;
 
                 case AlreadyExists:
-                    thisWeekAlreadyExistTv.setText(""+postHistoryModel.getCountThisWeek());
-                    totalAlreadyExistTv.setText(""+postHistoryModel.getCountAllTime());
+
+
+                    invalidThisWeek = invalidThisWeek + postHistoryModel.getCountThisWeek();
+                    invalidTotal = invalidTotal + postHistoryModel.getCountAllTime();
+
                     break;
             }
+
+            totalThisWeek = invalidThisWeek + alreadyRentOutThisWeek + alreadySoldOutThisWeek +
+                    successfulThisWeek + checkInProgressThisWeek + finishedThisWeek;
+
+            totalTotal = invalidTotal + alreadyRentOutTotal + alreadySoldOutTotal +
+                    successfulTotal + checkInProgressTotal + finishedTotal;
+
+            thisWeekTotalPostTV.setText(String.valueOf(totalThisWeek));
+            thisWeekInvalidTv.setText(String.valueOf(invalidThisWeek));
+            thisWeekAlreadyRentOutTv.setText(String.valueOf(alreadyRentOutThisWeek));
+            thisWeekAlreadySoldOutTv.setText(String.valueOf(alreadySoldOutThisWeek));
+            thisWeekSuccessfulTv.setText(String.valueOf(successfulThisWeek));
+            thisWeekCheckInProgressTv.setText(String.valueOf(checkInProgressThisWeek));
+
+
+            totalTotalPostTV.setText(String.valueOf(totalTotal));
+            totalInvalidTv.setText(String.valueOf(invalidTotal));
+            totalAlreadyRentOutTv.setText(String.valueOf(alreadyRentOutTotal));
+            totalAlreadySoldOutTv.setText(String.valueOf(alreadySoldOutTotal));
+            totalSuccessfulTv.setText(String.valueOf(successfulTotal));
+            totalCheckInProgressTv.setText(String.valueOf(checkInProgressTotal));
         }
     }
 }

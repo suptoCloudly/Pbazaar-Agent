@@ -94,6 +94,12 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     @BindView(R.id.et_advertiser_phone_product_posting_fragment)
     TextInputEditText advertiserPhoneEt;
 
+    @BindView(R.id.et_advertiser_phone_second_product_posting_fragment)
+    TextInputEditText advertiserPhone2Et;
+
+    @BindView(R.id.et_advertiser_phone_third_product_posting_fragment)
+    TextInputEditText advertiserPhone3Et;
+
     @BindView(R.id.et_advertiser_email_product_posting_fragment)
     TextInputEditText advertiserEmailEt;
 
@@ -127,8 +133,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setRetainInstance(true);
-
-        Log.d(TAG, "On create");
     }
 
     @Override
@@ -136,8 +140,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_product_posting, container, false);
         ButterKnife.bind(this, view);
-
-        Log.d(TAG, "On create view");
 
         pickImageImageView.setOnClickListener(this);
         postProductButton.setOnClickListener(this);
@@ -189,6 +191,8 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         savedInstanceState.putString("roadNo", roadNoEt.getText().toString());
         savedInstanceState.putString("advertiserName", advertiserNameEt.getText().toString());
         savedInstanceState.putString("advertiserPhone", advertiserPhoneEt.getText().toString());
+        savedInstanceState.putString("advertiserPhone2", advertiserPhone2Et.getText().toString());
+        savedInstanceState.putString("advertiserPhone3", advertiserPhone3Et.getText().toString());
         savedInstanceState.putString("advertiserEmail", advertiserEmailEt.getText().toString());
 
 
@@ -238,30 +242,11 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             roadNoEt.setText(savedInstanceState.getString("roadNo"));
             advertiserNameEt.setText(savedInstanceState.getString("advertiserName"));
             advertiserPhoneEt.setText(savedInstanceState.getString("advertiserPhone"));
+            advertiserPhone2Et.setText(savedInstanceState.getString("advertiserPhone2"));
+            advertiserPhone3Et.setText(savedInstanceState.getString("advertiserPhone3"));
             advertiserEmailEt.setText(savedInstanceState.getString("advertiserEmail"));
 
         }
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, "OnPause");
-
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "OnDestroy");
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.d(TAG, "OnDetach");
     }
 
 
@@ -280,32 +265,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
             postProduct();
         }
-    }
-
-    private void postProduct() {
-        // provide validation
-        emptyInputFieldValidation(advertiserPhoneEt);
-
-
-        int categoryId = (rentRadioButton.isChecked() ? CATEGORY_RENT : CATEGORY_SELL);
-        int subCategoryId = subCategories.get(selectSubCategorySpinner.getSelectedItemPosition()).getId();
-        int areaId = thanaList.get(selectAreaSpinner.getSelectedItemPosition()).getLocationId();
-        int collectedById = PreferenceHelper.getInstance().getCustomerId();
-        int imageId = this.imageId;
-
-        String blockSector = blockSectorEt.getText().toString();
-        String houseNo = houseNoEt.getText().toString();
-        String roadNo = roadNoEt.getText().toString();
-        String advertiserName = advertiserNameEt.getText().toString();
-        String advertiserPhone = advertiserPhoneEt.getText().toString();
-        String advertiserEmail = advertiserEmailEt.getText().toString();
-
-
-        PostProductModel postProductModel = new PostProductModel(categoryId, subCategoryId, advertiserName, advertiserPhone, advertiserEmail, blockSector, houseNo, roadNo, areaId, imageId, collectedById);
-        presenter.onPostProductClicked(postProductModel);
-
-        Log.d(TAG, " Area: " + areaId + " cat: " + categoryId + " subc: " + subCategoryId + " coll: " + collectedById);
-
     }
 
     @Override
@@ -331,8 +290,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @Override
     public void showMessage(String message) {
-//        Snackbar.make(rootLayout, message, Snackbar.LENGTH_SHORT).show();
-
         ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
         showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
 
@@ -366,7 +323,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             progressDialog.dismiss();
     }
 
-
     @Override
     public void setSubcategories(ArrayList<SubCategoryModel> subCategories) {
 
@@ -379,6 +335,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         subcategorySpinnerAdapter.notifyDataSetChanged();
         selectSubCategorySpinner.setSelection(0);
     }
+
 
     @Override
     public void onDistrictLoaded(ArrayList<LocationSpinnerDataModel> districtList) {
@@ -397,7 +354,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     public void onThanaLoaded(ArrayList<LocationSpinnerDataModel> thanaList) {
 
         thanaList.add(0, new LocationSpinnerDataModel("Select Area", -1));
-        Log.d(TAG, "Thana is: " + isTwoArrayListsWithSameValues(thanaList, this.thanaList));
         if (isTwoArrayListsWithSameValues(thanaList, this.thanaList))
             return;
 
@@ -417,13 +373,10 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         // hide the keyboard and scroll to bottom
         scrollView.smoothScrollTo(0, scrollView.getBottom());
 
-
         if (getActivity().getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
             inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
-
-        Log.d(TAG, "Image Id: " + imageId);
     }
 
     @Override
@@ -435,6 +388,8 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         roadNoEt.setText("");
         advertiserNameEt.setText("");
         advertiserPhoneEt.setText("");
+        advertiserPhone2Et.setText("");
+        advertiserPhone3Et.setText("");
         advertiserEmailEt.setText("");
         imageId = 0;
         pickImageImageView.setImageResource(R.drawable.ic_add_a_photo);
@@ -457,7 +412,6 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         postSuccessDialog.show(getActivity().getSupportFragmentManager(), PostSuccessDialog.class.getSimpleName());
     }
 
-
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         if (adapterView == selectDistrictSpinner) {
@@ -465,6 +419,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             presenter.onDistrictSelected(districtList.get(i).getLocationId());
         }
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -478,6 +433,31 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         } else if (checkedId == R.id.radio_button_sell_category_product_post) {
             presenter.getSubcategories(CATEGORY_SELL);
         }
+    }
+
+    private void postProduct() {
+        // provide validation
+        emptyInputFieldValidation(advertiserPhoneEt);
+
+
+        int categoryId = (rentRadioButton.isChecked() ? CATEGORY_RENT : CATEGORY_SELL);
+        int subCategoryId = subCategories.get(selectSubCategorySpinner.getSelectedItemPosition()).getId();
+        int areaId = thanaList.get(selectAreaSpinner.getSelectedItemPosition()).getLocationId();
+        int collectedById = PreferenceHelper.getInstance().getCustomerId();
+        int imageId = this.imageId;
+
+        String blockSector = blockSectorEt.getText().toString();
+        String houseNo = houseNoEt.getText().toString();
+        String roadNo = roadNoEt.getText().toString();
+        String advertiserName = advertiserNameEt.getText().toString();
+        String advertiserPhone = advertiserPhoneEt.getText().toString();
+        String advertiserPhone2 = advertiserPhone2Et.getText().toString();
+        String advertiserPhone3 = advertiserPhone3Et.getText().toString();
+        String advertiserEmail = advertiserEmailEt.getText().toString();
+
+
+        PostProductModel postProductModel = new PostProductModel(categoryId, subCategoryId, advertiserName, advertiserPhone, advertiserPhone2, advertiserPhone3, advertiserEmail, blockSector, houseNo, roadNo, areaId, imageId, collectedById);
+        presenter.onPostProductClicked(postProductModel);
     }
 
     private void emptyInputFieldValidation(TextInputEditText... textInputEditTextGroups) {

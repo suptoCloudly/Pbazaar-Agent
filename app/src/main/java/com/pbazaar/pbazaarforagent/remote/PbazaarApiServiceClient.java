@@ -1,5 +1,7 @@
 package com.pbazaar.pbazaarforagent.remote;
 
+import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoRequest;
+import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoResponse;
 import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordRequest;
 import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
@@ -70,4 +72,7 @@ public interface PbazaarApiServiceClient {
 
     @POST("GetProductInfoStatistics")
     Call<PostHistoryResponse> getPostHistory(@Body PostHistoryRequest request);
+
+    @POST("CheckDuplicateNumber")
+    Call<CheckDuplicateNoResponse> checkForDuplicateNo(@Body CheckDuplicateNoRequest request);
 }

@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -30,7 +28,7 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateDial
     public static final String DEVELOPER_STATUS_PATH = "developerStatus";
     public static final String DEVELOPER_HAPPY = "happy";
 
-    private DatabaseReference databaseReference;
+
     private ValueEventListener mListener;
 
     @Override
@@ -38,7 +36,7 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateDial
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+
         FirebaseMessaging.getInstance().subscribeToTopic(PushConstants.TOPIC_NAME);
 
 
@@ -47,69 +45,43 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateDial
         }
 
 
-        mListener = databaseReference.child(DEVELOPER_STATUS_PATH).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+        int versionCode = getCurrentVersionCode();
+        if (versionCode < PreferenceHelper.getInstance().getLatestVersionCode()) {
+
+            ForceUpdateDialog forceUpdateDialog = ForceUpdateDialog.newInstance(SplashActivity.this);
+            forceUpdateDialog.show(getSupportFragmentManager(), ForceUpdateDialog.class.getSimpleName());
+
+        } else {
 
 
-                String devStatus = dataSnapshot.getValue(String.class);
-                if (devStatus.contentEquals(DEVELOPER_HAPPY)) {
+            final Intent intent;
 
-                    int versionCode = getCurrentVersionCode();
-                    if (versionCode < PreferenceHelper.getInstance().getLatestVersionCode()) {
-
-                        ForceUpdateDialog forceUpdateDialog = ForceUpdateDialog.newInstance(SplashActivity.this);
-                        forceUpdateDialog.show(getSupportFragmentManager(), ForceUpdateDialog.class.getSimpleName());
-
-                    } else {
-
-
-                        Log.d(TAG, devStatus);
-                        final Intent intent;
-
-                        if (PreferenceHelper.getInstance().getCustomerId() == PreferenceHelper.CUSTOMER_ID_DEFAULT_VALUE) {
-                            Log.d(TAG, "Not Logged In");
-                            intent = new Intent(SplashActivity.this, LoginActivity.class);
-                        } else {
-                            Log.d(TAG, "Logged In");
-                            intent = new Intent(SplashActivity.this, MainActivity.class);
-                        }
+            if (PreferenceHelper.getInstance().getCustomerId() == PreferenceHelper.CUSTOMER_ID_DEFAULT_VALUE) {
+                Log.d(TAG, "Not Logged In");
+                intent = new Intent(SplashActivity.this, LoginActivity.class);
+            } else {
+                Log.d(TAG, "Logged In");
+                intent = new Intent(SplashActivity.this, MainActivity.class);
+            }
 
 
-                        Log.d(TAG, "Id: " + PreferenceHelper.getInstance().getCustomerId());
+            Log.d(TAG, "Id: " + PreferenceHelper.getInstance().getCustomerId());
 
 
-                        Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                finish();
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
-                            }
-                        }, 100);
-
-
-                    }
-                } else {
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
                     finish();
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.push_right_in, R.anim.push_right_out);
                 }
-            }
+            }, 2000);
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "FB error");
-            }
-        });
+
+        }
     }
 
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mListener != null)
-            databaseReference.child(DEVELOPER_STATUS_PATH).removeEventListener(mListener);
-    }
 
 
     @Override
