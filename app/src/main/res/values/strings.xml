@@ -44,6 +44,7 @@
     <string name="successful_post_history">Successful:</string>
     <string name="check_in_progress_post_history">Check In Progress:</string>
     <string name="invalid_post_history">Invalid : </string>
+    <string name="already_exists_post_history">Already Exists:</string>
     <string name="rent_out_post_history">Rent out : </string>
     <string name="sold_out_post_history">Sold out : </string>
     <string name="total_posts_history">Total posts history : </string>
