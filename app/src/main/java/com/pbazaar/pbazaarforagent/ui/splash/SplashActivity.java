@@ -49,6 +49,7 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateDial
         if (versionCode < PreferenceHelper.getInstance().getLatestVersionCode()) {
 
             ForceUpdateDialog forceUpdateDialog = ForceUpdateDialog.newInstance(SplashActivity.this);
+            forceUpdateDialog.setCancelable(false);
             forceUpdateDialog.show(getSupportFragmentManager(), ForceUpdateDialog.class.getSimpleName());
 
         } else {
