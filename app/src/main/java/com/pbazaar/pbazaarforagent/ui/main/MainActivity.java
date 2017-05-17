@@ -158,22 +158,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }, 200);
 
                 return true;
-            case R.id.payment_nav_menu_item:
+            case R.id.post_history_nav_menu_item:
                 navigationView.getMenu().getItem(0).setChecked(false);
                 navigationView.getMenu().getItem(2).setChecked(false);
                 navigationView.getMenu().getItem(1).setChecked(true);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showPaymentHistoryFragment();
-                    }
-                }, 200);
-
-                return true;
-            case R.id.post_history_nav_menu_item:
-                navigationView.getMenu().getItem(0).setChecked(false);
-                navigationView.getMenu().getItem(1).setChecked(false);
-                navigationView.getMenu().getItem(2).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -182,6 +170,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }, 200);
 
                 return true;
+            case R.id.payment_nav_menu_item:
+            navigationView.getMenu().getItem(0).setChecked(false);
+            navigationView.getMenu().getItem(1).setChecked(false);
+            navigationView.getMenu().getItem(2).setChecked(true);
+            new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showPaymentHistoryFragment();
+                    }
+                }, 200);
+
+            return true;
             case R.id.share_referral_nav_menu_item:
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), productPostingFragment, "AAAA").commit();
 
-        getSupportActionBar().setTitle("post Product");
+        getSupportActionBar().setTitle(getString(R.string.post_product_nav_menu_item));
 
     }
 
@@ -253,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), payHistoryFragment, PayHistoryFragment.class.getSimpleName()).commit();
 
-        getSupportActionBar().setTitle("Payment History");
+        getSupportActionBar().setTitle(getString(R.string.payment_history_nav_menu_item));
 
     }
 
@@ -267,8 +267,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), postHistoryFragment, PostHistoryFragment.class.getSimpleName()).commit();
 
-        getSupportActionBar().setTitle("Post History");
-
+        getSupportActionBar().setTitle(getString(R.string.post_history_nav_menu_item));
     }
 
     private void requestPermission() {

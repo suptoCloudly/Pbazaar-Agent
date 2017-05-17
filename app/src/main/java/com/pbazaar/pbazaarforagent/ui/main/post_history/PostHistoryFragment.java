@@ -35,6 +35,9 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
     @BindView(R.id.tv_this_invalid_post_history)
     TextView thisWeekInvalidTv;
 
+    @BindView(R.id.tv_this_week_already_exists_post_history)
+    TextView thisWeekAlreadyExistsTv;
+
     @BindView(R.id.tv_this_week_rent_out_post_history)
     TextView thisWeekAlreadyRentOutTv;
 
@@ -55,6 +58,9 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
     @BindView(R.id.tv_total_invalid_post_history)
     TextView totalInvalidTv;
 
+    @BindView(R.id.tv_total_already_exists_post_history)
+    TextView totalAlreadyExistsTv;
+
     @BindView(R.id.tv_total_rent_out_post_history)
     TextView totalAlreadyRentOutTv;
 
@@ -66,6 +72,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
 
     @BindView(R.id.tv_total_check_in_progress_post_history)
     TextView totalCheckInProgressTv;
+
 
     private ArrayList<PostHistoryModel> postHistoryList = new ArrayList<>();
     private PostHistoryContract.Presenter presenter;
@@ -163,7 +170,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
         int alreadySoldOutThisWeek = 0;
         int successfulThisWeek = 0;
         int checkInProgressThisWeek = 0;
-        int finishedThisWeek = 0;
+        int alreadyExistsThisWeek = 0;
 
 
         int totalTotal = 0;
@@ -172,7 +179,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
         int alreadySoldOutTotal = 0;
         int successfulTotal = 0;
         int checkInProgressTotal = 0;
-        int finishedTotal = 0;
+        int alreadyExistsTotal = 0;
 
 
         for (PostHistoryModel postHistoryModel : postHistoryModels) {
@@ -255,25 +262,25 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
 
                 case Finished:
 
-                    finishedThisWeek = finishedThisWeek + postHistoryModel.getCountThisWeek();
-                    finishedTotal = finishedTotal + postHistoryModel.getCountAllTime();
+                    successfulThisWeek = successfulThisWeek + postHistoryModel.getCountThisWeek();
+                    successfulTotal = successfulTotal + postHistoryModel.getCountAllTime();
 
                     break;
 
                 case AlreadyExists:
 
 
-                    invalidThisWeek = invalidThisWeek + postHistoryModel.getCountThisWeek();
-                    invalidTotal = invalidTotal + postHistoryModel.getCountAllTime();
+                    alreadyExistsThisWeek = alreadyExistsThisWeek + postHistoryModel.getCountThisWeek();
+                    alreadyExistsTotal = alreadyExistsTotal + postHistoryModel.getCountAllTime();
 
                     break;
             }
 
             totalThisWeek = invalidThisWeek + alreadyRentOutThisWeek + alreadySoldOutThisWeek +
-                    successfulThisWeek + checkInProgressThisWeek + finishedThisWeek;
+                    successfulThisWeek + checkInProgressThisWeek+ alreadyExistsThisWeek;
 
             totalTotal = invalidTotal + alreadyRentOutTotal + alreadySoldOutTotal +
-                    successfulTotal + checkInProgressTotal + finishedTotal;
+                    successfulTotal + checkInProgressTotal + alreadyExistsTotal;
 
             thisWeekTotalPostTV.setText(String.valueOf(totalThisWeek));
             thisWeekInvalidTv.setText(String.valueOf(invalidThisWeek));
@@ -281,6 +288,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
             thisWeekAlreadySoldOutTv.setText(String.valueOf(alreadySoldOutThisWeek));
             thisWeekSuccessfulTv.setText(String.valueOf(successfulThisWeek));
             thisWeekCheckInProgressTv.setText(String.valueOf(checkInProgressThisWeek));
+            thisWeekAlreadyExistsTv.setText(String.valueOf(alreadyExistsThisWeek));
 
 
             totalTotalPostTV.setText(String.valueOf(totalTotal));
@@ -289,6 +297,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
             totalAlreadySoldOutTv.setText(String.valueOf(alreadySoldOutTotal));
             totalSuccessfulTv.setText(String.valueOf(successfulTotal));
             totalCheckInProgressTv.setText(String.valueOf(checkInProgressTotal));
+            totalAlreadyExistsTv.setText(String.valueOf(alreadyExistsTotal));
         }
     }
 }

@@ -40,6 +40,7 @@ public class PostHistoryRemoteService {
 
     public void loadPostHistory(@NonNull int collectedById, @NonNull final LoadPostHistoryListener loadPostHistoryListener) {
         if (!PreferenceHelper.getInstance().getNetworkStatus()) {
+            loadPostHistoryListener.onLoadFailed(AppController.getInstance().getString(R.string.no_internet_error_message));
             return;
         }
 

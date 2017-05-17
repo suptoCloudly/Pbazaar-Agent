@@ -44,16 +44,17 @@
     <string name="successful_post_history">Successful:</string>
     <string name="check_in_progress_post_history">Check In Progress:</string>
     <string name="invalid_post_history">Invalid : </string>
+    <string name="already_exists_post_history">Already Exists:</string>
     <string name="rent_out_post_history">Rent out : </string>
     <string name="sold_out_post_history">Sold out : </string>
-    <string name="total_posts_history">Total posts history : </string>
-    <string name="posts_this_week">Posts This Week : </string>
+    <string name="total_posts_history">Total posting history : </string>
+    <string name="posts_this_week">Posting status of this week : </string>
 
 
     <string name="referral_code_nav_menu_item">Referral Code</string>
-    <string name="post_history_nav_menu_item">Post History</string>
+    <string name="post_history_nav_menu_item">Posting Status</string>
     <string name="payment_history_nav_menu_item">Payment History</string>
-    <string name="post_product_nav_menu_item">Post Product</string>
+    <string name="post_product_nav_menu_item">Post New Product</string>
     <string name="forgot_password_note">If you have forgotten your password, you can reset it here</string>
     <string name="update">Update</string>
 
