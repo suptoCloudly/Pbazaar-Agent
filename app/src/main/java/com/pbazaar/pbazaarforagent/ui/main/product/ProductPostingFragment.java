@@ -255,6 +255,8 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         if (view == pickImageImageView) {
             Intent chooseImageIntent = ImagePicker.getPickImageIntent(getActivity());
             startActivityForResult(chooseImageIntent, PICK_IMAGE_ID);
+
+
         } else if (view == postProductButton) {
 
             // hide the soft keyboard
@@ -369,9 +371,15 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         pickImageImageView.setImageBitmap(bitmap);
         this.imageId = imageId;
 
+        Log.d(TAG, "should Scroll");
 
         // hide the keyboard and scroll to bottom
-        scrollView.smoothScrollTo(0, scrollView.getBottom());
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
 
         if (getActivity().getCurrentFocus() != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);

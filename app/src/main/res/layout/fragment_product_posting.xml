@@ -193,7 +193,7 @@
                             style="@style/InputField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Phone*"
+                            android:hint="Mobile*"
                             android:inputType="number" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -207,7 +207,7 @@
                             style="@style/InputField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Phone 2"
+                            android:hint="Mobile 2"
                             android:inputType="number" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -221,7 +221,7 @@
                             style="@style/InputField"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Phone 3"
+                            android:hint="Mobile 3"
                             android:inputType="number" />
                     </android.support.design.widget.TextInputLayout>
 

@@ -54,7 +54,7 @@
     <string name="referral_code_nav_menu_item">Referral Code</string>
     <string name="post_history_nav_menu_item">Posting Status</string>
     <string name="payment_history_nav_menu_item">Payment History</string>
-    <string name="post_product_nav_menu_item">Post New Product</string>
+    <string name="post_product_nav_menu_item">Post New Property</string>
     <string name="forgot_password_note">If you have forgotten your password, you can reset it here</string>
     <string name="update">Update</string>
 

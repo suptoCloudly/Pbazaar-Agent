@@ -396,15 +396,15 @@ public class ProductPostingRemoteService {
 
 
                         if (checkDuplicateNoResponse.getData().getAdvertiserPhone1Duplicate()) {
-                            completionListener.onPostFailed("Phone no already exists");
+                            completionListener.onPostFailed("Mobile no already exists");
                             return;
                         }
                         if (checkDuplicateNoResponse.getData().getAdvertiserPhone2Duplicate()) {
-                            completionListener.onPostFailed("Second Phone no already exists");
+                            completionListener.onPostFailed("Mobile Phone no already exists");
                             return;
                         }
                         if (checkDuplicateNoResponse.getData().getAdvertiserPhone3Duplicate()) {
-                            completionListener.onPostFailed("Third Phone no already exists");
+                            completionListener.onPostFailed("Mobile Phone no already exists");
                             return;
                         }
 
