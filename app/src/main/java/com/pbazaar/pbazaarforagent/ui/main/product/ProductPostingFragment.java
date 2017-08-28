@@ -292,9 +292,11 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @Override
     public void showMessage(String message) {
-        ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
-        showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
 
+        if (getActivity().getSupportFragmentManager() != null) {
+            ShowMessageDialog showMessageDialog = ShowMessageDialog.newInstance(message);
+            showMessageDialog.show(getActivity().getSupportFragmentManager(), ShowMessageDialog.class.getSimpleName());
+        }
     }
 
     @Override

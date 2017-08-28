@@ -60,7 +60,11 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.forgot_password.ForgotPasswordActivity"></activity>
+        <activity android:name=".ui.forgot_password.ForgotPasswordActivity" />
+        <activity
+            android:name=".ui.insert_agent_search_client.InsertAgentSearchClientActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.insert_agent_search_client_requirement.InsertAgentSearchClientRequirementActivity"></activity>
     </application>
 
 </manifest>

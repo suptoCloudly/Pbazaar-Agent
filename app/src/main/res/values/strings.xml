@@ -57,5 +57,18 @@
     <string name="post_product_nav_menu_item">Post New Property</string>
     <string name="forgot_password_note">If you have forgotten your password, you can reset it here</string>
     <string name="update">Update</string>
+    <string name="agent_search_nav_menu_item">Agent Search</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="insert_client_phone_no">Insert Client Phone Number</string>
+    <string name="phone">Phone No</string>
+    <string name="submit">Submit</string>
+    <string name="insert_client_phon_no">Insert client phone number</string>
+    <string name="insert_agent_search_client">Insert Search Client Details</string>
+    <string name="full_name">Full Name</string>
+    <string name="add_search_client">Create Search Client</string>
+    <string name="insert_client_requirements">Insert Client Requirements</string>
+    <string name="min_budget">Minimum Budget</string>
+    <string name="max_budget">Max Budget</string>
 
 </resources>

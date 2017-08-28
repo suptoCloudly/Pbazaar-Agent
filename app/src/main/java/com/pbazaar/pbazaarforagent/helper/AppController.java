@@ -2,6 +2,8 @@ package com.pbazaar.pbazaarforagent.helper;
 
 import android.app.Application;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
+
 
 /**
  * Created by supto on 4/2/17.
@@ -22,6 +24,8 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        TypefaceProvider.registerDefaultIconSets();
     }
 
 }

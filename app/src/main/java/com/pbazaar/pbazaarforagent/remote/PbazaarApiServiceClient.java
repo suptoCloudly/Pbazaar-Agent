@@ -4,12 +4,16 @@ import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoRequest;
 import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoResponse;
 import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordRequest;
 import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordResponse;
+import com.pbazaar.pbazaarforagent.remote.data.GetAgentSearchClientByPhoneNumberRequest;
+import com.pbazaar.pbazaarforagent.remote.data.GetAgentSearchClientByPhoneNumberResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetSubcategoryResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
+import com.pbazaar.pbazaarforagent.remote.data.InsertAgentSearchClientRequest;
+import com.pbazaar.pbazaarforagent.remote.data.InsertAgentSearchClientResponse;
 import com.pbazaar.pbazaarforagent.remote.data.InsertImageResponse;
 import com.pbazaar.pbazaarforagent.remote.data.LoginRequest;
 import com.pbazaar.pbazaarforagent.remote.data.LoginResponse;
@@ -24,6 +28,7 @@ import com.pbazaar.pbazaarforagent.remote.data.RegistrationResponse;
 import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralRequest;
 import com.pbazaar.pbazaarforagent.remote.data.ValidateReferralResponse;
 
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
@@ -75,4 +80,17 @@ public interface PbazaarApiServiceClient {
 
     @POST("CheckDuplicateNumber")
     Call<CheckDuplicateNoResponse> checkForDuplicateNo(@Body CheckDuplicateNoRequest request);
+
+    @POST("GetAgentSearchClientByPhoneNumber")
+    Observable<GetAgentSearchClientByPhoneNumberResponse> getAgentSearchClientByPhoneNumber(@Body GetAgentSearchClientByPhoneNumberRequest getAgentSearchClientByPhoneNumberRequest);
+
+    @POST("InsertAgentSearchClient")
+    Observable<InsertAgentSearchClientResponse> insertAgentSearchClient(@Body InsertAgentSearchClientRequest request);
+
+
+    @POST("GetDistrictsByCountryId")
+    Observable<GetDistrictByCountryIdResponse> getDistrictsByCountryIdObservable(@Body GetDistrictByCountryIdRequest getDistrictByCountryIdRequest);
+
+    @POST("GetThanaAreasByDistrictId")
+    Observable<GetThanaByDistrictIdResponse> getThanaByDistrictIdObservable(@Body GetThanaByDistrictIdRequest request);
 }

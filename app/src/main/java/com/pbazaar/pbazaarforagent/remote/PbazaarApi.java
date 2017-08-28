@@ -1,6 +1,7 @@
 package com.pbazaar.pbazaarforagent.remote;
 
 import com.google.gson.GsonBuilder;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,6 +32,7 @@ public class PbazaarApi {
         retrofit = new Retrofit.Builder()
                 .baseUrl(RemoteConstant.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient.build())
                 .build();
 
@@ -56,6 +58,7 @@ public class PbazaarApi {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(RemoteConstant.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(okHttpClient.build())
                 .build();
 

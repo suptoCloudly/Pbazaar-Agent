@@ -4,17 +4,23 @@
     <item
         android:id="@+id/product_posting_nav_menu_item"
         android:icon="@drawable/ic_home"
-        android:title="@string/post_product_nav_menu_item"/>
+        android:title="@string/post_product_nav_menu_item" />
+
+    <item
+        android:id="@+id/agent_search_nav_menu_item"
+        android:icon="@drawable/ic_search_black"
+        android:title="@string/agent_search_nav_menu_item" />
+
     <item
         android:id="@+id/post_history_nav_menu_item"
         android:icon="@drawable/ic_history"
-        android:title="@string/post_history_nav_menu_item"/>
+        android:title="@string/post_history_nav_menu_item" />
     <item
         android:id="@+id/payment_nav_menu_item"
         android:icon="@drawable/ic_payment"
-        android:title="@string/payment_history_nav_menu_item"/>
+        android:title="@string/payment_history_nav_menu_item" />
     <item
         android:id="@+id/share_referral_nav_menu_item"
         android:icon="@drawable/ic_share"
-        android:title="@string/referral_code_nav_menu_item"/>
+        android:title="@string/referral_code_nav_menu_item" />
 </menu>

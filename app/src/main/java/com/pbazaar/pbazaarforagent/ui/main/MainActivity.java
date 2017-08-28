@@ -26,6 +26,7 @@ import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.ui.dialogs.ShareReferralDialog;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
+import com.pbazaar.pbazaarforagent.ui.main.agent_search.AgentSearchFragment;
 import com.pbazaar.pbazaarforagent.ui.main.payment.PayHistoryFragment;
 import com.pbazaar.pbazaarforagent.ui.main.post_history.PostHistoryFragment;
 import com.pbazaar.pbazaarforagent.ui.main.product.ProductPostingFragment;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String ACTION = "no_permission_receiver";
     private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_CODE = 420;
+
+
     private final BroadcastReceiver mNotificationReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -54,15 +57,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             noPermissionDialog.show(MainActivity.this.getSupportFragmentManager(), NoPermissionDialog.class.getSimpleName());
         }
     };
+
+
     @BindView(R.id.drawer_layout_main_activity)
     DrawerLayout drawerLayout;
+
     @BindView(R.id.navigation_view_main_activity)
     NavigationView navigationView;
+
     @BindView(R.id.toolbar_main_activity)
     Toolbar toolbar;
+
     @BindView(R.id.fragment_container_main_activity)
     FrameLayout fragmentContainer;
+
+
     private ProductPostingFragment productPostingFragment;
+    private AgentSearchFragment agentSearchFragment;
     private PayHistoryFragment payHistoryFragment;
     private PostHistoryFragment postHistoryFragment;
 
@@ -108,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
 
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mNotificationReceiver);
-        Log.d(TAG, "OnDestroy");
 
     }
 
@@ -149,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.product_posting_nav_menu_item:
                 navigationView.getMenu().getItem(1).setChecked(false);
                 navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(3).setChecked(false);
                 navigationView.getMenu().getItem(0).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -158,10 +169,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }, 200);
 
                 return true;
-            case R.id.post_history_nav_menu_item:
+            case R.id.agent_search_nav_menu_item:
                 navigationView.getMenu().getItem(0).setChecked(false);
                 navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(3).setChecked(false);
                 navigationView.getMenu().getItem(1).setChecked(true);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAgentSearchFragment();
+                    }
+                }, 200);
+
+                return true;
+            case R.id.post_history_nav_menu_item:
+                navigationView.getMenu().getItem(0).setChecked(false);
+                navigationView.getMenu().getItem(1).setChecked(false);
+                navigationView.getMenu().getItem(3).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -171,17 +196,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 return true;
             case R.id.payment_nav_menu_item:
-            navigationView.getMenu().getItem(0).setChecked(false);
-            navigationView.getMenu().getItem(1).setChecked(false);
-            navigationView.getMenu().getItem(2).setChecked(true);
-            new Handler().postDelayed(new Runnable() {
+                navigationView.getMenu().getItem(0).setChecked(false);
+                navigationView.getMenu().getItem(1).setChecked(false);
+                navigationView.getMenu().getItem(2).setChecked(false);
+                navigationView.getMenu().getItem(3).setChecked(true);
+                new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         showPaymentHistoryFragment();
                     }
                 }, 200);
 
-            return true;
+                return true;
             case R.id.share_referral_nav_menu_item:
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -230,6 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
     private void showPostProductFragment() {
         productPostingFragment = (ProductPostingFragment) getSupportFragmentManager().findFragmentByTag("AAAA");
         if (productPostingFragment == null) {
@@ -240,6 +267,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSupportActionBar().setTitle(getString(R.string.post_product_nav_menu_item));
 
+    }
+
+    private void showAgentSearchFragment() {
+
+        agentSearchFragment = (AgentSearchFragment) getSupportFragmentManager().findFragmentByTag(AgentSearchFragment.class.getSimpleName());
+        if (agentSearchFragment == null) {
+            agentSearchFragment = AgentSearchFragment.newInstance();
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(fragmentContainer.getId(), agentSearchFragment, AgentSearchFragment.class.getSimpleName())
+                .commit();
+        getSupportActionBar().setTitle(getString(R.string.agent_search_nav_menu_item));
     }
 
 
