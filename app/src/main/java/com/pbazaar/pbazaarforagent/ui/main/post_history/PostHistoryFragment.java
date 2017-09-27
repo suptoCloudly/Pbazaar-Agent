@@ -50,6 +50,9 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
     @BindView(R.id.tv_this_week_check_in_progress_post_history)
     TextView thisWeekCheckInProgressTv;
 
+    @BindView(R.id.tv_this_week_not_interested_post_history)
+    TextView thisWeekNotInterestedProgressTv;
+
 
     // ui field for total
     @BindView(R.id.tv_total_total_post_post_history)
@@ -72,6 +75,9 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
 
     @BindView(R.id.tv_total_check_in_progress_post_history)
     TextView totalCheckInProgressTv;
+
+    @BindView(R.id.tv_total_not_interested_post_history)
+    TextView totalNotInterestedTv;
 
 
     private ArrayList<PostHistoryModel> postHistoryList = new ArrayList<>();
@@ -171,7 +177,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
         int successfulThisWeek = 0;
         int checkInProgressThisWeek = 0;
         int alreadyExistsThisWeek = 0;
-
+        int notInterestedThisWeek = 0;
 
         int totalTotal = 0;
         int invalidTotal = 0;
@@ -180,6 +186,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
         int successfulTotal = 0;
         int checkInProgressTotal = 0;
         int alreadyExistsTotal = 0;
+        int notInterestedTotal = 0;
 
 
         for (PostHistoryModel postHistoryModel : postHistoryModels) {
@@ -224,8 +231,11 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
                 case NotInterested:
 
 
-                    successfulThisWeek = successfulThisWeek + postHistoryModel.getCountThisWeek();
-                    successfulTotal = successfulTotal + postHistoryModel.getCountAllTime();
+//                    successfulThisWeek = successfulThisWeek + postHistoryModel.getCountThisWeek();
+//                    successfulTotal = successfulTotal + postHistoryModel.getCountAllTime();
+
+                    notInterestedThisWeek = notInterestedThisWeek + postHistoryModel.getCountThisWeek();
+                    notInterestedTotal = notInterestedTotal + postHistoryModel.getCountAllTime();
 
                     break;
 
@@ -277,7 +287,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
             }
 
             totalThisWeek = invalidThisWeek + alreadyRentOutThisWeek + alreadySoldOutThisWeek +
-                    successfulThisWeek + checkInProgressThisWeek+ alreadyExistsThisWeek;
+                    successfulThisWeek + checkInProgressThisWeek + alreadyExistsThisWeek;
 
             totalTotal = invalidTotal + alreadyRentOutTotal + alreadySoldOutTotal +
                     successfulTotal + checkInProgressTotal + alreadyExistsTotal;
@@ -289,6 +299,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
             thisWeekSuccessfulTv.setText(String.valueOf(successfulThisWeek));
             thisWeekCheckInProgressTv.setText(String.valueOf(checkInProgressThisWeek));
             thisWeekAlreadyExistsTv.setText(String.valueOf(alreadyExistsThisWeek));
+            thisWeekNotInterestedProgressTv.setText(String.valueOf(notInterestedThisWeek));
 
 
             totalTotalPostTV.setText(String.valueOf(totalTotal));
@@ -298,6 +309,7 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
             totalSuccessfulTv.setText(String.valueOf(successfulTotal));
             totalCheckInProgressTv.setText(String.valueOf(checkInProgressTotal));
             totalAlreadyExistsTv.setText(String.valueOf(alreadyExistsTotal));
+            totalNotInterestedTv.setText(String.valueOf(notInterestedTotal));
         }
     }
 }

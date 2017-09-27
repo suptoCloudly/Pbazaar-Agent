@@ -154,12 +154,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         drawerLayout.closeDrawers();
 
+        navigationView.getMenu().getItem(0).setChecked(false);
+        navigationView.getMenu().getItem(1).setChecked(false);
+        navigationView.getMenu().getItem(2).setChecked(false);
 
         switch (item.getItemId()) {
             case R.id.product_posting_nav_menu_item:
-                navigationView.getMenu().getItem(1).setChecked(false);
-                navigationView.getMenu().getItem(2).setChecked(false);
-                navigationView.getMenu().getItem(3).setChecked(false);
+
                 navigationView.getMenu().getItem(0).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -169,24 +170,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }, 200);
 
                 return true;
-            case R.id.agent_search_nav_menu_item:
-                navigationView.getMenu().getItem(0).setChecked(false);
-                navigationView.getMenu().getItem(2).setChecked(false);
-                navigationView.getMenu().getItem(3).setChecked(false);
-                navigationView.getMenu().getItem(1).setChecked(true);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showAgentSearchFragment();
-                    }
-                }, 200);
-
-                return true;
+//            case R.id.agent_search_nav_menu_item:
+//                navigationView.getMenu().getItem(0).setChecked(false);
+//                navigationView.getMenu().getItem(2).setChecked(false);
+//                navigationView.getMenu().getItem(3).setChecked(false);
+//                navigationView.getMenu().getItem(1).setChecked(true);
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        showAgentSearchFragment();
+//                    }
+//                }, 200);
+//
+//                return true;
             case R.id.post_history_nav_menu_item:
-                navigationView.getMenu().getItem(0).setChecked(false);
-                navigationView.getMenu().getItem(1).setChecked(false);
-                navigationView.getMenu().getItem(3).setChecked(false);
-                navigationView.getMenu().getItem(2).setChecked(true);
+
+                navigationView.getMenu().getItem(1).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -196,10 +195,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 return true;
             case R.id.payment_nav_menu_item:
-                navigationView.getMenu().getItem(0).setChecked(false);
-                navigationView.getMenu().getItem(1).setChecked(false);
-                navigationView.getMenu().getItem(2).setChecked(false);
-                navigationView.getMenu().getItem(3).setChecked(true);
+
+                navigationView.getMenu().getItem(2).setChecked(true);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

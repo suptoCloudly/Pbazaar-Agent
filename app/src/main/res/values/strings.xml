@@ -43,6 +43,7 @@
     <string name="total_post_post_history">Total Post</string>
     <string name="successful_post_history">Successful:</string>
     <string name="check_in_progress_post_history">Check In Progress:</string>
+    <string name="not_interested_post_history">Not Interested:</string>
     <string name="invalid_post_history">Invalid : </string>
     <string name="already_exists_post_history">Already Exists:</string>
     <string name="rent_out_post_history">Rent out : </string>

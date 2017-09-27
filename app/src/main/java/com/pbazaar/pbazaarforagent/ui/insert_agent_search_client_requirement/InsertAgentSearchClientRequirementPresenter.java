@@ -1,5 +1,7 @@
 package com.pbazaar.pbazaarforagent.ui.insert_agent_search_client_requirement;
 
+import android.util.Log;
+
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.helper.ConnectivityUtils;
@@ -13,10 +15,13 @@ import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetThanaByDistrictIdResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
@@ -74,6 +79,56 @@ public class InsertAgentSearchClientRequirementPresenter implements InsertAgentS
                 .getThanaByDistrictIdObservable(thanaByDistrictIdRequest);
 
 
+        Observable.zip(getDistrictByCountryIdObservable, getThanaByDistrictIdObservable, new BiFunction<GetDistrictByCountryIdResponse, GetThanaByDistrictIdResponse, HashMap<String, ArrayList<LocationSpinnerDataModel>>>() {
+            @Override
+            public HashMap<String, ArrayList<LocationSpinnerDataModel>> apply(@NonNull GetDistrictByCountryIdResponse response, @NonNull GetThanaByDistrictIdResponse getThanaByDistrictIdResponse) throws Exception {
+
+
+                if (response.getSuccess() == 1 && getThanaByDistrictIdResponse.getSuccess() == 1) {
+
+                    Log.d(TAG, "both: " + response.getSuccess() + getThanaByDistrictIdResponse.getSuccess());
+                    ArrayList<LocationSpinnerDataModel> districtList = new ArrayList<>();
+
+                    for (GetDistrictByCountryIdResponse.Data data : response.getData()) {
+                        LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
+                        districtList.add(locationSpinnerDataModel);
+                        Log.d(TAG, "District Add: " + locationSpinnerDataModel.getLocationName());
+                    }
+
+
+                    ArrayList<LocationSpinnerDataModel> thanaArrayList = new ArrayList<>();
+                    for (GetThanaByDistrictIdResponse.Data data : getThanaByDistrictIdResponse.getData()) {
+                        LocationSpinnerDataModel locationSpinnerDataModel = new LocationSpinnerDataModel(data.getName(), data.getId());
+                        thanaArrayList.add(locationSpinnerDataModel);
+                        Log.d(TAG, "Thana Add: " + locationSpinnerDataModel.getLocationName());
+                    }
+
+                    HashMap<String, ArrayList<LocationSpinnerDataModel>> map = new HashMap<>();
+                    map.put("District", districtList);
+                    map.put("Thana", thanaArrayList);
+
+
+                    return map;
+
+                } else {
+
+                    return null;
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<HashMap<String, ArrayList<LocationSpinnerDataModel>>>() {
+                    @Override
+                    public void accept(HashMap<String, ArrayList<LocationSpinnerDataModel>> stringArrayListHashMap) throws Exception {
+
+                        // todo if map is null then request faild, else return the data to view
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                });
 
 //        initialLoadDisposable = Observable
 //                .zip(getDistrictByCountryIdObservable, getThanaByDistrictIdObservable, new BiFunction<GetDistrictByCountryIdResponse, GetThanaByDistrictIdResponse, Boolean>() {

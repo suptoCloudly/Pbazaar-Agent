@@ -1,20 +1,29 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'pbazaaragent'
+            keyPassword 'supto10104948'
+            storeFile file('/home/supto/AndroidStudioProjects/Pbazaar-Agent/keystore.jks')
+            storePassword 'supto10104948'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.pbazaar.pbazaarforagent"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 11
-        versionName "1.0"
+        versionCode 12
+        versionName "1.12"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }
@@ -24,7 +33,6 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.android.support:design:25.3.1'
@@ -39,7 +47,6 @@ dependencies {
     compile 'com.google.firebase:firebase-database:10.2.1'
     compile 'com.google.firebase:firebase-messaging:10.2.1'
     compile 'com.google.android.gms:play-services-analytics:10.2.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.beardedhen:androidbootstrap:2.3.2'

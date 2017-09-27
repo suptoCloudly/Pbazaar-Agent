@@ -6,10 +6,10 @@
         android:icon="@drawable/ic_home"
         android:title="@string/post_product_nav_menu_item" />
 
-    <item
-        android:id="@+id/agent_search_nav_menu_item"
-        android:icon="@drawable/ic_search_black"
-        android:title="@string/agent_search_nav_menu_item" />
+    <!--<item-->
+        <!--android:id="@+id/agent_search_nav_menu_item"-->
+        <!--android:icon="@drawable/ic_search_black"-->
+        <!--android:title="@string/agent_search_nav_menu_item" />-->
 
     <item
         android:id="@+id/post_history_nav_menu_item"
