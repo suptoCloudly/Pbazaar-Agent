@@ -287,10 +287,10 @@ public class PostHistoryFragment extends Fragment implements PostHistoryContract
             }
 
             totalThisWeek = invalidThisWeek + alreadyRentOutThisWeek + alreadySoldOutThisWeek +
-                    successfulThisWeek + checkInProgressThisWeek + alreadyExistsThisWeek;
+                    successfulThisWeek + checkInProgressThisWeek + alreadyExistsThisWeek + notInterestedThisWeek;
 
             totalTotal = invalidTotal + alreadyRentOutTotal + alreadySoldOutTotal +
-                    successfulTotal + checkInProgressTotal + alreadyExistsTotal;
+                    successfulTotal + checkInProgressTotal + alreadyExistsTotal + notInterestedTotal;
 
             thisWeekTotalPostTV.setText(String.valueOf(totalThisWeek));
             thisWeekInvalidTv.setText(String.valueOf(invalidThisWeek));

@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.pbazaar.pbazaarforagent.R;
@@ -23,12 +21,9 @@ import com.pbazaar.pbazaarforagent.ui.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity implements ForceUpdateDialog.OnButtonClicked {
 
-    private static final String TAG = SplashActivity.class.getSimpleName();
-
     public static final String DEVELOPER_STATUS_PATH = "developerStatus";
     public static final String DEVELOPER_HAPPY = "happy";
-
-
+    private static final String TAG = SplashActivity.class.getSimpleName();
     private ValueEventListener mListener;
 
     @Override
@@ -82,7 +77,6 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateDial
 
         }
     }
-
 
 
     @Override
