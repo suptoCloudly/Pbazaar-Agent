@@ -87,10 +87,14 @@ public interface PbazaarApiServiceClient {
     @POST("InsertAgentSearchClient")
     Observable<InsertAgentSearchClientResponse> insertAgentSearchClient(@Body InsertAgentSearchClientRequest request);
 
-
     @POST("GetDistrictsByCountryId")
     Observable<GetDistrictByCountryIdResponse> getDistrictsByCountryIdObservable(@Body GetDistrictByCountryIdRequest getDistrictByCountryIdRequest);
 
     @POST("GetThanaAreasByDistrictId")
     Observable<GetThanaByDistrictIdResponse> getThanaByDistrictIdObservable(@Body GetThanaByDistrictIdRequest request);
+
+
+    // new product posting api call with RxJava
+    @POST("GetDistrictsByCountryId")
+    Observable<GetDistrictByCountryIdResponse> getDistrictsByCountryIdNew(@Body GetDistrictByCountryIdRequest getDistrictByCountryIdRequest);
 }

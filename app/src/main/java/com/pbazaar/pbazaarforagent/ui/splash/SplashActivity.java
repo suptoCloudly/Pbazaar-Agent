@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.pbazaar.pbazaarforagent.R;
 import com.pbazaar.pbazaarforagent.firebase.PushConstants;
@@ -24,7 +23,6 @@ public class SplashActivity extends AppCompatActivity implements ForceUpdateDial
     public static final String DEVELOPER_STATUS_PATH = "developerStatus";
     public static final String DEVELOPER_HAPPY = "happy";
     private static final String TAG = SplashActivity.class.getSimpleName();
-    private ValueEventListener mListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

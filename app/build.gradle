@@ -49,5 +49,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     implementation 'com.beardedhen:androidbootstrap:2.3.2'
+    implementation 'com.google.android.gms:play-services-maps:11.6.0'
+    implementation 'com.google.android.gms:play-services-location:11.6.0'
+    implementation 'com.google.android.gms:play-services-places:11.6.0'
 }
 apply plugin: 'com.google.gms.google-services'

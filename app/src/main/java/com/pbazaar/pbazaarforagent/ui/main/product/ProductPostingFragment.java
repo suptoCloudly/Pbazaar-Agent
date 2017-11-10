@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.pbazaar.pbazaarforagent.CustomAreaSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.CustomCategorySpinnerAdapter;
@@ -32,6 +33,7 @@ import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.model.LocationSpinnerDataModel;
 import com.pbazaar.pbazaarforagent.model.PostProductModel;
 import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
+import com.pbazaar.pbazaarforagent.ui.dialogs.SelectLocationDialog;
 import com.pbazaar.pbazaarforagent.ui.dialogs.ShowMessageDialog;
 import com.pbazaar.pbazaarforagent.ui.main.PostSuccessDialog;
 
@@ -84,6 +86,9 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
     @BindView(R.id.et_road_no_product_posting_fragment)
     TextInputEditText roadNoEt;
+
+    @BindView(R.id.select_property_location_tv)
+    TextView selecPropertyLocationTv;
 
     @BindView(R.id.image_view_pick_image_product_posting_fagment)
     ImageView pickImageImageView;
@@ -143,6 +148,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
         pickImageImageView.setOnClickListener(this);
         postProductButton.setOnClickListener(this);
+        selecPropertyLocationTv.setOnClickListener(this);
         selectDistrictSpinner.setOnItemSelectedListener(this);
         selectCategoryRadioGroup.setOnCheckedChangeListener(this);
 
@@ -266,6 +272,9 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             }
 
             postProduct();
+        } else if (view == selecPropertyLocationTv) {
+            SelectLocationDialog dialog = SelectLocationDialog.newInstance();
+            dialog.show(getActivity().getSupportFragmentManager(), SelectLocationDialog.class.getSimpleName());
         }
     }
 

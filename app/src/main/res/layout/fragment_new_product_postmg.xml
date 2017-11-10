@@ -1,13 +1,72 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.pbazaar.pbazaarforagent.ui.main.new_product.NewProductPostingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
+        android:id="@+id/scroll_view_product_posting"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:padding="@dimen/medium_margin"
+        android:scrollbars="none">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/standard_margin"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Category Selection" />
+
+                    <RadioGroup
+                        android:id="@+id/radio_group_select_category_product_posting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/medium_margin"
+                        android:layout_marginTop="@dimen/medium_margin"
+                        android:checkedButton="@+id/radio_button_rent_category_product_post"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                            android:id="@+id/radio_button_rent_category_product_post"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Rent" />
+
+                        <android.support.v7.widget.AppCompatRadioButton
+                            android:id="@+id/radio_button_sell_category_product_post"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sell" />
+                    </RadioGroup>
+
+
+                    <android.support.v7.widget.AppCompatSpinner
+                        android:id="@+id/spinner_subcategory_product_posting_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
