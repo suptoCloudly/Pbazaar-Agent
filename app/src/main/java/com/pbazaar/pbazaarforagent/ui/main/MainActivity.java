@@ -264,7 +264,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), productPostingFragment, "AAAA").commit();
 
 
-
         getSupportActionBar().setTitle(getString(R.string.post_product_nav_menu_item));
 
     }
@@ -322,10 +321,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                     != PackageManager.PERMISSION_GRANTED ||
                     checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            != PackageManager.PERMISSION_GRANTED) {
+                            != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
+                            != PackageManager.PERMISSION_GRANTED
+
+                    ) {
 
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE
-                                , Manifest.permission.WRITE_EXTERNAL_STORAGE}
+                                , Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION}
                         , MY_PERMISSIONS_REQUEST_CODE);
             }
         }

@@ -48,7 +48,17 @@ public class PostProductRequest extends BaseRequest {
     @Expose
     private Integer collectedById;
 
-    public PostProductRequest(String apiToken, Integer categoryId, Integer subCategoryId, String advertiserName, String advertiserPhone, String advertiserPhone2, String advertiserPhone3, String advertiserEmail, String sectorBlock, String houseNo, String roadNo, Integer thanaAreaId, Integer pictureId, Integer collectedById) {
+    @SerializedName("Latitude")
+    @Expose
+    private double latitude;
+    @SerializedName("longitude")
+    @Expose
+    private double longitude;
+    @SerializedName("GMapStringResponse")
+    @Expose
+    private String address;
+
+    public PostProductRequest(String apiToken, Integer categoryId, Integer subCategoryId, String advertiserName, String advertiserPhone, String advertiserPhone2, String advertiserPhone3, String advertiserEmail, String sectorBlock, String houseNo, String roadNo, Integer thanaAreaId, Integer pictureId, Integer collectedById, double latitude, double longitude, String address) {
         super(apiToken);
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
@@ -63,6 +73,9 @@ public class PostProductRequest extends BaseRequest {
         this.thanaAreaId = thanaAreaId;
         this.pictureId = pictureId;
         this.collectedById = collectedById;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.address = address;
     }
 
     public Integer getCategoryId() {
@@ -167,5 +180,29 @@ public class PostProductRequest extends BaseRequest {
 
     public void setCollectedById(Integer collectedById) {
         this.collectedById = collectedById;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -4,6 +4,7 @@ import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoRequest;
 import com.pbazaar.pbazaarforagent.remote.data.CheckDuplicateNoResponse;
 import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordRequest;
 import com.pbazaar.pbazaarforagent.remote.data.ForgotPasswordResponse;
+import com.pbazaar.pbazaarforagent.remote.data.GeoCodingResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetAgentSearchClientByPhoneNumberRequest;
 import com.pbazaar.pbazaarforagent.remote.data.GetAgentSearchClientByPhoneNumberResponse;
 import com.pbazaar.pbazaarforagent.remote.data.GetDistrictByCountryIdRequest;
@@ -33,9 +34,11 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Query;
 
 /**
  * Created by supto on 4/2/17.

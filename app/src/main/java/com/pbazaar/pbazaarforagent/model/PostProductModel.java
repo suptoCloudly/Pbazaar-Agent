@@ -19,8 +19,11 @@ public class PostProductModel {
     private int thanaAreaId;
     private int pictureId;
     private int collectedId;
+    private double lat;
+    private double lng;
+    private String address;
 
-    public PostProductModel(int categoryId, int subCategoryId, String advertiserName, String advertiserPhone, String advertiserPhone2, String advertiserPhone3, String advertiserEmail, String blockSector, String houseNo, String roadNo, int thanaAreaId, int pictureId, int collectedId) {
+    public PostProductModel(int categoryId, int subCategoryId, String advertiserName, String advertiserPhone, String advertiserPhone2, String advertiserPhone3, String advertiserEmail, String blockSector, String houseNo, String roadNo, int thanaAreaId, int pictureId, int collectedId, double lat, double lng, String address) {
         this.categoryId = categoryId;
         this.subCategoryId = subCategoryId;
         this.advertiserName = advertiserName;
@@ -34,6 +37,9 @@ public class PostProductModel {
         this.thanaAreaId = thanaAreaId;
         this.pictureId = pictureId;
         this.collectedId = collectedId;
+        this.lat = lat;
+        this.lng = lng;
+        this.address = address;
     }
 
     public int getCategoryId() {
@@ -66,6 +72,22 @@ public class PostProductModel {
 
     public void setAdvertiserPhone(String advertiserPhone) {
         this.advertiserPhone = advertiserPhone;
+    }
+
+    public String getAdvertiserPhone2() {
+        return advertiserPhone2;
+    }
+
+    public void setAdvertiserPhone2(String advertiserPhone2) {
+        this.advertiserPhone2 = advertiserPhone2;
+    }
+
+    public String getAdvertiserPhone3() {
+        return advertiserPhone3;
+    }
+
+    public void setAdvertiserPhone3(String advertiserPhone3) {
+        this.advertiserPhone3 = advertiserPhone3;
     }
 
     public String getAdvertiserEmail() {
@@ -124,19 +146,27 @@ public class PostProductModel {
         this.collectedId = collectedId;
     }
 
-    public String getAdvertiserPhone2() {
-        return advertiserPhone2;
+    public double getLat() {
+        return lat;
     }
 
-    public void setAdvertiserPhone2(String advertiserPhone2) {
-        this.advertiserPhone2 = advertiserPhone2;
+    public void setLat(double lat) {
+        this.lat = lat;
     }
 
-    public String getAdvertiserPhone3() {
-        return advertiserPhone3;
+    public double getLng() {
+        return lng;
     }
 
-    public void setAdvertiserPhone3(String advertiserPhone3) {
-        this.advertiserPhone3 = advertiserPhone3;
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

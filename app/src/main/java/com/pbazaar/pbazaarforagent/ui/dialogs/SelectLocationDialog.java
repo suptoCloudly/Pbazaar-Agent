@@ -14,6 +14,10 @@ import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,28 +37,59 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.pbazaar.pbazaarforagent.R;
+import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.helper.Constants;
+import com.pbazaar.pbazaarforagent.remote.MapApi;
+import com.pbazaar.pbazaarforagent.remote.data.GeoCodingResponse;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by supto on 11/11/17.
  */
 
-public class SelectLocationDialog extends DialogFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class SelectLocationDialog extends DialogFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnCameraIdleListener, View.OnClickListener {
 
     public static final String TAG = SelectLocationDialog.class.getSimpleName();
     private static final int MY_PERMISSIONS_REQUEST_CODE = 420;
+
+
+//    @BindView(R.id.map_container)
+//    FrameLayout mapContainer;
+
+    @BindView(R.id.address_tv)
+    TextView addressTv;
+
+    @BindView(R.id.progressBar2)
+    ProgressBar progressBar;
+
+    @BindView(R.id.select_address_dialog)
+    Button selectAddressButton;
+
+    private String address;
+    private LatLng selectedLocation;
+
     private GoogleMap map;
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
     private Location lastLocation;
+    private SupportMapFragment mapFragment;
+
+
+    private AddressSelectionListener addressSelectionListener;
 
     public SelectLocationDialog() {
     }
 
-    public static SelectLocationDialog newInstance() {
+    public static SelectLocationDialog newInstance(@NonNull AddressSelectionListener addressSelectionListener) {
         SelectLocationDialog dialog = new SelectLocationDialog();
+        dialog.addressSelectionListener = addressSelectionListener;
         return dialog;
     }
 
@@ -66,8 +101,10 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
 
         ButterKnife.bind(this, view);
 
+        selectAddressButton.setOnClickListener(this);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+
+        mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
@@ -98,6 +135,7 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        map.setOnCameraIdleListener(this);
     }
 
     public void onLocationChanged(Location location) {
@@ -112,6 +150,69 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
     }
+
+    @Override
+    public void onCameraIdle() {
+        LatLng latLng = map.getCameraPosition().target;
+        getDestinationAddress(latLng);
+    }
+
+    public void getDestinationAddress(final LatLng latLng) {
+        MapApi.getInstance().getApiServiceClient()
+                .getGeoCodingAddress(latLng.latitude + "," + latLng.longitude, "AIzaSyC6hBIPNZRpUyiiGvhf4vCQt7ipdxORqaY")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        addressTv.setText("");
+                        progressBar.setVisibility(View.VISIBLE);
+                        selectAddressButton.setVisibility(View.GONE);
+                    }
+                })
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        progressBar.setVisibility(View.GONE);
+                        selectAddressButton.setVisibility(View.VISIBLE);
+
+                    }
+                })
+                .subscribe(new Consumer<GeoCodingResponse>() {
+                    @Override
+                    public void accept(GeoCodingResponse geoCodingResponse) throws Exception {
+                        StringBuilder addressSb = new StringBuilder();
+
+                        Log.d(TAG, "Status: " + geoCodingResponse.getStatus());
+
+
+                        int count = 1;
+                        for (GeoCodingResponse.Result.AddressComponent bean : geoCodingResponse.getResults().get(0).getAddressComponents()) {
+                            addressSb.append(bean.getShortName());
+
+                            count++;
+                            if (count > 3) {
+                                break;
+                            }
+
+                            addressSb.append(", ");
+                        }
+
+                        selectedLocation = latLng;
+                        address = addressSb.toString();
+
+                        addressTv.setText(address);
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, throwable.getLocalizedMessage());
+                        Toast.makeText(getActivity(), throwable.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 
     private void requestForLocationAndShowInMap() {
         //check uses permission
@@ -137,7 +238,6 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
@@ -145,13 +245,18 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
 
     }
 
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, SelectLocationDialog.this);
         googleApiClient.disconnect();
-    }
 
+        if (null != mapFragment)
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .remove(mapFragment)
+                    .commit();
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -250,5 +355,21 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
                         , MY_PERMISSIONS_REQUEST_CODE);
             }
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == selectAddressButton) {
+            Log.d(TAG, "Address: " + address);
+            Log.d(TAG, "lat: " + selectedLocation.latitude);
+            Log.d(TAG, "lng: " + selectedLocation.longitude);
+
+            dismiss();
+            addressSelectionListener.onAddressSelected(selectedLocation, address);
+        }
+    }
+
+    public interface AddressSelectionListener {
+        void onAddressSelected(LatLng latLng, String address);
     }
 }

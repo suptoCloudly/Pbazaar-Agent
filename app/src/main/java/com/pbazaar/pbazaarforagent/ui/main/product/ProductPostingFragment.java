@@ -25,6 +25,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.pbazaar.pbazaarforagent.CustomAreaSpinnerAdapter;
 import com.pbazaar.pbazaarforagent.CustomCategorySpinnerAdapter;
 import com.pbazaar.pbazaarforagent.R;
@@ -88,7 +89,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     TextInputEditText roadNoEt;
 
     @BindView(R.id.select_property_location_tv)
-    TextView selecPropertyLocationTv;
+    TextView selectPropertyLocationTv;
 
     @BindView(R.id.image_view_pick_image_product_posting_fagment)
     ImageView pickImageImageView;
@@ -125,6 +126,9 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     private ProgressDialog progressDialog;
 
     private int imageId = 0;
+    private double lat = 0;
+    private double lng = 0;
+    private String propertyAddress = "";
 
     public ProductPostingFragment() {
     }
@@ -148,7 +152,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
 
         pickImageImageView.setOnClickListener(this);
         postProductButton.setOnClickListener(this);
-        selecPropertyLocationTv.setOnClickListener(this);
+        selectPropertyLocationTv.setOnClickListener(this);
         selectDistrictSpinner.setOnItemSelectedListener(this);
         selectCategoryRadioGroup.setOnCheckedChangeListener(this);
 
@@ -201,7 +205,9 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         savedInstanceState.putString("advertiserPhone3", advertiserPhone3Et.getText().toString());
         savedInstanceState.putString("advertiserEmail", advertiserEmailEt.getText().toString());
 
-
+        savedInstanceState.putDouble("latitude", lat);
+        savedInstanceState.putDouble("longitude", lng);
+        savedInstanceState.putString("propertyAddress", propertyAddress);
     }
 
     @Override
@@ -252,6 +258,10 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             advertiserPhone3Et.setText(savedInstanceState.getString("advertiserPhone3"));
             advertiserEmailEt.setText(savedInstanceState.getString("advertiserEmail"));
 
+            this.lat = savedInstanceState.getDouble("latitude");
+            this.lng = savedInstanceState.getDouble("longitude");
+            this.propertyAddress = savedInstanceState.getString("propertyAddress");
+            selectPropertyLocationTv.setText(propertyAddress);
         }
     }
 
@@ -272,8 +282,20 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             }
 
             postProduct();
-        } else if (view == selecPropertyLocationTv) {
-            SelectLocationDialog dialog = SelectLocationDialog.newInstance();
+        } else if (view == selectPropertyLocationTv) {
+            SelectLocationDialog dialog = (SelectLocationDialog) getActivity().getSupportFragmentManager().findFragmentByTag(SelectLocationDialog.class.getSimpleName());
+
+            if (dialog == null) {
+                dialog = SelectLocationDialog.newInstance(new SelectLocationDialog.AddressSelectionListener() {
+                    @Override
+                    public void onAddressSelected(LatLng latLng, String address) {
+                        lat = latLng.latitude;
+                        lng = latLng.longitude;
+                        propertyAddress = address;
+                        selectPropertyLocationTv.setText(propertyAddress);
+                    }
+                });
+            }
             dialog.show(getActivity().getSupportFragmentManager(), SelectLocationDialog.class.getSimpleName());
         }
     }
@@ -475,7 +497,7 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         String advertiserEmail = advertiserEmailEt.getText().toString();
 
 
-        PostProductModel postProductModel = new PostProductModel(categoryId, subCategoryId, advertiserName, advertiserPhone, advertiserPhone2, advertiserPhone3, advertiserEmail, blockSector, houseNo, roadNo, areaId, imageId, collectedById);
+        PostProductModel postProductModel = new PostProductModel(categoryId, subCategoryId, advertiserName, advertiserPhone, advertiserPhone2, advertiserPhone3, advertiserEmail, blockSector, houseNo, roadNo, areaId, imageId, collectedById, lat, lng, propertyAddress);
         presenter.onPostProductClicked(postProductModel);
     }
 
