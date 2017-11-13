@@ -27,7 +27,6 @@ import com.pbazaar.pbazaarforagent.helper.PreferenceHelper;
 import com.pbazaar.pbazaarforagent.ui.dialogs.ShareReferralDialog;
 import com.pbazaar.pbazaarforagent.ui.login.LoginActivity;
 import com.pbazaar.pbazaarforagent.ui.main.agent_search.AgentSearchFragment;
-import com.pbazaar.pbazaarforagent.ui.main.new_product.NewProductPostingFragment;
 import com.pbazaar.pbazaarforagent.ui.main.payment.PayHistoryFragment;
 import com.pbazaar.pbazaarforagent.ui.main.post_history.PostHistoryFragment;
 import com.pbazaar.pbazaarforagent.ui.main.product.ProductPostingFragment;
@@ -283,23 +282,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void showPaymentHistoryFragment() {
-//        payHistoryFragment = (PayHistoryFragment) getSupportFragmentManager().findFragmentByTag(PayHistoryFragment.class.getSimpleName());
-//
-//        if (payHistoryFragment == null) {
-//            payHistoryFragment = PayHistoryFragment.newInstance();
-//            Log.d(TAG, "Payment Fragment created");
-//        }
-//
-//        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), payHistoryFragment, PayHistoryFragment.class.getSimpleName()).commit();
+        payHistoryFragment = (PayHistoryFragment) getSupportFragmentManager().findFragmentByTag(PayHistoryFragment.class.getSimpleName());
+
+        if (payHistoryFragment == null) {
+            payHistoryFragment = PayHistoryFragment.newInstance();
+            Log.d(TAG, "Payment Fragment created");
+        }
+
+        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), payHistoryFragment, PayHistoryFragment.class.getSimpleName()).commit();
 
         getSupportActionBar().setTitle(getString(R.string.payment_history_nav_menu_item));
-
-
-        NewProductPostingFragment fragment = (NewProductPostingFragment) getSupportFragmentManager().findFragmentByTag(NewProductPostingFragment.class.getSimpleName());
-        if (fragment == null)
-            fragment = NewProductPostingFragment.newInstance();
-        getSupportFragmentManager().beginTransaction().replace(fragmentContainer.getId(), fragment, NewProductPostingFragment.class.getSimpleName()).commit();
-
 
     }
 
