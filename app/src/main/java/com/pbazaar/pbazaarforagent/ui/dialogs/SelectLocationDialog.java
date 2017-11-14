@@ -37,7 +37,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.pbazaar.pbazaarforagent.R;
-import com.pbazaar.pbazaarforagent.helper.AppController;
 import com.pbazaar.pbazaarforagent.helper.Constants;
 import com.pbazaar.pbazaarforagent.remote.MapApi;
 import com.pbazaar.pbazaarforagent.remote.data.GeoCodingResponse;
@@ -242,7 +241,6 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
     public void onStart() {
         super.onStart();
         googleApiClient.connect();
-
     }
 
 
@@ -250,7 +248,9 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
     public void onDestroy() {
         super.onDestroy();
         LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, SelectLocationDialog.this);
-        googleApiClient.disconnect();
+
+        if (googleApiClient.isConnected())
+            googleApiClient.disconnect();
 
         if (null != mapFragment)
             getActivity().getSupportFragmentManager().beginTransaction()
