@@ -137,7 +137,7 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//        map = googleMap;
+        map = googleMap;
 
         if (map != null) {
             cardView.setVisibility(View.VISIBLE);
