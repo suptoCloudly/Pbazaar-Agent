@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,6 +62,9 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
 
 //    @BindView(R.id.map_container)
 //    FrameLayout mapContainer;
+
+    @BindView(R.id.card_view)
+    CardView cardView;
 
     @BindView(R.id.address_tv)
     TextView addressTv;
@@ -133,8 +137,12 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-        map.setOnCameraIdleListener(this);
+//        map = googleMap;
+
+        if (map != null) {
+            cardView.setVisibility(View.VISIBLE);
+            map.setOnCameraIdleListener(this);
+        }
     }
 
     public void onLocationChanged(Location location) {
@@ -145,7 +153,8 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
             Log.d(TAG, "Location found");
             LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, Constants.MAP_ZOOM_FACTOR));
+            if (map != null)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, Constants.MAP_ZOOM_FACTOR));
             LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
         }
     }
@@ -229,7 +238,9 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
         // if there is a location then zoom the map there
         if (lastLocation != null) {
             LatLng currentLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, Constants.MAP_ZOOM_FACTOR));
+
+            if (map != null)
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, Constants.MAP_ZOOM_FACTOR));
         } else {
             // if last location not found then
             // initialize location change listener
