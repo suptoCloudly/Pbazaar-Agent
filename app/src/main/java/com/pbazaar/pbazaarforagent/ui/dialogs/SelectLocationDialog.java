@@ -145,6 +145,7 @@ public class SelectLocationDialog extends DialogFragment implements OnMapReadyCa
         }
     }
 
+    @Override
     public void onLocationChanged(Location location) {
         // if there is a location then zoom the map there
         // and remove the listener

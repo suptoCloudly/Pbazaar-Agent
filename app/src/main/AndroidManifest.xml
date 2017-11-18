@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!--android:debuggable="true"-->
+
     <application
         android:name=".helper.AppController"
         android:allowBackup="true"
@@ -25,8 +27,8 @@
             android:value="@string/google_maps_key" />
 
         <!--<meta-data-->
-            <!--android:name="com.google.android.geo.API_KEY"-->
-            <!--android:value="AIzaSyAuGu8eK-jGVzg-YtxxnT1FjY9Lp-KmWOw"/>-->
+        <!--android:name="com.google.android.geo.API_KEY"-->
+        <!--android:value="AIzaSyAuGu8eK-jGVzg-YtxxnT1FjY9Lp-KmWOw"/>-->
 
         <activity
             android:name=".ui.login.LoginActivity"

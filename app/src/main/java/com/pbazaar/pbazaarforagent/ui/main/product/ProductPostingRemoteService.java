@@ -365,6 +365,10 @@ public class ProductPostingRemoteService {
             completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
             return;
         }
+        if (!checkEmptyString(model.getHouseNo())) {
+            completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
+            return;
+        }
 
         if (model.getPictureId() == 0) {
             completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_image_error_message));
