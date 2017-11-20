@@ -71,5 +71,6 @@
     <string name="insert_client_requirements">Insert Client Requirements</string>
     <string name="min_budget">Minimum Budget</string>
     <string name="max_budget">Max Budget</string>
+    <string name="incorrect_mobile_no">Please Insert a Valid Mobile No</string>
 
 </resources>

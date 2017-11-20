@@ -361,6 +361,16 @@ public class ProductPostingRemoteService {
         }
 
 
+        if (model.getAdvertiserPhone().length() != 11) {
+            completionListener.onPostFailed(AppController.getInstance().getString(R.string.incorrect_mobile_no));
+            return;
+        }
+
+        if (!model.getAdvertiserPhone().startsWith("015") && !model.getAdvertiserPhone().startsWith("016") && !model.getAdvertiserPhone().startsWith("017") && !model.getAdvertiserPhone().startsWith("018") && !model.getAdvertiserPhone().startsWith("019")){
+            completionListener.onPostFailed(AppController.getInstance().getString(R.string.incorrect_mobile_no));
+            return;
+        }
+
         if (!checkEmptyString(model.getAdvertiserPhone())) {
             completionListener.onPostFailed(AppController.getInstance().getString(R.string.empty_textbox_error_meassage));
             return;
@@ -382,7 +392,8 @@ public class ProductPostingRemoteService {
         }
 
 
-        CheckDuplicateNoRequest checkDuplicateNoRequest = new CheckDuplicateNoRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getAdvertiserPhone(), model.getAdvertiserPhone2(), model.getAdvertiserPhone3());
+
+            CheckDuplicateNoRequest checkDuplicateNoRequest = new CheckDuplicateNoRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getAdvertiserPhone(), model.getAdvertiserPhone2(), model.getAdvertiserPhone3());
 
         Call<CheckDuplicateNoResponse> checkDuplicateNoCall = PbazaarApi.getInstance().getPbazaarApiServiceClient().checkForDuplicateNo(checkDuplicateNoRequest);
         checkDuplicateNoCall.enqueue(new Callback<CheckDuplicateNoResponse>() {
@@ -436,7 +447,7 @@ public class ProductPostingRemoteService {
     }
 
     private void post(PostProductModel model, @NonNull final ProductPostCompletionListener completionListener) {
-        PostProductRequest request = new PostProductRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getCategoryId(), model.getSubCategoryId(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getAdvertiserPhone2(), model.getAdvertiserPhone3(), model.getAdvertiserEmail(), model.getBlockSector(), model.getHouseNo(), model.getRoadNo(), model.getThanaAreaId(), model.getPictureId(), model.getCollectedId(),model.getLat(),model.getLng(),model.getAddress());
+        PostProductRequest request = new PostProductRequest(RemoteConstant.PUBLIC_API_TOKEN, model.getCategoryId(), model.getSubCategoryId(), model.getAdvertiserName(), model.getAdvertiserPhone(), model.getAdvertiserPhone2(), model.getAdvertiserPhone3(), model.getAdvertiserEmail(), model.getBlockSector(), model.getHouseNo(), model.getRoadNo(), model.getThanaAreaId(), model.getPictureId(), model.getCollectedId(), model.getLat(), model.getLng(), model.getAddress());
         Call<PostProductResponse> call = PbazaarApi.getInstance().getPbazaarApiServiceClient().postProduct(request);
         call.enqueue(new Callback<PostProductResponse>() {
             @Override

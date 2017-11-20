@@ -220,6 +220,30 @@
                                 android:layout_height="32dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/location_marker" />
+
+                            <Button
+                                android:id="@+id/select_address_dialog"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_margin="@dimen/standard_margin"
+                                android:background="#99049C3C"
+                                android:text="Select"
+                                android:textAllCaps="true"
+                                android:textColor="@android:color/white" />
+
+                            <Button
+                                android:id="@+id/change_address_dialog"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom"
+                                android:layout_margin="@dimen/standard_margin"
+                                android:background="#99FF0000"
+                                android:text="Change"
+                                android:textAllCaps="true"
+                                android:textColor="@android:color/white"
+                                android:visibility="gone" />
+
                         </FrameLayout>
 
 
@@ -334,7 +358,7 @@
                         style="@style/Label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="To-let/Sell Picture" />
+                        android:text="To-let/Sell Signboard" />
 
 
                     <android.support.v7.widget.CardView

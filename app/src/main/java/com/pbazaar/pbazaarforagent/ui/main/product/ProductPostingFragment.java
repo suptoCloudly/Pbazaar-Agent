@@ -61,7 +61,6 @@ import com.pbazaar.pbazaarforagent.model.SubCategoryModel;
 import com.pbazaar.pbazaarforagent.remote.MapApi;
 import com.pbazaar.pbazaarforagent.remote.data.GeoCodingResponse;
 import com.pbazaar.pbazaarforagent.ui.ScrollGoogleMap;
-import com.pbazaar.pbazaarforagent.ui.dialogs.SelectLocationDialog;
 import com.pbazaar.pbazaarforagent.ui.dialogs.ShowMessageDialog;
 import com.pbazaar.pbazaarforagent.ui.main.PostSuccessDialog;
 
@@ -148,6 +147,12 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     @BindView(R.id.button_product_post_fragment)
     Button postProductButton;
 
+    @BindView(R.id.select_address_dialog)
+    Button selectAddress;
+
+    @BindView(R.id.change_address_dialog)
+    Button changeAddress;
+
 
     private ProductPostingContract.Presenter presenter;
 
@@ -197,6 +202,8 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
         pickImageImageView.setOnClickListener(this);
         postProductButton.setOnClickListener(this);
         selectPropertyLocationTv.setOnClickListener(this);
+        selectAddress.setOnClickListener(this);
+        changeAddress.setOnClickListener(this);
         selectDistrictSpinner.setOnItemSelectedListener(this);
         selectCategoryRadioGroup.setOnCheckedChangeListener(this);
 
@@ -352,6 +359,12 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
             }
 
             postProduct();
+        } else if (view == selectAddress) {
+            selectAddress.setVisibility(View.GONE);
+            changeAddress.setVisibility(View.VISIBLE);
+        } else if (view == changeAddress) {
+            selectAddress.setVisibility(View.VISIBLE);
+            changeAddress.setVisibility(View.GONE);
         }
 
 
@@ -649,8 +662,11 @@ public class ProductPostingFragment extends Fragment implements ProductPostingCo
     @Override
     public void onCameraIdle() {
         LatLng latLng = map.getCameraPosition().target;
-        if (latLng != null)
-            getDestinationAddress(latLng);
+
+        if (selectAddress.getVisibility() == View.VISIBLE) {
+            if (latLng != null)
+                getDestinationAddress(latLng);
+        }
     }
 
     private void requestForLocationAndShowInMap() {
